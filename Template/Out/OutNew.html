@@ -1,0 +1,2720 @@
+{% extends 'Out/OutList.html' %}
+{% load static %}
+{% block content %}
+<link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+<div class="FinalClassPopup" id="Loading">
+    <div class="LoadImg"></div>
+</div>
+<div id="InNonImporterSerchId"></div>
+<div class="row mt-3">
+    <div class="col-10"></div>
+    <div class="col-1">
+        <a href="/OutList/" class="ExitButton">ExitForm</a>
+    </div>
+</div>
+
+<div class="container-fluid InpaymentNewStyles mt-4 " style="width: 90%;">
+    <section>
+        <button class="NewBtns" id="HeaderTab" onclick="TabHead(this.id)">HEADER</button>
+        <button class="NewBtns" id="PartyTab" onclick="TabHead(this.id)">PARTY</button>
+        <button class="NewBtns" id="CargoTab" onclick="TabHead(this.id)">CARGO</button>
+        <button class="NewBtns" id="InvoiceTab" onclick="TabHead(this.id)">INVOICE</button>
+        <button class="NewBtns" id="ItemTab" onclick="TabHead(this.id)">ITEM</button>
+        <button class="NewBtns" id="CpcTab" onclick="TabHead(this.id)">CPC</button>
+        <button class="NewBtns" id="SummaryTab" onclick="TabHead(this.id)">SUMMARY</button>
+        <button class="NewBtns d-none" id="AmendTab" onclick="TabHead(this.id)">AMEND</button>
+        <button class="NewBtns d-none" id="CancelTab" onclick="TabHead(this.id)">CANCEL</button>
+    </section>
+    <form method="POST">
+        {% csrf_token %}
+        <!---------------------------------------------------Header--------------------------------------------------->
+        <div id="Header" style="display:none">
+            <div class="row">
+                <div class="col-6">
+                    <div class="row mt-4">
+                        <div class="col-4">MESSAGE TYPE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="MessageType" value="OUTDEC">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARATION TYPE</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="DeclarationType" onchange="OutDeclarationChange()">
+                                <option selected>--Select--</option>
+                                {% for i in DeclarationType %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">PREVIOUS PERMIT NO</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="PreviousPermitNo">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">CARGO PACK TYPE</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="CargoPackType" onchange="OutCargoPackTypeChange()">
+                                <option selected>--Select--</option>
+                                {% for i in CargoType%}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="InwardTransportModeShowHide">
+                        <div class="col-4">INWARD TRANSPORT MODE</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="OutInwardTransportMode"
+                                onchange="OutInwardTrasnPortModeChange()">
+                                <option selected>--Select--</option>
+                                {% for i in OutWardTransportMode %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">OUTWARD TRANSPORT MODE</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="OutOutwardTransportMode"
+                                onchange="OutOutwardTrasnPortModeChange()">
+                                <option selected>--Select--</option>
+                                {% for i in OutWardTransportMode %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="CoTypeShow">
+                        <div class="col-4">CO TYPE</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="CoType" onchange="OutCoTypeChange()">
+                                <option selected>--Select--</option>
+                                {% for i in CoType %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARING FOR</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="DeclaringFor">
+                                <option selected>--Select--</option>
+                                {% for i in DeclaringFor %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">BG INDICATOR</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="BgIndicator">
+                                <option selected>--Select--</option>
+                                {% for i in BgIndicator %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="OverRideExchangeRate">OVERRIDE EXCHANGE RATE</label></div>
+                        <div class="col-8"><input type="checkbox" id="OverRideExchangeRate" value="False"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="SupplyIndicator">SUPPLY INDICATOR</label></div>
+                        <div class="col-8"><input type="checkbox" id="SupplyIndicator" value="False"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="ReferenceDocuments">REFERENCE DOCUMENT</label></div>
+                        <div class="col-8"><input type="checkbox" id="ReferenceDocuments" value="False"
+                                onclick="OutReferenceDocument()"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="PermitId">PERMIT ID</label></div>
+                        <div class="col-8">
+                            <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="Refid">REF ID</label></div>
+                        <div class="col-8">
+                            <input type="text" id="Refid" class="inputStyle" value="{{RefId}}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="JobId">JOB ID</label></div>
+                        <div class="col-8">
+                            <input type="text" id="JobId" class="inputStyle" value="{{JobId}}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="MSGId">MSG ID</label></div>
+                        <div class="col-8">
+                            <input type="text" id="MSGId" class="inputStyle" value="{{MsgId}}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="PermitNumber">PERMIT NUMBER</label></div>
+                        <div class="col-8">
+                            <input type="text" id="PermitNumber" class="inputStyle" value="{{PermitNumber}}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="prmtStatus">PERMIT Status</label></div>
+                        <div class="col-8">
+                            <input type="text" id="prmtStatus" class="inputStyle" value="{{prmtStatus}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <div class="row mt-4">
+                        <div class="col-4">MAILBOX ID</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="MailBoxId">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARANT NAME</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="DeclarantName">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARANT CODE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="DeclarantCode">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARANT TELEPHONE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="DeclarantTelePhone">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">CR UEI NO</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="CrueiNo">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">ADDITIONAL RECIPIENTS</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">RECIPIENTS 1</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="Recipient1">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">RECIPIENTS 2</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="Recipient2">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">RECIPIENTS 3</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="Recipient3">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display: none;" id="OutReferenceShow">
+                <div class="col-6">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">LICENCE</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence1"></div>
+                        <div class="col-1"></div>
+                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence4"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence2"></div>
+                        <div class="col-1"></div>
+                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence5"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence3"></div>
+                        <div class="col-1"></div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">ATTACHMENT DOCUMENT</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-5">DOCUMENT TYPE</div>
+                        <div class="col-5">ATTACHMENT</div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <select class="Dropdown" id="DeclarationType">
+                                <option selected>--Select--</option>
+                                {% for i in declarationTypeValue%}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-4"><input type="file" class="inputChooseFile"></div>
+                        <div class="col-2"><button type="button" class="ButtonClick">ATTACH</button></div>
+                    </div>
+                    <div class="row mt-3" style="font-size: 9px;color: red;">TOTAL SIZE SHOULD NOT EXCEED 20000 (KB)
+                    </div>
+                    <div class="row" style="font-size: 9px;color: red;">FILE FORMAT :
+                        DOC,DOCX,XLS,XLSX,PDF,JPG,JPEG,PNG,BMP,GIF,TIF,TIFF</div>
+                </div>
+            </div>
+            <div class="row PartyManufacturer" style="display: none;">
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h1 class="Borderdiv">CERTIFICATE OF ORIGIN</h1>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-12">CERTIFICATE TYPE 1</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <select class="Dropdown CoTypeEmptySelect" id="CertificateType1" style="width: 90%;">
+                                    <option selected>--Select--</option>
+                                    {% for i in CertificateType%}
+                                    <option>{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">CERTIFICATE TYPE 2</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <select class="Dropdown CoTypeEmptySelect" id="CertificateType2" style="width: 90%;">
+                                    <option selected>--Select--</option>
+                                    {% for i in CertificateType%}
+                                    <option>{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">CURRENCY CODE</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <select class="Dropdown CoTypeEmptySelect" id="CurrencyCode" style="width: 90%;">
+                                    <option selected>--Select--</option>
+                                    {% for i in Currency%}
+                                    <option>{{i.Currency}} : {{i.CurrencyCountry}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="row">
+                            <div class="col-12">COPIES</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" id="CerDetailCopies1">
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">COPIES</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" id="CerDetailCopies2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-1"></div>
+                    <div class="col-3">
+                        <div class="row">
+                            <div class="col-12">ADDITIONAL CERTIFICATE DETAILS</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="AddCerDtl1">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="AddCerDtl2">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="AddCerDtl3">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="AddCerDtl4">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="AddCerDtl5">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="row">
+                            <div class="col-12">TRANSPORT DETAILS</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="TransDtl1">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="TransDtl2">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="TransDtl3">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="TransDtl4">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12"><input type="text" class="inputStyle CoTypeEmpty" style="width: 70%;"
+                                    id="TransDtl5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-4"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('PartyTab')">NEXT</button></div>
+                <div class="col-4"></div>
+            </div>
+            <br>
+        </div>
+        <!---------------------------------------------------Party--------------------------------------------------->
+        <div class="" id="Party" style="display:none">
+            <div class="row mt-3">
+                <div class="col-2">DECLARANT COMPANY</div>
+                <div class="col-1"></div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" id="DeclarantCompanyCode"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2">EXPORTER</div>
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
+                        id="ExporterCode" onfocus="ExportFocusIn()" onfocusout="ExportFocusOut()"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
+                        id="ExporterCruei"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
+                        id="ExporterName"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
+                        id="ExporterName1"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS"
+                        id="ExporterAddress">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS1"
+                        id="ExporterAddress1">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CITY"
+                        id="ExporterCity"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB CODE"
+                        id="ExporterSubCode">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB DIVISION"
+                        id="ExporterSubDivison">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="COUNTRY"
+                        id="ExporterCountry">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="POSTAL CODE"
+                        id="ExporterPostalCode">
+                </div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row mt-5 " style="display: none;" id="OutCargoImporterShow">
+                <div class="col-2 mt-2">IMPORTER</div>
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
+                        id="ImporterCode" onfocus="ImportFocusIn()" onfocusout="ImportFocusOut()"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
+                        id="ImporterCruei"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
+                        id="ImporterName"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
+                        id="ImporterName1"></div>
+            </div>
+            <div class="row mt-3" style="display: none;" id="OutInwardCarrierShow">
+                <div class="col-2 mt-2">INWARD CARRIER AGENT</div>
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
+                        id="InwardCode" onfocus="InwardFocusIn()" onfocusout="InwardFocusOut()"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
+                        id="InwardCruei"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
+                        id="InwardName"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
+                        id="InwardName1"></div>
+            </div>
+            <div class="row mt-3 " style="display: none;" id="OutWardCarrierAgentShow">
+                <div class="col-2 mt-2">OUTWARD CARRIER AGENT</div>
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
+                        id="OutwardCode" onfocus="OutwardFocusIn()" onfocusout="OutwardFocusOut()"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
+                        id="OutwardCruei"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
+                        id="OutwardName"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
+                        id="OutwardName1"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2 mt-2">FREIGHT FORWARDER</div>
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
+                        id="FrieghtCode" onfocus="FrieghtFocusIn()" onfocusout="FrieghtFocusOut()"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
+                        id="FrieghtCruei"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
+                        id="FrieghtName"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
+                        id="FrieghtName1"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2 mt-2">CONSIGNEE</div>
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
+                        id="ConsigneCode" onfocus="ConsigneFocusIn()" onfocusout='ConsigneFocusOut()'></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
+                        id="ConsigneCruei"></div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CON NAME"
+                        id="ConsigneConName">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
+                        id="ConsigneName1"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS"
+                        id="ConsigneAddress">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS1"
+                        id="ConsigneAddress1">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CITY"
+                        id="ConsigneCity"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB COUNTRY"
+                        id="ConsigneSubCountry">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB DIVISION"
+                        id="ConsigneSubDivison">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="COUNTRY"
+                        id="ConsigneCountry">
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="POSTAL"
+                        id="ConsignePostal"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2">
+                    <input type="checkbox" id="EndUserID" onclick="EndUserClick()">
+                    <label for="EndUserID">ENDUSER</label>
+                </div>
+                <div class="col-1 EndUserHide">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                        placeholder="CODE" id="EndConsigneCode" onfocus="EndConsigneFocusIn()"
+                        onfocusout='EndConsigneFocusOut()'></div>
+                <div class="col-2 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                        placeholder="CRUEI" id="EndConsigneCruei"></div>
+                <div class="col-3 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                        placeholder="USER NAME" id="EndConsigneUserName">
+                </div>
+                <div class="col-3 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                        placeholder="NAME1" id="EndConsigneName1"></div>
+            </div>
+            <div class="row mt-3 EndUserHide">
+                <div class="col-2"><button type="button" class="btn1" onclick="CopyConsigne()">COPY OF CONSIGNE</button>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS"
+                        id="EndConsigneAddress">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS1"
+                        id="EndConsigneAddress1">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CITY"
+                        id="EndConsigneCity"></div>
+            </div>
+            <div class="row mt-3 EndUserHide">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB CODE"
+                        id="EndConsigneSubCode">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="POSTAL"
+                        id="EndConsignePostal">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="COUNTRY"
+                        id="EndConsigneCountry">
+                </div>
+            </div>
+            <div class="row mt-3 EndUserHide">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB DIVISON"
+                        id="EndConsigneSubDivison"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row mt-3 PartyManufacturer" style="display: none;">
+                <div class="col-2 mt-2">MANUFACTURER</div>
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <button type="button" class="btn" style="font-weight: bold;">+</button>
+                </div>
+                <div class="col-1"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="CODE" id="ManuFactureCode" onfocus="ManFactureFocusIn()"
+                        onfocusout="ManFactureFocusOut()"></div>
+                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="CRUEI" id="ManuFactureCruei"></div>
+                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="NAME" id="ManuFactureName">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="NAME1" id="ManuFactureName1"></div>
+            </div>
+            <div class="row mt-3 PartyManufacturer" style="display: none;">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="ADDRESS" id="ManuFactureAddress">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="ADDRESS1" id="ManuFactureAddress1">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="CITY" id="ManuFactureCity"></div>
+            </div>
+            <div class="row mt-3 PartyManufacturer" style="display: none;">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="SUB CODE" id="ManuFactureSubCode">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="SUB DIVISION" id="ManuFactureSubDivision">
+                </div>
+                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="COUNTRY" id="ManuFactureCountry">
+                </div>
+            </div>
+            <div class="row mt-3 PartyManufacturer" style="display: none;">
+                <div class="col-2"></div>
+                <div class="col-1"></div>
+                <div class="col-1"></div>
+                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
+                        placeholder="POSTAL" id="ManuFacturePostal"></div>
+                <div class="col-3"></div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('HeaderTab')">PREVIOUS</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('CargoTab')">NEXT</button></div>
+                <div class="col-3"></div>
+            </div>
+        </div>
+        <!---------------------------------------------------Cargo--------------------------------------------------->
+        <div class="" id="Cargo" style="display:none">
+            <div class="row">
+                <div class="col-6">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">TOTAL OUTER PACK</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row mt-3">
+                            <div class="col-4">TOTAL OUTER PACK</div>
+                            <div class="col-3"><input type="text" class="inputStyle" id="TotalOuterPack"></div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="TotalOuterPackUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack%}
+                                    <option>{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row mt-3">
+                            <div class="col-4">TOTAL GROSS WEIGHT</div>
+                            <div class="col-3"><input type="text" class="inputStyle" id="TotalGrossWeight"></div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="DeclarationType" id="TotalGrossWeightUOM">
+                                    <option selected>--Select--</option>
+                                    <option>KGM</option>
+                                    <option>TNE</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row mt-3">
+                            <div class="col-4">PERMIT GROSS WEIGHT</div>
+                            <div class="col-3"><input type="text" class="inputStyle"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">LOCATION INFORMATION</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">RELEASE LOCATION</div>
+                        <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
+                        <div class="col-2"><input type="text" class="inputStyle" id="ReleaseLocaName"
+                                onfocus="ReleaseLocationFocusIn()" onfocusout="ReleaseLocationFocusOut()"></div>
+                        <div class="col-5"><textarea name="" id="ReleaseLocText" class="inputStyle"></textarea></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">RECEIPT LOCATION</div>
+                        <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
+                        <div class="col-2"><input type="text" class="inputStyle" id="ReciptLocationCode"
+                                onfocus="ReciptFocusIn()" onfocusout="ReciptFocusOut()"></div>
+                        <div class="col-5"><textarea id="RecepitLocName" class="inputStyle"></textarea></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">STORAGE LOCATION</div>
+                        <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
+                        <div class="col-2"><input type="text" class="inputStyle" id="StorageCode"
+                                onfocus="StorageFocusIn()" onfocusout="StorageFocusOut()"></div>
+                        <div class="col-5"><textarea name="" id="StorageText" class="inputStyle"></textarea></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">BLANKET START DATE</div>
+                        <div class="col-1"></div>
+                        <div class="col-7"><input type="text" id="BlanketStartDate" class="inputStyle"
+                                onfocusout="InvoiceDateFunction('BlanketStartDate')"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6" id="OutWardDetailsShow" style="display: none;">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">INWARD DETAILS</h1>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row mt-3">
+                            <div class="col-4">MODE</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="InwardMode"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row mt-3">
+                            <div class="col-4">ARRIVAL DATE & TIME</div>
+                            <div class="col-4"><input type="text" class="inputStyle" placeholder="Date" id="ArrivalDate"
+                                    onfocusout="InvoiceDateFunction('ArrivalDate')"></div>
+                            <div class="col-2"><input type="text" class="inputStyle" placeholder="Time" id="ArrivalTime"
+                                    onfocusout="InvoiceDateFunction('ArrivalTime')"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid">
+                        <div class="row mt-3">
+                            <div class="col-3">LOADING PORT</div>
+                            <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"
+                                    onclick="alert('Welcome ')"></div>
+                            <div class="col-2"><input type="text" class="inputStyle" id="LoadingPortCode"
+                                    onfocus="LoadingPortFocusIn()" onfocusout="LoadingPortFocusOut()"></div>
+                            <div class="col-4"><input type="text" class="inputStyle" id="LoadingPortCodeText"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid CargoSeaShow">
+                        <div class="row mt-3">
+                            <div class="col-4">VOYAGE NUMBER</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="VoyageNumber"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid CargoSeaShow">
+                        <div class="row mt-3">
+                            <div class="col-4">VESSEL NAME</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="VesselName"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid CargoRailShow">
+                        <div class="row mt-3">
+                            <div class="col-4">CONVEYANCE NO</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="ConveyanceRefNo"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid CargoRailShow">
+                        <div class="row mt-3">
+                            <div class="col-4">TRANSPORT ID</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="TransportId"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid CargoAirShow">
+                        <div class="row mt-3">
+                            <div class="col-4">FLIGHT NUMBER</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="FlightNO"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid CargoAirShow">
+                        <div class="row mt-3">
+                            <div class="col-4">AIRCRAFT REG NO</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="AircraftRegNo"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="OutCargoOblShow">
+                        <div class="row mt-3">
+                            <div class="col-4" id="OceanBillofLadingNo">OBL</div>
+                            <div class="col-6"><input type="text" class="inputStyle" id="OceanBillofLadingNo"></div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="OutCargoHblShow">
+                        <div class="row mt-3">
+                            <div class="col-4" id="OutCargoHbl">HBL</div>
+                            <div class="col-6"><input type="text" class="inputStyle"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6" id="OutOutWardDetailShow" style="display: none;">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">OUTWARD DETAILS</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-3">MODE</div>
+                                <div class="col-1"></div>
+                                <div class="col-7"><input type="text" class="inputStyle" id="OutwardMode"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-3">DEPARTURE DATE & TIME</div>
+                                <div class="col-1"></div>
+                                <div class="col-4"><input type="text" class="inputStyle" placeholder="DATE"
+                                        id="DepartureDate" onfocusout="InvoiceDateFunction('DepartureDate')"></div>
+                                <div class="col-3"><input type="text" class="inputStyle" placeholder="TIME"
+                                        id="DepartureTime"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-3">DISCHARGE PORT</div>
+                                <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
+                                <div class="col-2"><input type="text" class="inputStyle" id="DischargePort"
+                                        onfocus="DischargePortFocusIn()" onfocusout="DischargePortFocusOut()"></div>
+                                <div class="col-5"><input type="text" class="inputStyle" id="DischargePortText"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4">FINAL DESTINATION COUNTRY</div>
+                                <div class="col-7">
+                                    <select class="Dropdown" id="FinalDestinationCountry"
+                                        onfocus="FinalDestinationfocusin()" onfocusout="FinalDestinationfocusout()">
+                                        <option selected>--Select--</option>
+                                    </select><br>
+                                    <span id="FinalDestinationCountrySpan" style="color: #ff0000;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="OutOutwardSeaShow">
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="SeaStore">SEA STORE</label></div>
+                                <div class="col-7"><input type="checkbox" id="SeaStore"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutVoyageNumber">VOYAGE NUMBER</label></div>
+                                <div class="col-7"><input type="text" id="OutVoyageNumber" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutVesselName">VESSEL NAME</label></div>
+                                <div class="col-7"><input type="text" id="OutVesselName" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutOceanBillofLadingNo">OBL</label></div>
+                                <div class="col-7"><input type="text" id="OutOceanBillofLadingNo" class="inputStyle">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="Hbl">HBL</label></div>
+                                <div class="col-7"><input type="text" id="Hbl" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="VesselType">VESSEL TYPE</label></div>
+                                <div class="col-7">
+                                    <select class="Dropdown" id="VesselType">
+                                        <option selected>--Select--</option>
+                                        {% for i in VesselType%}
+                                        <option>{{i.Name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="VesselNetRegTon">VESSEL NET REGISTER
+                                        TONNAGE</label>
+                                </div>
+                                <div class="col-7"><input type="text" id="VesselNetRegTon" class="inputStyle">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="VesselNationality">VESSEL NATIONALITY</label></div>
+                                <div class="col-7">
+                                    <select class="Dropdown" id="VesselNationality" onfocus="VesselNationalityFocusIn()">
+                                        <option selected>--Select--</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="TowingVesselID">TOWING VESSEL ID</label></div>
+                                <div class="col-7"><input type="text" id="TowingVesselID" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="TowingVesselName">TOWING VESSEL NAME</label></div>
+                                <div class="col-7"><input type="text" id="TowingVesselName" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-3">NEXT PORT</div>
+                                <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
+                                <div class="col-2"><input type="text" class="inputStyle" id="NextPort" onfocus="NextPortFocusIn()" onfocusout="NextPortFocusOut()"></div>
+                                <div class="col-5"><input type="text" class="inputStyle" id="NextPortText"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-3">LAST PORT</div>
+                                <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
+                                <div class="col-2"><input type="text" class="inputStyle" id="LastPort" onfocus="LastPortFocusIn()" onfocusout="LastPortFocusOut()"></div>
+                                <div class="col-5"><input type="text" class="inputStyle" id="LastPortText"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="OutOutRailShow">
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutConveyanceRefNo">CONVEYANCE NO</label></div>
+                                <div class="col-7"><input type="text" id="OutConveyanceRefNo" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutTransportId">TRANSPORT ID</label></div>
+                                <div class="col-7"><input type="text" id="OutTransportId" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="HBL">HBL</label></div>
+                                <div class="col-7"><input type="text" name="HBL" class="inputStyle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="OutOutAirShow">
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutFlightNO">FLIGHT NUMBER</label></div>
+                                <div class="col-7"><input type="text" id="OutFlightNO" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutAircraftRegNo">AIRCRAFT REG NO</label></div>
+                                <div class="col-7"><input type="text" id="OutAircraftRegNo" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="OutMasterAirwayBill">MAWB</label></div>
+                                <div class="col-7"><input type="text" id="OutMasterAirwayBill" class="inputStyle"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="row mt-3">
+                                <div class="col-4"><label for="Hawb">HAWB</label></div>
+                                <div class="col-7"><input type="text" id="Hawb" class="inputStyle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="OutContainerShow" style="display: none;">
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h1 class="Borderdiv">CONTAINER INFO</h1>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-1"></div>
+                    <div class="col-10">
+                        <table id="cargoContainerTable" style="width: 100%;">
+                            <thead>
+                                <tr class="fontTable">
+                                    <th>S.NO</th>
+                                    <th>CONTAINER NO</th>
+                                    <th>SIZE / TYPE</th>
+                                    <th>WEIGHT ( TNE )</th>
+                                    <th>SEAL NO</th>
+                                    <th>Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>1</p>
+                                    </td>
+                                    <td>
+                                        <input type='text' class="inputStyle FinDc" name="ContainerNumber"
+                                            id="ContainerNumber" onfocusout="containerValidNum(this,this.value)">
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="container2nd">THE CONTAINER NO. FORMAT SHOULD BE 4 ALPHABETS <br>AND
+                                            FOLLOWED BY 7 DIGIT, FOR EX.: ABCD1234567</span>
+                                    </td>
+                                    <td>
+                                        <select class="Dropdown" name="ContainerSize"
+                                            onfocusout="ContainerValidSize(this,this.value)">
+                                            <option selected>--Select--</option>
+                                            {% for i in Container %}
+                                            <option value="{{i.Name}}">{{i.Name}}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="containerSelect">SIZE / TYPE IS REQUIRED</span>
+                                    </td>
+                                    <td>
+                                        <input type='text' class="inputStyle" name="ContainerWeight"
+                                            onfocusout="ContainerValidSize(this,this.value)" maxlength="3">
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="containerWeight">WEIGHT IS REQUIRED</span>
+                                    </td>
+                                    <td>
+                                        <input type='text' class="inputStyle" name="ContainerSeal"
+                                            onfocusout="ContainerValidSize(this,this.value)">
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="containerSeal">SEAL NO IS REQUIRED</span>
+                                    </td>
+                                    <td><i class="material-icons" style="color:red">delete</i></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><button class="ButtonClick" type="button" id="AddContainerBtn">ADD
+                                            CONTAINER</button></td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('PartyTab')">PREVIOUS</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('InvoiceTab')">NEXT</button></div>
+                <div class="col-3"></div>
+            </div>
+            <br>
+        </div>
+        <!---------------------------------------------------Invoice--------------------------------------------------->
+        <div class="" id="Invoice" style="display:none">
+            <div class="row mt-3">
+                <div class="col-2">EXPORTER PARTY</div>
+                <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"
+                        onclick="InNonImporeterSearch(Exporter,'EXPORTER PARTY','InviceExporterCode','InviceExporterCruei','InviceExporterName','InviceExporterName1')">
+                </div>
+                <div class="col-1"><input type="text" id="InviceExporterCode" class="inputStyle" placeholder="CODE"
+                        style="width : 100%" onfocus="InvoiceExporterFocusIn()" onfocusout="InvoiceExporterFocusOut()">
+                </div>
+                <div class="col-2"><input type="text" id="InviceExporterCruei" class="inputStyle" placeholder="CRUEI"
+                        style="width : 80%">
+                </div>
+                <div class="col-3">
+                    <input type="text" id="InviceExporterName" class="inputStyle HighLight" placeholder="NAME"
+                        style="width : 80%"><br>
+                    <span id="InviceExporterNameSpan" class="ErrorColor">Please Fill The Name</span>
+                </div>
+                <div class="col-3"><input type="text" id="InviceExporterName1" class="inputStyle" placeholder="NAME1"
+                        style="width : 80%">
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <h1 class="Borderdiv">INVOICE INFORMATION</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="row mt-3">
+                        <div class="col-4">SERIAL NUMBER</div>
+                        <div class="col-1"></div>
+                        <div class="col-7"><input type="text" class="inputStyle" style="width: 80%;"
+                                id="InvoiceSerialNumber" value="001" disabled></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">INVOICE NUMBER</div>
+                        <div class="col-1"></div>
+                        <div class="col-7"><input type="text" class="inputStyle HighLight" style="width: 80%;"
+                                id="InvoiceNumber">
+                            <br><span id="InvoiceNumberSpan" class="ErrorColor ">FILL NUMBER</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="row mt-3">
+                        <div class="col-4">INVOICE DATE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle HighLight" style="width: 80%;" id="InvoiceDate"
+                                onfocusout="InvoiceDateFunction('InvoiceDate')"><br>
+                            <span id="InvoiceDateSpan" class="ErrorColor">FILL DATE</span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">TERM TYPE</div>
+                        <div class="col-8">
+                            <select class="Dropdown" id="InvoiceTermType" style="width: 80%;">
+                                <option selected>--Select--</option>
+                                {% for i in InvoiceTermType %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <input type="checkbox" id="AdValoremIndicator" value="False"
+                                onclick="CheckFunction('AdValoremIndicator')">
+                            <label for="AdValoremIndicator">AD VALOREM INDICATOR</label>
+                        </div>
+                        <div class="col-7">
+                            <input type="checkbox" id="PreferentialDutyRateIndicator" value="False"
+                                onclick="CheckFunction('PreferentialDutyRateIndicator')">
+                            <label for="PreferentialDutyRateIndicator">PREFERENTIAL DUTY RATE INDICATOR</label>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-7">SUPPLIER IMPORTER RELATIONSHIP</div>
+                        <div class="col-5">
+                            <select class="Dropdown" id="InvoiceSupplierImporter">
+                                <option selected>--Select--</option>
+                                <option>AGENCY</option>
+                                <option>ORDINERY IMPORTER</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <table id="InvoiceCalculationTable">
+                    <thead>
+                        <th>ITEM</th>
+                        <th>CHARGES(%)</th>
+                        <th>CURRENCY</th>
+                        <th>EX.RATE</th>
+                        <th>AMOUNT</th>
+                        <th>AMOUNT($)</th>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>INVOICE VALUE</td>
+                            <td></td>
+                            <td>
+                                <select class="Dropdown HighLight" id="InvoiceCurrency"
+                                    onchange="InvoiceCurencyChange()">
+                                    <option selected>--Select--</option>
+                                    {% for i in Currency %}
+                                    <option>{{i.Currency}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span id="InvoiceCurrencySpan" class="ErrorColor">SELECT CURRENCY</span>
+                            </td>
+                            <td><input type="text" class="inputStyle" style="width: 80%;" id="InvoiceExRate" disabled
+                                    value="0.00"></td>
+                            <td><input type="text" class="inputStyle" style="width: 80%;" id="InvoiceAmount"
+                                    value="0.00" onkeyup="InvoiceCalculation()"></td>
+                            <td><input type="text" class="inputStyle" style="width: 80%;" id="InvoiceSumAmount" disabled
+                                    value="0.00"></td>
+                        </tr>
+                        <tr>
+                            <td>CIF VALUE</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td><input type="text" class="inputStyle" id="InvoiceCifSumAmount" style="width: 80%;"
+                                    value="0.00" disabled></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('CargoTab')">PREVIOUS</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="InvoiceSave()">ADD INVOICE</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="InvoiceReset()">RESET</button>
+                </div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('ItemTab')">NEXT</button></div>
+                <div class="col-2"></div>
+            </div>
+            <br>
+            <table id="InvoiceTable" style="width: 100%;" class="mt-5">
+                <thead>
+                    <tr>
+                        <th>EDIT</th>
+                        <th>DELETE</th>
+                        <th>S.NO</th>
+                        <th>INVOICE NUMBER</th>
+                        <th>INVOICE DATE</th>
+                        <th>INVOICE CURRENCY</th>
+                        <th>INVOICE AMOUNT</th>
+                        <th>CIF/FOB VALUE (S$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan=8 style='text-align:center'>No Record</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br>
+            <br>
+        </div>
+        <!---------------------------------------------------Item--------------------------------------------------->
+        <div class="" id="Item" style="display:none">
+            <div class="row">
+                <div class="col-7"></div>
+                <div class="col-5">
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="OutItemSave()">ADD
+                        ITEM</button>
+                    <button type="button" style="width:24%;" class="ButtonClick">PREVIOUS</button>
+                    <input type="text" style="display: inline;width:24%;" class="inputStyle">
+                    <button type="button" style="width:24%;" class="ButtonClick">NEXT</button>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-3">
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-4 " id="InHAWBOBLlbl">IN HAWB/HBL</div>
+                            <div class="col-8">
+                                <select id="InHAWBOBL" class="Dropdown">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4 " id="OutHAWBOBLlbl">OUT HAWB/HBL</div>
+                            <div class="col-8">
+                                <select id="OutHAWBOBL" class="Dropdown">
+                                    <option value=""></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4">ITEM NUMBER</div>
+                            <div class="col-8">
+                                <input type="text" class="inputStyle" id="ItemNo" value="1" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 ">ITEM CODE</div>
+                            <div class="col-6"> <input type="text" class="inputStyle" id="ItemCode"
+                                    onfocus="InhouseFocusIn()" onfocusout="InhouseFocusOut()">
+                            </div>
+                            <div class="col-1"><button type="button" class="btn" style="font-weight: bold;">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4"></div>
+                        <div class="col-8"><span style="background-color: brown;color: aliceblue;width: 100px;"
+                                id="HscodeControl"></span></div>
+                    </div>
+                    <div class="row">
+                        <div class="row">
+                            <div class="col-4">HS CODE</div>
+                            <div class="col-8">
+                                <input type="text" class="inputStyle HighLight" id="ItemHsCode"
+                                    onfocus="HsCodeFocusIn()" onfocusout="HsCodeFocusOut()">
+                                <span class="ErrColor" id="ItemHsCodeSpan">FILL HS CODE</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4">DESCRIPTION</div>
+                            <div class="col-8">
+                                <textarea class="inputStyle HighLight" id="ItmeDescription"
+                                    style="height: 70px;"></textarea>
+                                <span class="ErrColor" id="ItmeDescriptionSpan">FILL DESCRIPTION</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-2">COO</div>
+                            <div class="col-2 mt-1"><i class="fa-solid fa-magnifying-glass fa-lg"
+                                    onclick="ItemCooSearch()"></i></div>
+                            <div class="col-3">
+                                <input type="text" class="inputStyle HighLight" id="ItemCooInput" onfocus="ItemCooIn()"
+                                    onfocusout="ItemCooOut()">
+                                <span class="ErrColor" id="ItemCooInputSpan">FILL COO</span>
+                            </div>
+                            <div class="col-5"><input type="text" class="inputStyle" id="ItemCooInputText" disabled>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4"></div>
+                            <div class="col-4">
+                                <input type="checkbox" id="ItemDgIndicator" onclick="CheckFunction('ItemDgIndicator')">
+                                <label class="" for="ItemDgIndicator">DG INDICATOR</label>
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="ItemUnBrand" onclick="CheckFunction('ItemUnBrand')">
+                                <label class="" for="ItemUnBrand">UNBRANDED</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 ">BRAND </div>
+                            <div class="col-8">
+                                <input type="text" class="inputStyle HighLight" id="Brand">
+                                <span class="ErrColor" id="BrandSpan">FILL COO</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 ">MODEL</div>
+                            <div class="col-8">
+                                <input type="text" class="inputStyle" id="Model">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-5 ">
+                    <div class="row mt-3" id="VehicalTypeShow" style="display: none;">
+                        <div class="row">
+                            <div class="col-5 ">VEHICLE TYPE</div>
+                            <div class="col-7">
+                                <select class="Dropdown" id="VehicalTypeUom">
+                                    <option selected>--Select--</option>
+                                    {% for i in VehicalType %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="EngineCapacityShow" style="display: none;">
+                        <div class="row">
+                            <div class="col-5 ">ENGINE CAPACITY</div>
+                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00">
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="EngineCapacityUom">
+                                    <option selected>--Select--</option>
+                                    {% for i in EngineCapacity %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="OriginalShow" style="display: none;">
+                        <div class="row">
+                            <div class="col-5 ">ORIGINAL REGISTRATION DATE</div>
+                            <div class="col-7"><input type="text" class="inputStyle" id="orignaldatereg"
+                                    onfocusout="InvoiceDateFunction('orignaldatereg')"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="itemDutiableQtyNone" style="display: none;">
+                        <div class="row">
+                            <div class="col-5 ">DUTIABLE QUANTITY</div>
+                            <div class="col-4">
+                                <input type="number" class="inputStyle" id="TxtTotalDutiableQuantity" value="0.00"
+                                    onfocusout="DutiableQuantityOut()">
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="TDQUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">TOTAL DUTIABLE QUANTITY</div>
+                            <div class="col-4">
+                                <input type="number" class="inputStyle inputNumber" value="0.00" id="txttotDutiableQty">
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="ddptotDutiableQty">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">INVOICE QUANTITY</div>
+                            <div class="col-7">
+                                <input type="number" class="inputStyle inputNumber" value="0.00" id="TxtInvQty"
+                                    onfocusout="TxtInvQtyOut()">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 "> HS QUANTITY</div>
+                            <div class="col-4">
+                                <input type="number" class="inputStyle inputNumber HighLight" id="TxtHSQuantity"
+                                    value="0.00" onfocusout="TxtHSQuantityOut()">
+                                <span class="ErrColor" id="TxtHSQuantitySpan">FILL HS QUANTITY</span>
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="HSQTYUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" id="itemAlchoholNone" style="display: none;">
+                        <div class="row">
+                            <div class="col-5 ">ALCHOHOL PERCENTAGE (%)</div>
+                            <div class="col-7">
+                                <input type="number" class="inputStyle inputNumber" id="txtAlcoholPer" value="0.00">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="Borderdiv">ADDITIONAL FEATURES</p>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-3">
+                                <input type="checkbox" id="packing_details"
+                                    onclick="ItemCascShowAll('#packing_details','.PackingDetails')">
+                                <label for="packing_details">PACKING INFO</label>
+                            </div>
+                            <div class="col-3">
+                                <input type="checkbox" id="itemCascID" value="False"
+                                    onclick="ItemCascShowAll('#itemCascID','.OutItemCascHide')">
+                                <label class="" for="itemCascID">ITEM CASC</label>
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" id="shippingMarkCheck"
+                                    onclick="ItemCascShowAll('#shippingMarkCheck','.ShippingMark')">
+                                <label class="" for="shippingMarkCheck">SHIPPING MARK</label>
+                            </div>
+                            <div class="col-2">
+                                <input type="checkbox" id="lotIdCheck"
+                                    onclick="ItemCascShowAll('#lotIdCheck','.OutLotId')">
+                                <label class="" for="lotIdCheck">LOT ID</label>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-5">PREFERENTIAL CODE</div>
+                            <div class="col-7">
+                                <select class="Dropdown" id="itemPreferntialCode">
+                                    <option selected>--Select--</option>
+                                    {% for i in Preferntial %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">INVOICE NUMBER </div>
+                            <div class="col-7"> <select class="Dropdown" id="DrpInvoiceNo"
+                                    onchange="DrpInvoiceNoChange()"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">
+                                <label for="itemCheckUnitPrice">CURR (UNIT PRICE <input type="checkbox"
+                                        id="itemCheckUnitPrice" value="False">AUTO)</label>
+                            </div>
+                            <div class="col-4">
+                                <select class="Dropdown HighLight" id='DRPCurrency' onchange="DRPCurrencyChange()">
+                                    <option selected>--Select--</option>
+                                    {% for i in Currency %}
+                                    <option value="{{i.Currency}}">{{i.Currency}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-3"><input type="number" class="inputStyle inputNumber HighLight"
+                                    id="TxtExchangeRate" value="0.00"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 d-none" id="UnitPriceIDShow">
+                        <div class="row">
+                            <div class="col-5 ">UNIT PRICE VAL</div>
+                            <div class="col-4"><input type="number" class="inputStyle inputNumber" id="UnitPrice"
+                                    value="0.00"></div>
+                            <div class="col-3"><input type="number" class="inputStyle inputNumber" id="SumExchangeRate"
+                                    value="0.00"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 d-none" id="OptimalCharges">
+                        <div class="row">
+                            <div class="col-5 ">OPTIONAL CHARGES</div>
+                            <div class="col-4">
+                                <select class="Dropdown" id='OptionalChrgeUOM'>
+                                    <option selected>--Select--</option>
+                                    {% for i in Currency %}
+                                    <option value="{{i.Currency}}">{{i.Currency}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-3"><input type="number" class="inputStyle inputNumber" id="Optioncahrge"
+                                    value="0.00"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-5"></div>
+                            <div class="col-4"><input type="number" class="inputStyle inputNumber "
+                                    id="OptionalSumtotal" value="0.00"></div>
+                            <div class="col-3"><input type="number" class="inputStyle inputNumber"
+                                    id="OptionalSumExchage" value="0.00"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">TOTAL LINE AMOUNT</div>
+                            <div class="col-7">
+                                <input type="number" class="inputStyle inputNumber HighLight" id="TxtTotalLineAmount"
+                                    value="0.00" onfocusout="TxtTotalLineAmountOut()">
+                                <span class="ErrColor" id="TxtTotalLineAmountSpan">FILL TOTAL LINE AMOUNT</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">TOTAL INVOICE CHARGE (SGD)</div>
+                            <div class="col-7"><input type="number" class="inputStyle inputNumber"
+                                    id="TxtTotalLineCharges" value="0.00"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">CIF/FOB (SGD)</div>
+                            <div class="col-7">
+                                <input type="number" class="inputStyle inputNumber" id="TxtCIFFOB" value="0.00">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="row">
+                            <div class="col-5 ">LAST SELLING PRICE (SGD)</div>
+                            <div class="col-7">
+                                <input type="number" class="inputStyle inputNumber" id="itemLastSellingPrice"
+                                    value="0.00">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3 PackingDetails" style="display: none;">
+                        <div class="row">
+                            <div class="col-12">
+                                <h6 class="Borderdiv">PACKING DETAILS</h6>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-5 mt-2">OUTER PACK QUANTITY</div>
+                            <div class="col-3">
+                                <input type="number" class="inputStyle inputNumber" value="0" id="TxtOPQty">
+                            </div>
+                            <div class="col-4">
+                                <select class="Dropdown" id="OPUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-5 mt-2">IN PACK QUANTITY</div>
+                            <div class="col-3">
+                                <input type="number" class="inputStyle inputNumber" value="0" id="TxtIPQty">
+                            </div>
+                            <div class="col-4">
+                                <select class="Dropdown" id="IPUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-5 mt-2">INNER PACK QUANTITY</div>
+                            <div class="col-3">
+                                <input type="number" class="inputStyle inputNumber" value="0" id="TxtINPQty">
+                            </div>
+                            <div class="col-4">
+                                <select class="Dropdown" id="TxtINPQtyUom">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-5 mt-2">INMOST PACK QUANTITY</div>
+                            <div class="col-3">
+                                <input type="number" class="inputStyle inputNumber" value="0" id="TxtIMPQty">
+                            </div>
+                            <div class="col-4">
+                                <select class="Dropdown" id="ImPUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="Borderdiv">UPLOAD ITEM EXCEL TEMPLATE</h6>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            <a class="btn1" id="downloadTempBtn">DOWNLOAD TEMPLATE</a>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-5">
+                            <input type="file" class="inputChooseFile" style="width: 100%;" id="InpaymentFile"
+                                name="InpaymentFile" accept=".xlsx">
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-2">
+                            <button class="btn1" type="button" id="InpaymentReadBtn">UPLOAD DATA</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="Borderdiv">PREPARED EXCEL</h6>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-1"></div>
+                        <div class="col-6"><input type="file" class="inputChooseFile" style="width: 100%;"
+                                accept=".xlsx"></div>
+                        <div class="col-1"></div>
+                        <div class="col-2"><button class="btn1" type="button" id="InpaymentReadBtn">ATTACH</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------------------------ITEM CASC --------------------------------------------------->
+            <div class="row mt-5 OutItemCascHide" style="display: none;">
+                <div class="col-12">
+                    <h1 class="Borderdiv">ITEM CASC</h1>
+                </div>
+                <div class="container mt-3" style="padding-left: 100px;padding-right: 100px;">
+                    <!-------------------------------------------------------------OUT ITEMCASC 1 ---------------------------------------------------------->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">END USER DESCRIPTION</div>
+                                <div class="col-1" style="width: 150px;">PRODUCT CODE 1 </div>
+                                <div class="col-2 mb-5">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode1">
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn1" type="button"
+                                        onclick="CopyOfHsQty('#product1CodeCopyInput','#product1CodeCopyUom')">COPY OF
+                                        HS-QUANTITY</button>
+                                </div>
+                                <div class="col-1">
+                                    <input type="number" class="inputStyle" value="0.00" id="product1CodeCopyInput">
+                                </div>
+                                <div class="col-2">
+                                    <select class="Dropdown" id="product1CodeCopyUom">
+                                        <option selected>--Select--</option>
+                                        {% for i in TotalOuterPack %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn1" type="button"
+                                        onclick="OutItemAddCasc('#OutItemCascTable1' , 'Casc1')">ADDCASC</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <textarea id="EndUserDes1" class="inputStyle" style="height: 80px;"></textarea>
+                                </div>
+                                <div class="col-10">
+                                    <table style="width: 98%;" id="OutItemCascTable1">
+                                        <thead>
+                                            <th>CASC CODE 1</th>
+                                            <th>CASC CODE 2</th>
+                                            <th>CASC CODE 3</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="inputStyle" name="Casc1"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc1"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc1"></td>
+                                                <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                                        onclick="DeleteCasc(this)"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!------------------------------------------------------------- OUT ITEMCASC 2---------------------------------------------------------->
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2">END USER DESCRIPTION</div>
+                                <div class="col-1" style="width: 150px;">PRODUCT CODE 2 </div>
+                                <div class="col-2 mb-5">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode2">
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn1" type="button"
+                                        onclick="CopyOfHsQty('#product2CodeCopyInput','#product2CodeCopyUom')">COPY OF
+                                        HS-QUANTITY</button>
+                                </div>
+                                <div class="col-1">
+                                    <input type="number" class="inputStyle" value="0.00" id="product2CodeCopyInput">
+                                </div>
+                                <div class="col-2">
+                                    <select class="Dropdown" id="product2CodeCopyUom">
+                                        <option selected>--Select--</option>
+                                        {% for i in TotalOuterPack %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-1">
+                                    <button class="btn1" type="button"
+                                        onclick="OutItemAddCasc('#OutItemCascTable2' , 'Casc2')">ADDCASC</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-2">
+                                    <textarea id="EndUserDes2" class="inputStyle" style="height: 80px;"></textarea>
+                                </div>
+                                <div class="col-10">
+                                    <table style="width: 98%" id="OutItemCascTable2">
+                                        <thead>
+                                            <th>CASC CODE 1</th>
+                                            <th>CASC CODE 2</th>
+                                            <th>CASC CODE 3</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="inputStyle" name="Casc2"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc2"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc2"></td>
+                                                <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                                        onclick="DeleteCasc(this)"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------------------------------------------OUT ITEMCASC 3 ---------------------------------------------------------->
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2 ">
+                                    <h1 class="OutCasc3 FontName">END USER DESCRIPTION</h1>
+                                </div>
+                                <div class="col-1" style="width: 150px;">
+                                    <input type="checkbox" id="ProductCode3"
+                                        onclick="ItemCascShow('#ProductCode3','.OutCasc3')">
+                                    <label for="ProductCode3">PRODUCT CODE 3</label>
+                                </div>
+                                <div class="col-2 mb-5 OutCasc3">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <input type="text" class="inputStyle" id="itemProductCode3" style="width: 80%;">
+                                </div>
+                                <div class="col-2 OutCasc3">
+                                    <button class="btn1" type="button"
+                                        onclick="CopyOfHsQty('#product3CodeCopyInput','#product3CodeCopyUom')">COPY OF
+                                        HS-QUANTITY</button>
+                                </div>
+                                <div class="col-1 OutCasc3">
+                                    <input type="number" class="inputStyle" value="0.00" id="product3CodeCopyInput">
+                                </div>
+                                <div class="col-2 OutCasc3">
+                                    <select class="Dropdown" id="product3CodeCopyUom">
+                                        <option selected>--Select--</option>
+                                        {% for i in TotalOuterPack %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-1 OutCasc3">
+                                    <button class="btn1" type="button"
+                                        onclick="OutItemAddCasc('#OutItemCascTable3','Casc3')">ADDCASC</button>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-2 OutCasc3">
+                                    <textarea id="EndUserDes3" class="inputStyle" style="height: 80px;"></textarea>
+                                </div>
+                                <div class="col-10 OutCasc3">
+                                    <table style="width: 98%;" id="OutItemCascTable3">
+                                        <thead>
+                                            <th>CASC CODE 1</th>
+                                            <th>CASC CODE 2</th>
+                                            <th>CASC CODE 3</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="inputStyle" name="Casc3"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc3"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc3"></td>
+                                                <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                                        onclick="DeleteCasc(this)"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------------------------------------------OUT ITEMCASC 4 ---------------------------------------------------------->
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2 ">
+                                    <h1 class="OutCasc4 FontName">END USER DESCRIPTION</h1>
+                                </div>
+                                <div class="col-1" style="width: 150px;">
+                                    <input type="checkbox" id="ProductCode4"
+                                        onclick="ItemCascShow('#ProductCode4','.OutCasc4')">
+                                    <label for="ProductCode4">PRODUCT CODE 4</label>
+                                </div>
+                                <div class="col-2 mb-5 OutCasc4">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode4">
+                                </div>
+                                <div class="col-2 OutCasc4">
+                                    <button class="btn1" type="button"
+                                        onclick="CopyOfHsQty('#product4CodeCopyInput','#product4CodeCopyUom')">COPY OF
+                                        HS-QUANTITY</button>
+                                </div>
+                                <div class="col-1 OutCasc4">
+                                    <input type="number" class="inputStyle" value="0.00" id="product4CodeCopyInput">
+                                </div>
+                                <div class="col-2 OutCasc4">
+                                    <select class="Dropdown" id="product4CodeCopyUom">
+                                        <option selected>--Select--</option>
+                                        {% for i in TotalOuterPack %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-1 OutCasc4">
+                                    <button class="btn1" type="button"
+                                        onclick="OutItemAddCasc('#OutItemCascTable4','Casc4')">ADDCASC</button>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-2 OutCasc4">
+                                    <textarea id="EndUserDes4" class="inputStyle" style="height: 80px;"></textarea>
+                                </div>
+                                <div class="col-10 OutCasc4">
+                                    <table style="width: 98%" id="OutItemCascTable4">
+                                        <thead>
+                                            <th>CASC CODE 1</th>
+                                            <th>CASC CODE 2</th>
+                                            <th>CASC CODE 3</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="inputStyle" name="Casc4"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc4"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc4"></td>
+                                                <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                                        onclick="DeleteCasc(this)"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-------------------------------------------------------------OUT ITEMCASC 5 ---------------------------------------------------------->
+                    <div class="row mt-5">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-2 ">
+                                    <h1 class="OutCasc5 FontName">END USER DESCRIPTION</h1>
+                                </div>
+                                <div class="col-1" style="width: 150px;">
+                                    <input type="checkbox" id="ProductCode5"
+                                        onclick="ItemCascShow('#ProductCode5','.OutCasc5')">
+                                    <label for="ProductCode5">PRODUCT CODE 5</label>
+                                </div>
+                                <div class="col-2 mb-5 OutCasc5">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode5">
+                                </div>
+                                <div class="col-2 OutCasc5">
+                                    <button class="btn1" type="button"
+                                        onclick="CopyOfHsQty('#product5CodeCopyInput','#product5CodeCopyUom')">COPY OF
+                                        HS-QUANTITY</button>
+                                </div>
+                                <div class="col-1 OutCasc5">
+                                    <input type="number" class="inputStyle" value="0.00" id="product5CodeCopyInput">
+                                </div>
+                                <div class="col-2 OutCasc5">
+                                    <select class="Dropdown" id="product5CodeCopyUom">
+                                        <option selected>--Select--</option>
+                                        {% for i in TotalOuterPack %}
+                                        <option value="{{i.Name}}">{{i.Name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-1 OutCasc5">
+                                    <button class="btn1" type="button"
+                                        onclick="OutItemAddCasc('#OutItemCascTable5' , 'Casc5')">ADDCASC</button>
+                                </div>
+                            </div>
+                            <div class="row ">
+                                <div class="col-2 OutCasc5">
+                                    <textarea id="EndUserDes5" class="inputStyle" style="height: 80px;"></textarea>
+                                </div>
+                                <div class="col-10 OutCasc5">
+                                    <table style="width: 98%;" id="OutItemCascTable5">
+                                        <thead>
+                                            <th>CASC CODE 1</th>
+                                            <th>CASC CODE 2</th>
+                                            <th>CASC CODE 3</th>
+                                            <th></th>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="inputStyle" name="Casc5"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc5"></td>
+                                                <td><input type="text" class="inputStyle" name="Casc5"></td>
+                                                <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                                        onclick="DeleteCasc(this)"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!------------------------------------------ LOT ID -------------------------------------------->
+            <div class="row OutLotId" style="display: none;">
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h1 class="Borderdiv">LOT ID</h1>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3">CURRENT LOT</div>
+                    <div class="col-1"></div>
+                    <div class="col-3">MARKING</div>
+                    <div class="col-1"></div>
+                    <div class="col-3">PREVIOUS LOT</div>
+                    <div class="col-1"></div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3"><input type="text" class="inputStyle" style="width: 60%;" id="TxtCurrentLot">
+                    </div>
+                    <div class="col-1"></div>
+                    <div class="col-3">
+                        <select class="Dropdown" style="width: 60%;" id="DrpMaking">
+                            <option selected>--Select--</option>
+                            {% for i in Making %}
+                            <option value="{{i.Name}}">{{i.Name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-1"></div>
+                    <div class="col-3"><input type="text" class="inputStyle" style="width: 60%;" id="TxtPreviousLot">
+                    </div>
+                    <div class="col-1"></div>
+                </div>
+            </div>
+            <!--------------------------------------- SHIPPING MARKS --------------------------------------->
+            <div class="row ShippingMark" style="display: none;">
+                <div class="row mt-5">
+                    <div class="col-12">
+                        <h1 class="Borderdiv">SHIPPING MARKS INFORMATION</h1>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3">SHIPPING MARKS 1</div>
+                    <div class="col-3">SHIPPING MARKS 2</div>
+                    <div class="col-3">SHIPPING MARKS 3</div>
+                    <div class="col-3">SHIPPING MARKS 4</div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-3"><textarea id="txtShippingMarks1" class="inputStyle"
+                            style="height: 60px;width: 70%;"></textarea>
+                    </div>
+                    <div class="col-3"><textarea id="txtShippingMarks2" class="inputStyle"
+                            style="height: 60px;width: 70%;"></textarea>
+                    </div>
+                    <div class="col-3"><textarea id="txtShippingMarks3" class="inputStyle"
+                            style="height: 60px;width: 70%;"></textarea>
+                    </div>
+                    <div class="col-3"><textarea id="txtShippingMarks4" class="inputStyle"
+                            style="height: 60px;width: 70%;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------------CERTIFICATE OF ORIGIN --------------------------------->
+            <div class="row mt-5 PartyManufacturer" style="display: none;">
+                <div class="row">
+                    <div class="col-12">
+                        <h1 class="Borderdiv">CERTIFICATE OF ORIGIN</h1>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row  mt-3">
+                            <div class="col-12">CERTIFICATE DESCRIPTION</div>
+                        </div>
+                        <div class="row  mt-3">
+                            <div class="col-12"><textarea class="inputStyle CoTypeEmpty"
+                                    style="height: 350px;width: 70%;" id="TxtCerDes"></textarea></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row mt-3">
+                            <div class="col-12">CERTIFICATE ITEM QUANTITY</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-5"><input type="number" class="inputStyle CoTypeEmpty" id="TxtCerItemQty"
+                                    value="0.00"></div>
+                            <div class="col-4">
+                                <select class="Dropdown CoTypeEmptySelect" id="DrpCerItemUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">CIF/FOB ITEM VALUE ON CERTIFICATE</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-9"><input type="number" class="inputStyle CoTypeEmpty" id="TxtCIFCer"
+                                    value="0.00"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">MANUFACTURING COST DATE</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="ManuDate"
+                                    onfocusout="InvoiceDateFunction('ManuDate')"></div>
+                        </div>
+                        <div class="row mt-3 CoTxtile">
+                            <div class="col-12">TEXTILE CATEGORY</div>
+                        </div>
+                        <div class="row mt-3 CoTxtile">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="TexCat"></div>
+                        </div>
+                        <div class="row mt-3 CoTxtile">
+                            <div class="col-12">TEXTILE QUOTA QUANTITY</div>
+                        </div>
+                        <div class="row mt-3 CoTxtile">
+                            <div class="col-5"><input type="number" class="inputStyle CoTypeEmpty" id="TexQuotaQty"
+                                    value="0.00"></div>
+                            <div class="col-4">
+                                <select class="Dropdown CoTypeEmptySelect" id="TexQuotaUOM">
+                                    <option selected>--Select--</option>
+                                    {% for i in TotalOuterPack %}
+                                    <option value="{{i.Name}}">{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">INVOICE NUMBER</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="TxtCerInvoice">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">INVOICE DATE</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="InvDate"
+                                    onfocusout="InvoiceDateFunction('InvDate')"></div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="row mt-3">
+                            <div class="col-12">ORIGIN CRITERION CODE</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes1"></div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes2"></div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes3"></div>
+                        </div>
+                        <div class="row mt-5">
+                            <div class="col-12">HS CODE ON CERTIFICATE</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="TxtHSCodeCer">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">PERCENTAGE CONTENT OF ORIGIN CRITERION</div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="TxtPerOrigin">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!---------------------------------------------- BUTTONS --------------------------------------->
+            <div class="row mt-4">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('InvoiceTab')">PREVIOUS</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="ItemReset()">RESET</button>
+                </div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('CpcTab')">NEXT</button>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="DeleteItem()">DELETE
+                        ITEM</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button">EDIT ALL ITEM</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button">CONSOLIDATE</button></div>
+                <div class="col-2"><input type="text" class="inputStyle" placeholder="SEARCH BY ITEM NO..."></div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-2"><button class="MoveOnButtons" type="button">DEL HBL / HAWB</button></div>
+            </div>
+            <br>
+            <br>
+            <table id="ItemTable" style="width: 100%;">
+                <thead>
+                    <th><input type="checkbox"></th>
+                    <th>EDIT</th>
+                    <th>S.NO</th>
+                    <th>HS CODE</th>
+                    <th>GOODS DESCRIPTION</th>
+                    <th>COO</th>
+                    <th>IN HAWB/HBL</th>
+                    <th>OUT HAWB/HBL</th>
+                    <th>CURRENCY</th>
+                    <th>CIF/FOB (S$)</th>
+                    <th>HS QUANTITY</th>
+                    <th>HS UOM</th>
+                    <th>ITEM LINE AMOUNT</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan=14 style='text-align:center'>No Record</td>
+                    </tr>
+                </tbody>
+            </table>
+            <br><br>
+        </div>
+        <!---------------------------------------------------Cpc--------------------------------------------------->
+        <div class="" id="Cpc" style="display:none">
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="OutAeo" onclick="OutCpcHideShow('#OutAeo','.OutAeoClass','OutAeoName')">
+                    <label for="OutAeo">AEO</label>
+                </div>
+                <div class="col-8 OutAeoClass">
+                    <div class="row">
+                        <button class="ButtonClick" type="button" style="width: 14%;display: block;"
+                            onclick="OutCpcADD('#OutAeoTable','OutAeoName','.OutAeoMaximum')">ADD ROW</button>
+                        <p class="ErrorColor OutAeoMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR AEO.</p>
+                    </div>
+                    <div class="row mt-3">
+                        <table id="OutAeoTable">
+                            <thead>
+                                <th>PROCESSING CODE 1</th>
+                                <th>PROCESSING CODE 2</th>
+                                <th>PROCESSING CODE 3</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="inputStyle" name="OutAeoName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutAeoName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutAeoName"></td>
+                                    <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                            onclick="DeleteCasc(this)"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------------------------CWC--------------------------------------------------->
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="OutCwc" onclick="OutCpcHideShow('#OutCwc','.OutCwcClass','OutCwcName')">
+                    <label for="OutCwc">CWC</label>
+                </div>
+                <div class="col-8 OutCwcClass">
+                    <div class="row">
+                        <button class="ButtonClick" type="button" style="width: 14%;"
+                            onclick="OutCpcADD('#OutCwcTable','OutCwcName','OutCwcMaximum')">ADD ROW</button>
+                        <p class="ErrorColor OutCwcMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR CWC.</p>
+                    </div>
+                    <div class="row mt-3">
+                        <table id="OutCwcTable">
+                            <thead>
+                                <th>PROCESSING CODE 1</th>
+                                <th>PROCESSING CODE 2</th>
+                                <th>PROCESSING CODE 3</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="inputStyle" name="OutCwcName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutCwcName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutCwcName"></td>
+                                    <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                            onclick="DeleteCasc(this)"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------------------------SEA STORE--------------------------------------------------->
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="OutSeaStore"
+                        onclick="OutCpcHideShow('#OutSeaStore','.OutSeaStoreClass','OutSeaStoreName')">
+                    <label for="OutSeaStore">SEA STORE</label>
+                </div>
+                <div class="col-8 OutSeaStoreClass">
+                    <div class="row">
+                        <button class="ButtonClick" type="button" style="width: 14%;"
+                            onclick="OutCpcADD('#OutSeaStoreTable','OutSeaStoreName','.OutSeaStoreMaximum')">ADD
+                            ROW</button>
+                        <p class="ErrorColor OutSeaStoreMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR SEA STORE.</p>
+                    </div>
+                    <div class="row mt-3">
+                        <table id="OutSeaStoreTable">
+                            <thead>
+                                <th>PROCESSING CODE 1</th>
+                                <th>PROCESSING CODE 2</th>
+                                <th>PROCESSING CODE 3</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="inputStyle" name="OutSeaStoreName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutSeaStoreName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutSeaStoreName"></td>
+                                    <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                            onclick="DeleteCasc(this)"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------------------------STS--------------------------------------------------->
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="OutSts" onclick="OutCpcHideShow('#OutSts','.OutStsClass','OutStsName')">
+                    <label for="OutSts">STS</label>
+                </div>
+                <div class="col-8 OutStsClass">
+                    <div class="row">
+                        <button class="ButtonClick" type="button" style="width: 14%;"
+                            onclick="OutCpcADD('#OutStsTable','OutStsName','.OutStsMaximum')">ADD ROW</button>
+                        <p class="ErrorColor OutStsMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR STS.</p>
+                    </div>
+                    <div class="row mt-3">
+                        <table id="OutStsTable">
+                            <thead>
+                                <th>PROCESSING CODE 1</th>
+                                <th>PROCESSING CODE 2</th>
+                                <th>PROCESSING CODE 3</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="inputStyle" name="OutStsName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutStsName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutStsName"></td>
+                                    <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                            onclick="DeleteCasc(this)"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------------------------STS & CWC--------------------------------------------------->
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="OutStsCwc"
+                        onclick="OutCpcHideShow('#OutStsCwc','.OutStsCwcClass','OutStsName')">
+                    <label for="OutStsCwc">STS & CWC</label>
+                </div>
+                <div class="col-8 OutStsCwcClass">
+                    <div class="row">
+                        <button class="ButtonClick" type="button" style="width: 14%;"
+                            onclick="OutCpcADD('#OutStsCwcTable','OutStsCwcName','.OutStsCwcMaximum')">ADD ROW</button>
+                        <p class="ErrorColor OutStsCwcMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR STS & CWC.</p>
+                    </div>
+                    <div class="row mt-3">
+                        <table id="OutStsCwcTable">
+                            <thead>
+                                <th>PROCESSING CODE 1</th>
+                                <th>PROCESSING CODE 2</th>
+                                <th>PROCESSING CODE 3</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="inputStyle" name="OutStsCwcName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutStsCwcName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutStsCwcName"></td>
+                                    <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                            onclick="DeleteCasc(this)"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!---------------------------------------------------DEFERRED PRINTING OF CO--------------------------------------------------->
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="Defrentprinting" value="False" onclick="DefrentprintingClick()">
+                    <label for="Defrentprinting">DEFERRED PRINTING OF CO</label>
+                </div>
+            </div>
+            <!---------------------------------------------------CNB--------------------------------------------------->
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="OutCnb" value="False" onclick="CnbClick()">
+                    <label for="OutCnb">CNB</label>
+                </div>
+            </div>
+            <!---------------------------------------------------INTERNATIONAL PERMIT EXCHANGE--------------------------------------------------->
+            <div class="row mt-5">
+                <div class="col-2">
+                    <input type="checkbox" id="OutInterNational"
+                        onclick="OutCpcHideShow('#OutInterNational','.OutInterNationalClass','OutInterNationalName')">
+                    <label for="OutInterNational">INTERNATIONAL PERMIT EXCHANGE </label>
+                </div>
+                <div class="col-8 OutInterNationalClass">
+                    <div class="row">
+                        <button class="ButtonClick" type="button" style="width: 14%;"
+                            onclick="OutCpcADD('#OutInterNationalTable','OutInterNationalName','.OutInterNationalMaximum')">ADD
+                            ROW</button>
+                        <p class="ErrorColor OutInterNationalMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR STS.</p>
+                    </div>
+                    <div class="row mt-3">
+                        <table id="OutInterNationalTable">
+                            <thead>
+                                <th>PROCESSING CODE 1</th>
+                                <th>PROCESSING CODE 2</th>
+                                <th>PROCESSING CODE 3</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="inputStyle" name="OutInterNationalName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutInterNationalName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutInterNationalName"></td>
+                                    <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
+                                            onclick="DeleteCasc(this)"></i></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('ItemTab')">PREVIOUS</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('SummaryTab')">NEXT</button></div>
+                <div class="col-3"></div>
+            </div>
+            <br><br>
+        </div>
+        <!---------------------------------------------------Summary--------------------------------------------------->
+        <div class="" id="Summary" style="display:none">
+            <div class="row">
+                <div class="col-2">
+                    <div class="row mt-3">
+                        <div class="col-12">NO OF INVOICES</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">TOTAL CIF/FOB VALUE</div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="row mt-3">
+                        <div class="col-8"><input type="text" class="inputStyle" value="0.00"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00"></div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="row mt-3">
+                        <div class="col-12">NO OF ITEMS</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">SUM OF INVOICE AMOUNT </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="row mt-3">
+                        <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-8"> </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="row mt-3">
+                        <div class="col-12">TOTAL INVOICE CIF VALUE</div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">SUM OF ITEM AMOUNT</div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="row mt-3">
+                        <div class="col-8"><input type="text" class="inputStyle" value="0.00"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-8"> </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-1 mt-2">TRADER REMARKS</div>
+                <div class="col-2">
+                    <button class="ButtonClick" type="button" style="width:100%">PREVIOUS PERMIT NO</button>
+                </div>
+                <div class="col-1">
+                    <button class="ButtonClick" type="button">EX RATE</button>
+                </div>
+                <div class="col-1 mt-2"> FORMAT REMARKS</div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle">
+                </div>
+                <div class="col-1">
+                    <button class="ButtonClick" type="button">CONFIG</button>
+                </div>
+                <div class="col-1 mt-2"> CROSS REFERENCE </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle" id="GrossReference">
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <textarea class="inputStyle" style="height: 80px;" id="TradeRemarks"></textarea>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-6">INTERNAL REMARKS</div>
+                <div class="col-4">MRD </div>
+                <div class="col-2">TIME </div>
+            </div>
+            <div class="row">
+                <div class="col-6"><input type="text" class="inputStyle" id="InternalRemarks"></div>
+                <div class="col-4"><input type="text" class="inputStyle" id="MRDate" placeholder="DATE"></div>
+                <div class="col-2"><input type="text" class="inputStyle" id="MRTime" placeholder="TIME"></div>
+            </div>
+            <div class="row mt-3">
+                <h1 class="Borderdiv">DECLARATION SUMMARY</h1>
+            </div>
+            <div class="row mt-3">
+                <div class="col-6">
+                    <div class="row mt-4">
+                        <div class="col-6">EXPORTER</div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">IN MAWB/OBL</div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">OUT MAWB/OBL</div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">NO OF PACKING</div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">INVOICE AMOUNT</div>
+                        <div class="col-6"></div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row mt-4"></div>
+                    <div class="row mt-4">
+                        <div class="col-6">IN HAWB/HBL</div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">OUT HAWB/HBL</div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">GROSS WEIGHT</div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4"></div>
+                </div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12 SummaryCheckBoxClass">
+                    <input type="checkbox" id="DeclareIndicator"><label for="DeclareIndicator"> I/WE DECLARE THAT ALL
+                        PARTICULARS IN THIS APPLICATION ARE TRUE AND CORRECT</label>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('CpcTab')">PREVIOUS</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="AllDataSave()">SAVE</button>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <br><br>
+        </div>
+        <!---------------------------------------------------Amend--------------------------------------------------->
+        <div class="" id="Amend" style="display:none">
+            <div class="row">
+                <h1>Amend</h1>
+            </div>
+        </div>
+        <!---------------------------------------------------Cancel--------------------------------------------------->
+        <div class="" id="Cancel" style="display:none">
+            <div class="row">
+                <h1>Cancel</h1>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="{% static 'js/outJs/outFile.js'%}"></script>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
+<script>
+    function InvoiceCurencyChange() {
+        "{% for cur in Currency %}"
+        if ("{{cur.Currency}}" == $('#InvoiceCurrency').val()) {
+            $('#InvoiceExRate').val("{{cur.CurrencyRate}}")
+        }
+        "{% endfor %}"
+    }
+    function DRPCurrencyChange() {
+        "{% for cur in Currency %}"
+        if ("{{cur.Currency}}" == $('#DRPCurrency').val()) {
+            $('#TxtExchangeRate').val("{{cur.CurrencyRate}}")
+        }
+        "{% endfor %}"
+    }
+</script>
+
+{% endblock %}

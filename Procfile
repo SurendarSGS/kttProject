@@ -1,0 +1,1 @@
+web : gunicorn KttProject.wsgi --log-file -
