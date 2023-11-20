@@ -19,7 +19,7 @@ class SqlDb:
         self.conn = connections[database_name]
         self.cursor = self.conn.cursor() 
        
-
+ 
 def Login(request):
     context = {}
     print("This User Name : ", request.POST.get('Username'))
@@ -662,19 +662,19 @@ class ContainerSave(View,SqlDb):
 class PartyPage(View,SqlDb):
     def get(self,request):
         SqlDb.__init__(self)
-        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM Importer WHERE status = 'Active' ")
+        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM Importer WHERE status = 'Active' ORDER BY Code")
         importer = self.cursor.fetchall()
 
-        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM InwardCarrierAgent WHERE status = 'Active' ")
+        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM InwardCarrierAgent WHERE status = 'Active' ORDER BY Code")
         inward = self.cursor.fetchall()
 
-        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM FreightForwarder WHERE status = 'Active' ")
+        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM FreightForwarder WHERE status = 'Active' ORDER BY Code")
         fright = self.cursor.fetchall()
 
         self.cursor.execute("SELECT Name,Name1,CRUEI,ClaimantName,ClaimantName1,ClaimantCode,Name2 FROM ClaimantParty WHERE status = 'Active' ")
         claimant = self.cursor.fetchall() 
 
-        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM SUPPLIERMANUFACTURERPARTY WHERE status = 'Active' ")
+        self.cursor.execute("SELECT Code,Name,Name1,CRUEI FROM SUPPLIERMANUFACTURERPARTY WHERE status = 'Active' ORDER BY Code")
         supply = self.cursor.fetchall()
 
         self.cursor.execute("SELECT InhouseCode,HSCode,Description,Brand,Model,DGIndicator,DeclType,ProductCode FROM InhouseItemCode")

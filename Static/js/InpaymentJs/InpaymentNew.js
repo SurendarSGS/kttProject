@@ -3266,6 +3266,7 @@ $(document).ready(function () {
     url: '/PartyLoadDatas/',
     success: function (response) {
       ImporterData = response.Importer;
+      console.log(ImporterData);
       InwardData = response.Inward;
       FrieghtData = response.Frieght;
       ClaimantData = response.Claimant;
