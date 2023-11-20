@@ -910,7 +910,7 @@
                             <td>OTHER VALUE</td>
                             <td>
                                 <input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherCharges"
-                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
+                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }" disabled>
                             </td>
                             <td>
                                 <select class="Dropdown" style="width:70%" id="OtherCurrency"
@@ -930,10 +930,10 @@
                         </tr>
                         <tr id="InvoiceFrightRow">
                             <td><label for="InvoiceFrightCheck">FREIGHT VALUE ( <input type="checkbox"
-                                        id="InvoiceFrightCheck"> INCL. OTHER VALUE )</label> </td>
+                                        id="InvoiceFrightCheck" disabled> INCL. OTHER VALUE )</label> </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
                                     id="FrightCharges"
-                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }"></td>
+                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }" disabled></td>
                             <td>
                                 <select class="Dropdown" style="width:70%" id="FrightCurrency"
                                     onchange="InvoiceCurrencyFocusOut(this.value,'#FrightExRate','#FrightCharges')">
@@ -3350,7 +3350,6 @@
 
             summarySumOfItemAmoutFunction(itemCurAmountARR);
             if ($("#declarationType").val() == "DNG : Duty & GST") {
-                console.log("ITs True")
                 let suTot = itemOtherTaxAmountSummary + summaryTotalGstValue + summaryExciseDuty + summaryCustomsDuty;
                 $("#summaryTotalPayable").val(suTot.toFixed(2));
             }

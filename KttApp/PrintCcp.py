@@ -624,9 +624,9 @@ def PdfCcp(request, Data):
                 itemy = itemyF1(itemy)
         if draft == "DRAFT":
             draft = f"Draft_{Inheader.MSGId}"
-            filename = f"/Users/Public/printCcpFIles/{draft}1.pdf" #f"D:/Users/Public/PDFFilesKtt/1{draft}.pdf"
+            filename = f"D:/Users/Public/PDFFilesKtt/1{draft}.pdf"
         else:
-            filename = f"/Users/Public/printCcpFIles/{draft}1.pdf" #f"D:/Users/Public/PDFFilesKtt/1{draft}.pdf"
+            filename = f"D:/Users/Public/PDFFilesKtt/1{draft}.pdf"
         p.setTitle(draft)
         p.save()
         try:
@@ -669,11 +669,11 @@ def PdfCcp(request, Data):
                 page.merge_page(new_pdf.pages[2])
             output.add_page(page)
 
-        output_stream = open(f"/Users/Public/printCcpFIles/{draft}.pdf", "wb")#f"D:/Users/Public/PDFFilesKtt/{draft}.pdf
+        output_stream = open(f"D:/Users/Public/PDFFilesKtt/{draft}.pdf", "wb")#f"D:/Users/Public/PDFFilesKtt/{draft}.pdf
         output.write(output_stream)
         output_stream.close()
 
-        file_path = f"/Users/Public/printCcpFIles/{draft}1.pdf"
+        file_path = f"D:/Users/Public/PDFFilesKtt/{draft}1.pdf"
 
         if os.path.exists(file_path):
             os.remove(file_path)
@@ -681,7 +681,7 @@ def PdfCcp(request, Data):
         else:
             print(f"{file_path} does not exist.")
 
-        pdfFiles.append(f"/Users/Public/printCcpFIles/{draft}.pdf")
+        pdfFiles.append(f"D:/Users/Public/PDFFilesKtt/{draft}.pdf")
 
     pdfWriter = PdfFileWriter()
 
@@ -695,14 +695,14 @@ def PdfCcp(request, Data):
 
 
 
-    pdfOutputFile = open('/Users/Public/printCcpFIles/MergedFiles.pdf', 'wb')
+    pdfOutputFile = open('D:/Users/Public/PDFFilesKtt/MergedFiles.pdf', 'wb')
     pdfWriter.write(pdfOutputFile)
 
     pdfOutputFile.close()
     pdfFile.close()
 
 
-    with open(f"/Users/Public/printCcpFIles/MergedFiles.pdf", 'rb') as pdf_file:
+    with open(f"D:/Users/Public/PDFFilesKtt/MergedFiles.pdf", 'rb') as pdf_file:
         pdf_data = pdf_file.read()
 
     response = HttpResponse(pdf_data, content_type='application/pdf')

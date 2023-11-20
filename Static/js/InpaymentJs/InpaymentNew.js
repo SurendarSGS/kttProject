@@ -1543,19 +1543,12 @@ function invoiceTotalLineAmountFunction() {
   var TotInvoiceAmd = 0;
   for (var i of InvoiceData) {
     if (invoiceNumberval == i.InvoiceNo) {
-      console.log('i.OTCAmount : ', i.OTCSAmount);
-      console.log('i.FCSAmount : ', i.FCSAmount);
-      console.log('i.ICSAmount : ', i.ICSAmount);
-      console.log('i.TISAmount : ', i.TISAmount);
       totalAmd = Number(i.OTCSAmount) + Number(i.FCSAmount) + Number(i.ICSAmount)
       TotInvoiceAmd = Number(i.TISAmount)
     }
   }
   const InvoiceAmd = totalAmd / TotInvoiceAmd;
   const TotalLineAmd = icurrinput * itotalAmount;
-
-  console.log("InvoiceAmd : ", InvoiceAmd);
-  console.log("TotalLineAmd : ", TotalLineAmd);
 
   $('#iteminvoiceTotalInvoiceCharge').val((InvoiceAmd * TotalLineAmd).toFixed(2))
   var iTICharge = $('#iteminvoiceTotalInvoiceCharge').val()
