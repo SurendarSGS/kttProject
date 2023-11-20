@@ -27,6 +27,7 @@ urlpatterns = [
     path('',include('KttApp.urls')),
     path('',include('OutApp.urls')),
     path('',include('InonPaymentApp.urls')),
+    path('',include('Transhipment.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT)

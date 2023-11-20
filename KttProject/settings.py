@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'KttApp',
     'OutApp',
     'InonPaymentApp',
+    'Transhipment',
     'rest_framework',
     'django_filters',
     'fontawesomefree',

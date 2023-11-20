@@ -1,27 +1,25 @@
 {% extends 'Inpayment/InpaymentList.html' %}
-{% load static %} 
+{% load static %}
 {% block content %}
-<!-- <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
-<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
-<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css"> -->
 <div class="FinalClassPopup" id="Loading">
     <div class="LoadImg"></div>
 </div>
-<section class="InnonPayemnt-list-Buttons"> 
+<section class="InnonPayemnt-list-Buttons">
     {% csrf_token %}
     <div class="First-row">
         <Button type="button" id="NewBtn" onclick="NewButton()">NEW</Button>&nbsp;&nbsp;
-        <Button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="InNonSubmit()">SUBMIT</Button>&nbsp;&nbsp; <!--XmlInNon()-->
-        <Button type="button" id="PrintGstBtn" onclick = "PrintGstInNon()">PRINT GST</Button>&nbsp;&nbsp;
+        <Button type="button" id="SubmitBtn" style="background-color: indianred;"
+            onclick="InNonSubmit()">SUBMIT</Button>&nbsp;&nbsp; <!--XmlInNon()-->
+        <Button type="button" id="PrintGstBtn" onclick="PrintGstInNon()">PRINT GST</Button>&nbsp;&nbsp;
         <Button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</Button>&nbsp;&nbsp;
-        <Button type="button" id="AmendBtn" onclick = "InNonAmend()">AMEND</Button>&nbsp;&nbsp;
+        <Button type="button" id="AmendBtn" onclick="InNonAmend()">AMEND</Button>&nbsp;&nbsp;
         <Button type="button" id="CancelBtn" onclick="InNonCanecl()">CANCEL</Button>&nbsp;&nbsp;
-        <Button type="button" id="PrintStatusBtn" onclick = "InNonPrintStatus()">PRINT STATUS</Button>&nbsp;&nbsp;
+        <Button type="button" id="PrintStatusBtn" onclick="InNonPrintStatus()">PRINT STATUS</Button>&nbsp;&nbsp;
         <Button type="button" id="DownloadCcpBtn" onclick="DownloadCcpInNon()">DOWNLOAD CCP</Button>&nbsp;&nbsp;
         <Button type="button" id="DownloadDataBtn" onclick="DownloadDataInNon()">DOWNLOAD DATA</Button>&nbsp;&nbsp;
         <Button type="button" id="DeleteAllBtn" onclick="DeleteAllInNon()">DELETE ALL</Button>&nbsp;&nbsp;
     </div>
-    <br> 
+    <br>
     <div class="Second-row">
         <Button type="button" id="MergeBtn">MERGE</Button>&nbsp;&nbsp;
         <Button type="button" id="UnMergeBtn">UN MERGE</Button>&nbsp;&nbsp;
@@ -54,7 +52,7 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
 
 <section class="InonPayment-list-ScndButton">
     <label for="InnonPaymentNoofRows">NO OF ROWS</label>
@@ -69,7 +67,8 @@
         <option value="{{i}}">{{i}}</option>
         {% endfor %}
     </select>
-    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="TransmitDataClick()">TRANSMIT DATA</button>
+    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="TransmitDataClick()">TRANSMIT
+        DATA</button>
     <label style="margin-left: 20px;">SEARCH</label>
     <input type="text" class="inputStyle" style="width: 180px;margin-left: 20px;" id="InonPaymentTableSearch">
     <input type="checkbox" style="margin-left: 20px;" id="InonInpayCheckBox">
@@ -77,7 +76,8 @@
     <button type="button" class="ButtonClick" style="margin-left: 20px;">TRANSMIT OUTWARD</button>
     <div>
         <label for="InonPaymentFilter">FILTER PERMITS</label>
-        <select id="InonPaymentFilter" class="Dropdown" style="width: 150px;margin-left: 20px;" onchange="FilterPermits()">
+        <select id="InonPaymentFilter" class="Dropdown" style="width: 150px;margin-left: 20px;"
+            onchange="FilterPermits()">
             <option value="">all</option>
             <option value="NEW">new</option>
             <option value="DRF">draft</option>
@@ -152,6 +152,6 @@
     </table>
 </section>
 
-<script src="{% static 'js/InnonPayment/InonPaymentList.js' %}"></script>
+<script src="{% static 'js/Transhipment/Listpage.js' %}"></script>
 
 {% endblock %}
