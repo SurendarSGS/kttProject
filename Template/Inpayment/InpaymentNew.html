@@ -888,7 +888,7 @@
                             <td></td>
                             <td>
                                 <select class="Dropdown HighLight" style="width:70%" id="InvoiceCurrency"
-                                    onchange="InvoiceCurrencyFocusOut(this.value,'#InvoiceExRate')">
+                                    onchange="InvoiceCurrencyFocusOut(this.value,'#InvoiceExRate','#InvoiceExRate')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
                                     <option value="{{i.Currency}}">{{i.Currency}}</option>
@@ -900,7 +900,7 @@
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
                                     id="InvoiceExRate" disabled></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
-                                    id="InvoiceAmount" onkeyup="InvoiceCalculation()" onblur="InvoiceCalculation()"
+                                    id="InvoiceAmount"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
                             </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
@@ -910,12 +910,11 @@
                             <td>OTHER VALUE</td>
                             <td>
                                 <input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherCharges"
-                                    onkeyup="OtherCalculation()" onblur="OtherCalculation()"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
                             </td>
                             <td>
                                 <select class="Dropdown" style="width:70%" id="OtherCurrency"
-                                    onchange="InvoiceCurrencyFocusOut(this.value,'#OtherExRate')">
+                                    onchange="InvoiceCurrencyFocusOut(this.value,'#OtherExRate','#OtherCharges')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
                                     <option value="{{i.Currency}}">{{i.Currency}}</option>
@@ -925,7 +924,6 @@
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherExRate"
                                     disabled></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherAmount"
-                                    onkeyup="OtherCalculation()"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }"></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
                                     id="OtherSumAmount" disabled></td>
@@ -934,11 +932,11 @@
                             <td><label for="InvoiceFrightCheck">FREIGHT VALUE ( <input type="checkbox"
                                         id="InvoiceFrightCheck"> INCL. OTHER VALUE )</label> </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
-                                    id="FrightCharges" 
+                                    id="FrightCharges"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }"></td>
                             <td>
                                 <select class="Dropdown" style="width:70%" id="FrightCurrency"
-                                    onchange="InvoiceCurrencyFocusOut(this.value,'#FrightExRate')">
+                                    onchange="InvoiceCurrencyFocusOut(this.value,'#FrightExRate','#FrightCharges')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
                                     <option value="{{i.Currency}}">{{i.Currency}}</option>
@@ -948,7 +946,6 @@
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="FrightExRate"
                                     disabled></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="FrightAmount"
-                                    onkeyup="FreightSumFunction()"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }"></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
                                     id="FrightSumAmount" disabled></td>
@@ -966,7 +963,7 @@
                             </td>
                             <td>
                                 <select class="Dropdown" style="width:70%" id="InsurenceCurrency"
-                                    onchange="InvoiceCurrencyFocusOut(this.value,'#InsurenceExRate')">
+                                    onchange="InvoiceCurrencyFocusOut(this.value,'#InsurenceExRate','#InsurenceCharges')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
                                     <option value="{{i.Currency}}">{{i.Currency}}</option>
@@ -979,7 +976,7 @@
                             </td>
                             <td>
                                 <input type="number" value="0.00" class="inputStyle" style="width:50%"
-                                    id="InsurenceAmount" onkeyup="TxtInsuranceCharges_TextChanged()"
+                                    id="InsurenceAmount"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
                             </td>
                             <td>
@@ -3249,18 +3246,21 @@
     }
 
     /*------------------------------------------INVOICE TABLE FOCUSOUT CURRENCY---------------------------------------*/
-    function InvoiceCurrencyFocusOut(val, ExRateId) {
+    function InvoiceCurrencyFocusOut(val, ExRateId, charges) {
         $('#InvoiceCurrencySpan').hide();
         if (val == '--Select--') {
             $(ExRateId).val('0.00');
         } else {
+            if (charges != '#InvoiceExRate') {
+                $(charges).val('0.00');
+            }
+
             "{% for c in Currency%}"
             if ('{{c.Currency|escapejs}}' == val) {
                 $(ExRateId).val('{{c.CurrencyRate|escapejs}}');
             }
             "{% endfor %}"
         }
-        InvoiceCalculation()
     }
 
     function OptionalChrgeUOMOut() {
