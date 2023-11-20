@@ -604,6 +604,11 @@ function FrieghtClaculation() {
   InvoiceTotalGstFunction();
 }
 
+var FrightChargesEvent = document.getElementById('FrightCharges')
+FrightChargesEvent.addEventListener('input' , function(){
+  FrieghtChargesPer_TextChanged()
+})
+
 function FrieghtChargesPer_TextChanged() {
   FrieghtChargesPer = $('#FrightCharges').val()
   if (FrieghtChargesPer != "") {
@@ -657,6 +662,9 @@ function FreightSumFunction() {
   }
   InvoiceTotalGstFunction();
 }
+document.getElementById('InsurenceCharges').addEventListener('input',function(){
+  InsuranceCalculation()
+})
 
 function InsuranceCalculation() {
   let sumAmd = document.getElementById('InvoiceSumAmount').value;
