@@ -488,21 +488,16 @@
             });
             $('#searchInpaymentTableID').keyup(function () {
                 table.search($(this).val()).draw();
-                console.log($(this).val());
             });
 
         });
 
         function ClickedFunction(arg) {
-            console.log("iam clicked", arg);
         }
 
         function HtaHide(val1, ID) {
             let cbox = document.getElementById(ID);
-            console.log("this Name : " + val1);
-            console.log("this ID : " + ID);
             var table = $('#inpaymentTable').DataTable();
-            console.log("TYped Table : " + typeof (val1));
             if (cbox.checked) {
                 table.column(Number(val1) + 3).visible(true);
             } else {
@@ -511,7 +506,6 @@
         }
 
         function searchInpaymentTable(arg) {
-            console.log(arg);
             $('#inpaymentTable').DataTable().search(arg).draw();
         }
 
@@ -661,7 +655,6 @@
                 var ch = "true";
                 var valc = TruecheckBox[0]
                 for (var li = 0; li < TruecheckBox.length; li++) {
-                    console.log("THE STATUS IS " + TruecheckBox[li]);
                     if (valc == TruecheckBox[li]) {
                         ch = "true";
                     } else {
@@ -670,12 +663,10 @@
                     }
                 }
                 if (ch == "true") {
-                    console.log("Checking " + valc)
                     $("#MergeH").prop("disabled", false).css("background-color", 'rgb(25, 135, 84)');
                     $("#UnMergeH").prop("disabled", false).css("background-color", 'rgb(25, 135, 84)');
                     $("#PrintCcpH").prop("disabled", false).css("background-color", 'rgb(25, 135, 84)');
                     if (valc == "APR") {
-                        console.log("Checking " + valc + "Trues");
                         $("#DownloadCcpH").prop("disabled", false).css("background-color", 'rgb(25, 135, 84)');
                         $("#DownloadDataH").prop("disabled", false).css("background-color", 'rgb(25, 135, 84)');
                     } else if (valc == "NEW") {
@@ -717,7 +708,6 @@
                         "PermitNumber": PermitNumber,
                     },
                     success: function (data) {
-                        console.log("the data is :", data)
                         alert("xmldownload")
                         $('#Loading').hide();
                     },
@@ -739,7 +729,6 @@
         }
 
         function InpaymentCopyData(Arg) {
-            console.log("The copy data  : ", Arg)
             const NowDate = new Date();
             const TOUCHTIME = NowDate.toISOString().slice(0, 19).replace("T", " ");
             let downCheck = document.getElementsByName("inpaymentCheck");
@@ -757,13 +746,10 @@
                             csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
                         },
                         success: function (response) {
-                            console.log(response);
-                            console.log("Inpayment Copies successfully")
                             window.location.href = "/InpaymentNew/" + Arg + "/";
                             $('#Loading').hide();
                         },
                         error: function (response) {
-                            console.log("Error ", response);
                             $('#Loading').hide();
                         },
                     })
@@ -786,7 +772,6 @@
                     window.location.href = "/InpaymentNew/EDIT/";
                 },
                 error: function (response) {
-                    console.log("Error ", response);
                 },
             })
         }
@@ -802,13 +787,11 @@
                     csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
                 },
                 success: function (response) {
-                    console.log(response);
                     //window.location.href = "/InpaymentNew/SHOW/";
                     window.open("/InpaymentNew/SHOW/", 'KTT APP', 'width=1900,height=800')
                     $('#Loading').hide();
                 },
                 error: function (response) {
-                    console.log("Error ", response);
                 },
             })
         }
@@ -817,7 +800,6 @@
             let downCheck = document.getElementsByName("inpaymentCheck");
             for (let i of downCheck) {
                 if (i.checked) {
-                    console.log("welocme print status ")
                     window.location.assign("/InpaymentPrintStatus/" + i.value + "/");
                 }
             }
@@ -832,7 +814,6 @@
                 }
             }
             var data = checkAr.join(",");
-            console.log(" downloaded Data : " + data);
             window.location.assign("/InpaymentDownloadCcpZip/" + data + "/");
         }
 
@@ -845,7 +826,6 @@
                 }
             }
             var data = checkAr.join(",");
-            console.log(" downloaded Data : " + data);
             window.location.assign("/InpaymentDownloadData/" + data + "/");
         }
 
@@ -899,10 +879,8 @@
             var checkAr = [];
             if (val == "Inpayment") {
                 var mailId = $("#MailBoxCopyId").val();
-                console.log("Inpayment")
             } else if (val == "InNonpayment") {
                 var mailId = $("#InNonMailBoxCopyId").val();
-                console.log("InNonInpayment")
             }
 
             if (mailId != "--SELECT--") {
@@ -910,7 +888,6 @@
                 for (let i of downCheck) {
                     if (i.checked) {
                         checkAr.push(i.value);
-                        console.log("Checked : " + i.value);
                     }
                 }
                 var jsonData = JSON.stringify(checkAr);

@@ -8,8 +8,6 @@ from KttApp.views import SqlDb
 
 def CopyInpayment(request):
 
-    print("Loading copy datas...")
-
     nowRefId = datetime.now().strftime("%Y%m%d")
     nowJobId = datetime.now().strftime("%Y-%m-%d") 
 
@@ -40,8 +38,6 @@ def CopyInpayment(request):
     s.cursor.execute("SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'InFile'")
     for i in s.cursor.fetchall():
         pass
-        #print(i[0],end=',')
-        #print("%s" , end=',')
 
     val = "NEW"
     if Carc == "REFUND":

@@ -10,7 +10,6 @@
         <Button type="button" id="NewBtn" onclick="NewButton()">NEW</Button>&nbsp;&nbsp;
         <Button type="button" id="SubmitBtn" style="background-color: indianred;"
             onclick="InNonSubmit()">SUBMIT</Button>&nbsp;&nbsp; <!--XmlInNon()-->
-        <Button type="button" id="PrintGstBtn" onclick="PrintGstInNon()">PRINT GST</Button>&nbsp;&nbsp;
         <Button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</Button>&nbsp;&nbsp;
         <Button type="button" id="AmendBtn" onclick="InNonAmend()">AMEND</Button>&nbsp;&nbsp;
         <Button type="button" id="CancelBtn" onclick="InNonCanecl()">CANCEL</Button>&nbsp;&nbsp;
@@ -23,7 +22,9 @@
     <div class="Second-row">
         <Button type="button" id="MergeBtn">MERGE</Button>&nbsp;&nbsp;
         <Button type="button" id="UnMergeBtn">UN MERGE</Button>&nbsp;&nbsp;
+        <Button type="button" id="PrintGstBtn" onclick="PrintGstInNon()">ALL LIST</Button>&nbsp;&nbsp;
         <Button type="button" id="PrintCcpBtn" onclick="PrintCcpInNon()">PRINT CCP</Button>&nbsp;&nbsp;
+
     </div>
 </section>
 
@@ -101,7 +102,6 @@
                 <th>DELETE</th>
                 <th>EDIT</th>
                 <th>VIEW</th>
-                <th>JOB ID</th>
                 <th>MSG ID</th>
                 <th>DEC DATE</th>
                 <th>DEC TYPE</th>
@@ -118,7 +118,6 @@
                 <th>PRE PMT</th>
                 <th>X REF</th>
                 <th>INT REM</th>
-                <th>GST AMT</th>
                 <th>STATUS</th>
             </tr>
         </thead>
@@ -128,8 +127,6 @@
                 <th></th>
                 <th></th>
                 <th></th>
-                <th><input type="text" class="inputStyle"></th>
-                <th><input type="text" class="inputStyle"></th>
                 <th><input type="text" class="inputStyle"></th>
                 <th><input type="text" class="inputStyle"></th>
                 <th><input type="text" class="inputStyle"></th>

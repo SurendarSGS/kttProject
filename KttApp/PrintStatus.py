@@ -19,7 +19,6 @@ def PrintStatus(request,PermitId):
     Inheader = InheaderTbl.objects.get(PermitId=PermitId)
     Import = Importer.objects.get(code=Inheader.ImporterCompanyCode)
     Loading = LoadingPort.objects.get(portcode=Inheader.LoadingPortCode)
-    print("Status : ",Inheader.Status)  
     style = getSampleStyleSheet()['Normal']
     style.fontName = 'Times-Roman'  # Set the font family
     style.fontSize = 9
@@ -85,7 +84,6 @@ def PrintStatus(request,PermitId):
     can.drawString(60, 565, "CONVEYANCE NO :")
     can.drawString(60, 550, "MAWB / OBL :")
     createDate = (Inheader.TouchTime).strftime("%d-%m-%Y")
-    print("TouchTime :" ,createDate)
     can.drawString(310, 760, f"CREATE DATE : {createDate}")
     can.drawString(310, 745, f"MESSAGE ID : {Inheader.MSGId}")
     can.drawString(310, 730, f"PERMIT NUMBER : {Inheader.PermitNumber}")

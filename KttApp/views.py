@@ -15,29 +15,41 @@ from django.db import connections
 
 class SqlDb:
     def __init__(self, database_name='default'):
-        print("database_name : ",database_name)
         self.conn = connections[database_name]
         self.cursor = self.conn.cursor() 
        
  
 def Login(request):
     context = {}
-    print("This User Name : ", request.POST.get('Username'))
+   
     if request.method == "POST":
         Username = request.POST.get('Username')
         pswd = request.POST.get('Password')
+        check = request.POST.get('ChkLogin')
         if ManageUser.objects.filter(UserName=Username, Password=pswd).exists():
-            if ManageUser.objects.filter(UserName=Username, LoginStatus = "True").exists():
-                print("welcome")
+            if ManageUser.objects.filter(UserName=Username, LoginStatus = "True").exists(): 
+                if check:
+                    request.session['Username'] = Username
+                    request.session['Permit_Id'] = "NEW"
+                    context.update({'Success': "Success"})
+                else:
+                    context.update({'Error': "User Already Login with another System...!!!"})
             else:
-                print("Already Login")
-            request.session['Username'] = Username
-            request.session['Permit_Id'] = "NEW"
-            context.update({'Success': "Success"})
+                upd = ManageUser.objects.get(UserName=Username)
+                upd.LoginStatus = 'True'
+                upd.save()
+                request.session['Username'] = Username
+                request.session['Permit_Id'] = "NEW"
+                context.update({'Success': "Success"})
         elif Username == "" and pswd == "":
             context.update({})
         else:
             context.update({'Error': "Enter Correct Password and Username"})
+    else:
+        print("Log Out")
+        upd = ManageUser.objects.get(UserName=request.session['Username'])
+        upd.LoginStatus = 'False'
+        upd.save()
     return render(request, "LoginPage/Login.html", context)
   
 def Home(request):
@@ -161,7 +173,6 @@ def InpaymentHeader(request):
         mailBoxId = i.MailBoxId
         AccountId = i.AccountId
     nowdata = datetime.now()-timedelta(days=60)
-    print("The Data is : ",nowdata.strftime("%Y/%m/%d")) 
     s.cursor.execute("SELECT t1.Id as 'ID', t1.JobId as 'JOB ID', t1.MSGId as 'MSG ID', CONVERT(varchar, t1.TouchTime, 105) AS 'DEC DATE', SUBSTRING(t1.DeclarationType, 1, case when  CHARINDEX(' ', t1.DeclarationType ) = 0 then LEN(t1.DeclarationType) else CHARINDEX(' ', t1.DeclarationType) - 1 end) AS 'DEC TYPE', t1.TouchUser AS 'CREATE', t2.TradeNetMailboxID AS 'DEC ID', CONVERT(varchar, t1.ArrivalDate, 105) AS ETA, t1.PermitNumber AS 'PERMIT NO',t3.Name+' '+t3.Name1 AS 'IMPORTER',STUFF((SELECT distinct(', ' +  US.InHAWBOBL)  FROM ItemDtl US WHERE US.PermitId = t1.PermitId FOR XML PATH('')), 1, 1, '') 'HAWB',CASE  WHEN  t1.InwardTransportMode = '4 : Air' THEN t1.MasterAirwayBill  WHEN t1.InwardTransportMode = '1 : Sea'  THEN t1.OceanBillofLadingNo  ELSE ''  END AS 'MAWB/OBL',t1.LoadingPortCode as POL, t1.MessageType as 'MSG TYPE',t1.InwardTransportMode as TPT, t1.PreviousPermit as 'PRE PMT',t1.GrossReference as 'X REF', t1.InternalRemarks as 'INT REM',SUM(t1.TotalGSTTaxAmt) AS 'GST AMT', t1.Status as 'STATUS', 'Default' as  'COLOR',t1.PermitId  FROM  InHeaderTbl AS t1 left JOIN DeclarantCompany AS t2 ON t1.DeclarantCompanyCode = t2.Code left JOIN Importer AS t3 ON t1.ImporterCompanyCode = t3.Code   left JOIN ManageUser AS t6 ON t6.UserId=t1.TouchUser   where t6.AccountId='" +
                    AccountId + "' and convert(varchar,t1.TouchTime,111)>='"+ nowdata.strftime("%Y/%m/%d")+ " 'GROUP BY t1.Id, t1.JobId, t1.MSGId, t1.TouchTime, t1.TouchUser, t1.DeclarationType, t1.ArrivalDate, t1.PermitId, t1.InwardTransportMode, t1.MasterAirwayBill, t1.OceanBillofLadingNo, t1.LoadingPortCode, t1.MessageType, t1.InwardTransportMode, t1.PreviousPermit,t1.InternalRemarks, t1.Status, t2.TradeNetMailboxID,t2.DeclarantName,t1.GrossReference ,t1.License,t1.ReleaseLocation,t1.RecepitLocation,t1.DeclarningFor,t3.Name,t3.Name1,t6.AccountId,t1.PermitNumber")
     

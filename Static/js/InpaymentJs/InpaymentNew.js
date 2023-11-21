@@ -956,28 +956,31 @@ function ItemHscodeFocusIn() {
 
 function ItemHscodeFocusOut() {
   var itemcodeVal = $("#itemItemCode").val().trim().toUpperCase()
-  for (var i of InhouseItemCode) {
-    if ((i.InhouseCode).toUpperCase() == (itemcodeVal.split(":")[0]).toUpperCase()) {
-      $("#itemItemCode").val(i.InhouseCode)
-      $("#ItemHsCode").val(i.HSCode)
-      $("#itmeDescription").val(i.Description)
-      $("#itemBrandInput").val(i.Brand)
-      $("#itemModel").val(i.Model)
-      $("#itemDgIndicator").val(i.DgIndicator)
-      $("#itemProductCode1").val(i.ProductCode)
-      if (i.DGIndicator == "True") {
-        $('#itemDgIndicator').prop('checked', true);
-      } else {
-        $('#itemDgIndicator').prop('checked', false);
-      }
-      if (i.Brand == "UNBRANDED") {
-        $('#itemUnBrand').prop('checked', true);
-      } else {
-        $('#itemUnBrand').prop('checked', false);
+  if (itemcodeVal !== "") {
+    for (var i of InhouseItemCode) {
+      if ((i.InhouseCode).toUpperCase() == (itemcodeVal.split(":")[0]).toUpperCase()) {
+        $("#itemItemCode").val(i.InhouseCode)
+        $("#ItemHsCode").val(i.HSCode)
+        $("#itmeDescription").val(i.Description)
+        $("#itemBrandInput").val(i.Brand)
+        $("#itemModel").val(i.Model)
+        $("#itemDgIndicator").val(i.DgIndicator)
+        $("#itemProductCode1").val(i.ProductCode)
+        if (i.DGIndicator == "True") {
+          $('#itemDgIndicator').prop('checked', true);
+        } else {
+          $('#itemDgIndicator').prop('checked', false);
+        }
+        if (i.Brand == "UNBRANDED") {
+          $('#itemUnBrand').prop('checked', true);
+        } else {
+          $('#itemUnBrand').prop('checked', false);
+        }
       }
     }
+    HsOnFocusOut()
   }
-  HsOnFocusOut()
+
 }
 
 function HsOnFocus() {
@@ -1014,10 +1017,14 @@ function HsOnFocusOut() {
           $('#hsControledId').show();
           document.getElementById('itemCascID').checked = true;
           ItemCascShowAll('#itemCascID', '.OutItemCascHide')
+          document.getElementById('packing_details').checked = true;
+          ItemCascShowAll('#packing_details', '.PackingDetails')
           //itemCascFunction();
         } else {
           document.getElementById('itemCascID').checked = false;
           ItemCascShowAll('#itemCascID', '.OutItemCascHide')
+          document.getElementById('packing_details').checked = true;
+          ItemCascShowAll('#packing_details', '.PackingDetails')
           //itemCascFunction();
         }
         $('#ItemHsCode').val(i.HSCode)
@@ -1204,10 +1211,10 @@ function itemDutiCalculation(op, inp, inner, inmost, dutiab) {
   }
   if (dutiAb1 != "") {
     if (uom == "LTR") {
-      $('#ItemTotalDutiableQtyInput').val(Number(pckqty) * Number(dutiab));
-      $('#ItemHsQtyInput').val(Number(pckqty) * Number(dutiab));
+      $('#ItemTotalDutiableQtyInput').val((Number(pckqty) * Number(dutiab)).toFixed(2));
+      $('#ItemHsQtyInput').val((Number(pckqty) * Number(dutiab)).toFixed(2));
     } else if (uom == "KGM" && kgmvisible == "MULTIPLE") {
-      $('#ItemTotalDutiableQtyInput').val(Number(pckqty) * Number(dutiab));
+      $('#ItemTotalDutiableQtyInput').val((Number(pckqty) * Number(dutiab)).toFixed(2));
       if (!hsCode.startsWith('87')) {
         $('#TxtSumExciseDuty').val((Number(pckqty) * Number(dutiab)) * exiceDutyRate);
       }
@@ -1236,7 +1243,7 @@ function itemDutiCalculation(op, inp, inner, inmost, dutiab) {
         }
       }
     } else if (uom == "KGM" && kgmvisible == "DIVIDE") {
-      $('#ItemTotalDutiableQtyInput').val(Number(pckqty) * Number(dutiab) / 1000);
+      $('#ItemTotalDutiableQtyInput').val((Number(pckqty) * Number(dutiab) / 1000).toFixed(2));
       if (!hsCode.startsWith('87')) {
         $('#TxtSumExciseDuty').val(((Number(pckqty) * Number(dutiab)) / 1000) *
           exiceDutyRate);
@@ -1265,8 +1272,8 @@ function itemDutiCalculation(op, inp, inner, inmost, dutiab) {
         }
       }
     } else if (uom == "STK") {
-      $('#ItemTotalDutiableQtyInput').val(pckqty);
-      $("#ItemHsQtyInput").val((pckqty * dutiab) / 1000);
+      $('#ItemTotalDutiableQtyInput').val(pckqty.toFixed(2));
+      $("#ItemHsQtyInput").val(((pckqty * dutiab) / 1000).toFixed(2));
       if (!hsCode.startsWith('87')) {
         $('#TxtSumExciseDuty').val(pckqty * exiceDutyRate);
       }
@@ -1295,7 +1302,7 @@ function itemDutiCalculation(op, inp, inner, inmost, dutiab) {
         }
       }
     } else if (uom == "KGM" && typeId == 62) {
-      $('#ItemTotalDutiableQtyInput').val(Number(pckqty) * Number(dutiab))
+      $('#ItemTotalDutiableQtyInput').val((Number(pckqty) * Number(dutiab)).toFixed(2))
       if (!hsCode.startsWith('87')) {
         $('#TxtSumExciseDuty').val((Number(pckqty) * Number(dutiab)) * (
           exiceDutyRate));
@@ -1325,7 +1332,7 @@ function itemDutiCalculation(op, inp, inner, inmost, dutiab) {
         }
       }
     } else if (uom == "TNE" && typeId == 62) {
-      $('#ItemTotalDutiableQtyInput').val(Number(pckqty) * Number(dutiab))
+      $('#ItemTotalDutiableQtyInput').val((Number(pckqty) * Number(dutiab)).toFixed(2))
       if (!hsCode.startsWith('87')) {
         $('#TxtSumExciseDuty').val((Number(pckqty) * Number(dutiab)) * (
           exiceDutyRate));
@@ -1355,9 +1362,9 @@ function itemDutiCalculation(op, inp, inner, inmost, dutiab) {
         }
       }
     } else if (uom == "KGM" && typeId == 61) {
-      $('#ItemTotalDutiableQtyInput').val(Number(pckqty) * Number(dutiab))
+      $('#ItemTotalDutiableQtyInput').val((Number(pckqty) * Number(dutiab)).toFixed(2))
       if (!hsCode.startsWith('87')) {
-        $('#TxtSumExciseDuty').val((Number(pckqty) * Number(dutiab)) * (
+        $('#TxtSumExciseDuty').val(((Number(pckqty) * Number(dutiab)).toFixed(2)) * (
           exiceDutyRate));
       }
       let T3 = $('#TxtSumExciseDuty').val();
@@ -1385,7 +1392,7 @@ function itemDutiCalculation(op, inp, inner, inmost, dutiab) {
         }
       }
     } else if (uom == "DAL") {
-      $('#ItemTotalDutiableQtyInput').val(Number(pckqty) * Number(dutiab))
+      $('#ItemTotalDutiableQtyInput').val((Number(pckqty) * Number(dutiab)).toFixed(2))
       if (!hsCode.startsWith('87')) {
         $('#TxtSumExciseDuty').val((Number(pckqty) * Number(dutiab)) * (
           exiceDutyRate));
@@ -1489,10 +1496,10 @@ function itemInvoiceQuantityFunction() {
       }
     }
     if ($("#ItemHsQtyInput").val() == "0.00" || $("#ItemHsQtyInput").val() == "") {
-      $("#ItemHsQtyInput").val(total);
+      $("#ItemHsQtyInput").val(total.toFixed(2));
     }
     if ($("#itemInvoiceQuantity").val() != "0.00" && $("#ItemHsQtyInput").val() != "") {
-      $("#ItemHsQtyInput").val(total);
+      $("#ItemHsQtyInput").val(total.toFixed(2));
     }
   }
 }
@@ -1914,7 +1921,6 @@ function ItemEdit(Arg) {
       $('#ItemNextItemID').val(Arg);
       $('#MsgType').val(i.MessageType);
       $('#ItemHsCode').val(i.HSCode);
-      $('#itmeDescription').val(i.Description);
       $('#itemDgIndicator').val(i.DGIndicator);
       if (i.DGIndicator == "True") {
         $('#itemDgIndicator').prop('checked', true);
@@ -2014,6 +2020,7 @@ function ItemEdit(Arg) {
       CountryFocusOut()
       dutiableQtyFunction();
       ItemCascEdit(i.ItemNo);
+      $('#itmeDescription').val(i.Description);
       break;
     }
   }
@@ -3266,7 +3273,6 @@ $(document).ready(function () {
     url: '/PartyLoadDatas/',
     success: function (response) {
       ImporterData = response.Importer;
-      console.log(ImporterData);
       InwardData = response.Inward;
       FrieghtData = response.Frieght;
       ClaimantData = response.Claimant;
@@ -4124,10 +4130,10 @@ function duticalc(op, ip, inp, imp, totduti) {
     let gstperval = Number($("#invoiceGSTInput1").val()) / 100;
     let TDQUOM = $("#ItemDutiableUom").val();
     if (TDQUOM == "LTR") {
-      $("#ItemTotalDutiableQtyInput").val(pckqty * totduti);
-      $("#ItemHsQtyInput").val(pckqty * totduti);
+      $("#ItemTotalDutiableQtyInput").val((pckqty * totduti).toFixed(2));
+      $("#ItemHsQtyInput").val((pckqty * totduti).toFixed(2));
     } else if (TDQUOM == "KGM" && kgmvis == "MULTIPLE") {
-      $("#ItemTotalDutiableQtyInput").val(pckqty * totduti);
+      $("#ItemTotalDutiableQtyInput").val((pckqty * totduti).toFixed(2));
       if (!HsVal.startsWith("87")) {
         $("#TxtSumExciseDuty").val(pckqty * totduti * T1);
       }
@@ -4136,7 +4142,7 @@ function duticalc(op, ip, inp, imp, totduti) {
       T4 = T2 * gstperval + T3 * gstperval;
       $("#TxtItemSumGST").val(T4.toFixed(2));
     } else if (TDQUOM == "KGM" && kgmvis == "DIVIDE") {
-      $("#ItemTotalDutiableQtyInput").val((pckqty * totduti) / 1000);
+      $("#ItemTotalDutiableQtyInput").val(((pckqty * totduti) / 1000).toFixed(2));
       if (!HsVal.startsWith("87")) {
         $("#TxtSumExciseDuty").val(((pckqty * totduti) / 1000) * T1);
       }
@@ -4144,42 +4150,42 @@ function duticalc(op, ip, inp, imp, totduti) {
       T4 = T2 * gstperval + T3 * gstperval;
       $("#TxtItemSumGST").val(T4.toFixed(2));
     } else if (TDQUOM == "STK") {
-      $("#ItemTotalDutiableQtyInput").val(pckqty);
-      $("#ItemHsQtyInput").val((pckqty * totduti) / 1000);
+      $("#ItemTotalDutiableQtyInput").val(pckqty.toFixed(2));
+      $("#ItemHsQtyInput").val(((pckqty * totduti) / 1000).toFixed(2));
       if (!HsVal.startsWith("87")) {
-        $("#TxtSumExciseDuty").val(pckqty * T1);
+        $("#TxtSumExciseDuty").val((pckqty * T1).toFixed(2));
       }
       T3 = Number($("#TxtSumExciseDuty").val());
       T4 = T2 * gstperval + T3 * gstperval;
       $("#TxtItemSumGST").val(T4.toFixed(2));
     } else if (TDQUOM == "KGM" && typeidval == 62) {
-      $("#ItemTotalDutiableQtyInput").val(pckqty * totduti);
+      $("#ItemTotalDutiableQtyInput").val((pckqty * totduti).toFixed(2));
       if (!HsVal.startsWith("87")) {
-        $("#TxtSumExciseDuty").val(pckqty * totduti * T1);
+        $("#TxtSumExciseDuty").val((pckqty * totduti * T1).toFixed(2));
       }
       T3 = Number($("#TxtSumExciseDuty").val());
       T4 = T2 * gstperval + T3 * gstperval;
       $("#TxtItemSumGST").val(T4.toFixed(2));
     } else if (TDQUOM == "TNE" && typeidval == 62) {
-      $("#ItemTotalDutiableQtyInput").val(pckqty * totduti);
+      $("#ItemTotalDutiableQtyInput").val((pckqty * totduti).toFixed(2));
       if (!HsVal.startsWith("87")) {
-        $("#TxtSumExciseDuty").val(pckqty * totduti * T1);
+        $("#TxtSumExciseDuty").val((pckqty * totduti * T1).toFixed(2));
       }
       T3 = Number($("#TxtSumExciseDuty").val());
       T4 = T2 * gstperval + T3 * gstperval;
       $("#TxtItemSumGST").val(T4.toFixed(2));
     } else if (TDQUOM == "KGM" && typeidval == 61) {
-      $("#ItemTotalDutiableQtyInput").val(pckqty * totduti);
+      $("#ItemTotalDutiableQtyInput").val((pckqty * totduti).toFixed(2));
       if (!HsVal.startsWith("87")) {
-        $("#TxtSumExciseDuty").val(pckqty * totduti * T1);
+        $("#TxtSumExciseDuty").val((pckqty * totduti * T1).toFixed(2));
       }
       T3 = Number($("#TxtSumExciseDuty").val());
       T4 = T2 * gstperval + T3 * gstperval;
       $("#TxtItemSumGST").val(T4.toFixed(2));
     } else if (TDQUOM == "DAL") {
-      $("#ItemTotalDutiableQtyInput").val(pckqty * totduti);
+      $("#ItemTotalDutiableQtyInput").val((pckqty * totduti).toFixed(2));
       if (!HsVal.startsWith("87")) {
-        $("#TxtSumExciseDuty").val(pckqty * totduti * T1);
+        $("#TxtSumExciseDuty").val((pckqty * totduti * T1).toFixed(2));
       }
       T3 = Number($("#TxtSumExciseDuty").val());
       T4 = T2 * gstperval + T3 * gstperval;

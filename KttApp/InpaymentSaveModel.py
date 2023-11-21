@@ -9,7 +9,6 @@ def InvoiceSave(request):
     SNo = request.POST.get('SNo')
 
     if InvoiceDtl.objects.filter(PermitId=PermitId, SNo=SNo).exists():
-        print("INvoice Already Exists")
         try:
             InvoiceDtl.objects.filter(PermitId=PermitId, SNo=SNo).update(
                 SNo=request.POST.get('SNo'),
@@ -52,7 +51,6 @@ def InvoiceSave(request):
             )
             Result = "Invoice Updated Success"
         except Exception as e:
-            print(e)
             Result = "Inoice Data Already Exists SNo"+str(e)
     else:
         try:
@@ -97,7 +95,6 @@ def InvoiceSave(request):
             )
             invoice.save()
             Result = "Invoice Data Saved"
-            print(Result)
         except Exception as e:
             Result = "Invoice Data Saved Failed"+str(e)
 
@@ -200,7 +197,6 @@ def ItemSave(request):
         )
         Result = "Item Data Saved"
     except Exception as e:
-        print("The Error is: %s" % e)
         Result = "Item Did Not Saved Data Saved"
     try:
         if Cascdtl.objects.filter(PermitId=PermitId, ItemNo=ItemNumber).exists():
@@ -224,15 +220,13 @@ def ItemSave(request):
                 CascId=Casc['CascId'],
             )
             CascData.save()
-    except Exception as e:
-        print("Failed to save CascData", e)
+    except Exception as e:pass
 
     # CascDatas = request.POST.get('CascDatas')
     Item = Item = list(ItemDtl.objects.filter(
         PermitId=PermitId).order_by('ItemNo').values())
     ItemCasc = list(Cascdtl.objects.filter(
         PermitId=PermitId).order_by('ItemNo').values())
-    print(ItemCasc)
     return JsonResponse({'Item': Item, 'ItemCasc': ItemCasc, "Result": Result})
 
 
@@ -333,8 +327,7 @@ def FinalSubmit(request):
                 TouchUser=cp['TouchUser'],
                 TouchTime=cp['TouchTime'],
             )
-    except Exception as e:
-        print("The Cpc Error was : ", e)
+    except Exception as e:pass
 
     for i in ManageUser.objects.filter(UserName=UserName):
         AccountId = i.AccountId
@@ -342,7 +335,7 @@ def FinalSubmit(request):
     if "RFD" == request.POST.get('UpdateIndicator'):
         refundItemSum = json.loads(request.POST.get("RefundDatas"))
         try:ReundItemSumm.objects.filter(MsgId=request.POST.get("MSGId")).delete()
-        except Exception as e:print("The ReundItemSumm Error is : " ,e)
+        except Exception as e:pass
         for item in refundItemSum:
             refunditemsuum = ReundItemSumm(
                 PermitId=request.POST.get("PermitId"),
@@ -404,7 +397,6 @@ def FinalSubmit(request):
             MsgId=request.POST.get('MSGId'),
             CancelType=request.POST.get('CancelType')
         )
-    print("AmendUpdateIndicator : ",request.POST.get('AmendUpdateIndicator'))
     if "AME" == request.POST.get('AmendUpdateIndicator'):
         if InpaymentAmend.objects.filter(MsgId=request.POST.get("MSGId")).exists():
             amend = InpaymentAmend.objects.filter(MsgId=request.POST.get("MSGId")).update
@@ -426,11 +418,9 @@ def FinalSubmit(request):
         )
 
     if InheaderTbl.objects.filter(PermitId=PermitId).exists():
-        print("This Permit is already Inheader")
         Update = InheaderTbl.objects.filter(PermitId=PermitId).update
         PCount = PermitCount.objects.filter(PermitId=PermitId).update
     else:
-        print("This Permit is New Inheader")
         Update = InheaderTbl.objects.create
         PCount = PermitCount.objects.create
     Update(

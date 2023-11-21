@@ -32,7 +32,6 @@ def InpaymentDownload(request,data):
                 inpEndate = datetime.strptime(
                     str(inp.EndDate), '%Y-%m-%d').strftime('%d/%m/%Y')
         except Exception as e:
-            print("This Error : ", e)
             inpmtD = ""
 
         importerName = Impo.name+Impo.name1
@@ -650,9 +649,7 @@ def InpaymentDownload(request,data):
         try:
             with open(filename, 'wb') as f:
                 f.write(buffer.getbuffer())
-                print("Saved to file")
-        except Exception as e:
-            print(f"Error saving PDF: {e}")
+        except Exception as e:pass
         buffer.seek(0)
         buffer.close()
 
@@ -700,9 +697,7 @@ def InpaymentDownload(request,data):
         file_path = f"/Users/hightech/Desktop/Yosuva_KttProject/DownloadCcp/{draft}1.pdf"
         if os.path.exists(file_path):
             os.remove(file_path)
-            print(f"{file_path} has been deleted.")
-        else:
-            print(f"{file_path} does not exist.")
+        else:pass
 
     response = HttpResponse(content_type='application/zip')
     response['Content-Disposition'] = f'attachment; filename="Zip_{(datetime.now()).strftime("%Y-%B-%d-%H%M")}.zip"'

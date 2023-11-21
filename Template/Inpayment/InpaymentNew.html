@@ -25,7 +25,7 @@
 <div id="ClaimentPopUp"></div>
 <div id="SupplierPopUp"></div>
 <div id="ItemCascPopUp"></div>
-<div class="container-fluid InpaymentNewStyles mt-4 " style="width: 90%;">
+<div class="InpaymentNewStyles mt-4 " style="width: 90%;margin-left: 50px;">
     <section style="background-color: white;">
         <button type="button" class="NewBtns HeadTabStyleChange" onclick="TabHead(this.id)"
             id="HeaderTab">HEADER</button>
@@ -42,7 +42,7 @@
         <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="CancelTab"
             style="display: none;">REFUND</button>
     </section>
-    <form method="POST">
+    <form method="POST" style="padding: 20px;">
         {% csrf_token %}
         <!---------------------------------------------------Header--------------------------------------------------->
         <div id="Header">
@@ -3136,6 +3136,9 @@
                     for (var i = 0; i < value.length; i++) {
                         if (k[0].toLowerCase().startsWith(term)) {
                             return k[0].toLowerCase().startsWith(term);
+                        }
+                        else{
+                            return k[1].toLowerCase().startsWith(term);
                         } 
                     }
                 });

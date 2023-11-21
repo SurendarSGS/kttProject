@@ -61,12 +61,13 @@
                             </span>
                         </div>
                         <center>
-                            <input id="ChkLogin" type="checkbox" name="ChkLogin" /><label for="ChkLogin">Click here to
+                            <input id="ChkLogin" type="checkbox" name="ChkLogin" style="cursor: pointer;" /><label
+                                for="ChkLogin" style="cursor: pointer;">Click here to
                                 Logout from another session with same ID</label>
                         </center>
                         <div class="container-login100-form-btn">
-                            <input type="button" name="btnLogin" value="Login" id="btnLogin" class="login100-form-btn"
-                                onclick="submitForm()" />
+                            <button type="button" name="btnLogin" id="btnLogin" class="login100-form-btn"
+                                onclick="submitForm()">Login</button>
                             <span id="lbl_err" style="color: Red">
                                 {% if Error %} {{Error}} {% else %}
                                 {% endif %}
@@ -85,6 +86,8 @@
     <script>
         window.open("/KttHome/", "KTTAPP", "width = 1900,height=700")
     </script>
+    {% else %}
+
     {% endif %}
     <script>
         $(".js-tilt").tilt({

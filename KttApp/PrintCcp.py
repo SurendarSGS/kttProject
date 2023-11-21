@@ -31,7 +31,6 @@ def PdfCcp(request, Data):
                 inpstrtdate = datetime.strptime(str(inp.StartDate), '%Y-%m-%d').strftime('%d/%m/%Y')
                 inpEndate = datetime.strptime(str(inp.EndDate), '%Y-%m-%d').strftime('%d/%m/%Y')
         except Exception as e:
-            print("This Error : ", e)
             inpmtD = ""
 
         importerName = Impo.name+Impo.name1
@@ -324,10 +323,8 @@ def PdfCcp(request, Data):
                 p.drawString(lftcol, itemy, (item.InHAWBOBL).upper())
                 itemy = itemyF(itemy)
             ItemDescr = (str(item.Description)).upper()
-            print("ItemDescr : ",ItemDescr)
             if '\n' in ItemDescr:
                 itemDesc = ItemDescr.split('\n')
-                print("itemDesc : ",itemDesc)
                 p.drawString(lftcol, itemy, ((itemDesc)[0]).replace('\r',''))
                 p.drawString(prviousx+100, itemy, ('{:8d}.{} {}').format(int(item.HSQty), str(item.HSQty).split(".")[1], item.HSUOM))
                 itemy = itemyF(itemy)
@@ -632,9 +629,8 @@ def PdfCcp(request, Data):
         try:
             with open(filename, 'wb') as f:
                 f.write(buffer.getbuffer())
-                print("Saved to file")
         except Exception as e:
-            print(f"Error saving PDF: {e}")
+            pass
         buffer.seek(0)
         buffer.close()
 
@@ -677,9 +673,6 @@ def PdfCcp(request, Data):
 
         if os.path.exists(file_path):
             os.remove(file_path)
-            print(f"{file_path} has been deleted.")
-        else:
-            print(f"{file_path} does not exist.")
 
         pdfFiles.append(f"D:/Users/Public/PDFFilesKtt/{draft}.pdf")
 

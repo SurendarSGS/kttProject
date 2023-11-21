@@ -16,7 +16,7 @@ $(document).ready(function () {
     var table = $('#TranshipmentTable').DataTable({
         "ajax": {
             "processing": true,
-            "url": "/InNonList/",
+            "url": "/Transhipmentlist/",
             "dataSrc": "",
         },
         "initComplete": function (data) {
@@ -24,40 +24,37 @@ $(document).ready(function () {
         },
         "dom": 'rtip',
         "columns": [{
-            "data": "id"
+            "data": "ID"
         },
         {
-            "data": "id"
+            "data": "ID"
         },
         {
-            "data": "id"
+            "data": "ID"
         },
         {
-            "data": "PermitId"
+            "data": "ID"
         },
         {
-            "data": "JobId"
+            "data": "MSG ID"
         },
         {
-            "data": "MSGId"
+            "data": "DEC DATE"
         },
         {
-            "data": "DECDATE"
-        },
-        {
-            "data": "DECTYPE"
+            "data": "DEC TYPE"
         },
         {
             "data": "CREATE"
         },
         {
-            "data": "DECID"
+            "data": "DEC ID"
         },
         {
             "data": "ETA"
         },
         {
-            "data": "PERMITNO"
+            "data": "PERMIT NO"
         },
         {
             "data": "IMPORTER"
@@ -66,28 +63,25 @@ $(document).ready(function () {
             "data": "HAWB"
         },
         {
-            "data": "MAWBOBL"
+            "data": "MAWB/OBL"
         },
         {
             "data": "POL"
         },
         {
-            "data": "MSGTYPE"
+            "data": "MSG TYPE"
         },
         {
             "data": "TPT"
         },
-        {
-            "data": "PREPMT"
+        { 
+            "data": "PRE PMT"
         },
         {
-            "data": "XREF"
+            "data": "X REF"
         },
         {
-            "data": "INTREM"
-        },
-        {
-            "data": "GSTAMT"
+            "data": "INT REM"
         },
         {
             "data": "STATUS"
@@ -134,12 +128,12 @@ $(document).ready(function () {
         },
         {
             "width": "50px",
-            "targets": [4, 9, 16, 17, 18, 19],
+            "targets": [9, 16, 17, 18, 19],
             "className": "text-center",
             "visible": false,
         },
         {
-            "width": "50px",
+            "width": "100px",
             "targets": 5,
             "className": "text-center"
         },
@@ -155,7 +149,7 @@ $(document).ready(function () {
         },
         {
             "width": "300px",
-            "targets": 12,
+            "targets": 11,
         },
         {
             "width": "100px",
