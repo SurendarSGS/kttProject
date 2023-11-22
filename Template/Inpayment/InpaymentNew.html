@@ -136,7 +136,7 @@
                     <div class="row mt-3">
                         <div class="col-4"><label for="ReferenceDocuments">REFERENCE DOCUMENT</label></div>
                         <div class="col-8"><input type="checkbox" id="ReferenceDocuments" value="False"
-                                onclick="ReferenceDocument()"></div>
+                                onclick="ReferenceDocument()" onblur="HeaderRefernceOut()"></div>
                     </div>
                     <div class="row mt-3 ">
                         <div class="col-4">PERMIT ID</div>
@@ -312,8 +312,8 @@
             <div class="row mt-3">
                 <div class="col-4"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button"
-                        onclick="TabHead('PartyTab')">NEXT</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('PartyTab')"
+                        id="HeaderNext">NEXT</button></div>
                 <div class="col-4"></div>
             </div>
             <br>
@@ -369,6 +369,7 @@
                     <div class="col-3">
                         <input type="text" class="inputStyle" placeholder="NAME1" id="ImporterName1" style="width: 80%;"
                             onfocus="TrimKeyUp('ImporterName1')">
+
                     </div>
                 </div>
             </div>
@@ -809,8 +810,11 @@
                         <span class="ErrColor" style="display: none;" id="InvoiceImportNameSpan">PLEASE FILL THE
                             IMPORTER NAME</span>
                     </div>
-                    <div class="col-3"><input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1"
-                            id="InvoiceImportName1" onfocus="TrimKeyUp('InvoiceImportName1')"></div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1"
+                            id="InvoiceImportName1" onfocus="TrimKeyUp('InvoiceImportName1')">
+                        <button type="button" class="ButtonClick mt-2" onclick="CopyImporter()">Copy Importer</button>
+                    </div>
                 </div>
             </div>
             <div class="container-fluid mt-3">
@@ -3137,9 +3141,9 @@
                         if (k[0].toLowerCase().startsWith(term)) {
                             return k[0].toLowerCase().startsWith(term);
                         }
-                        else{
+                        else {
                             return k[1].toLowerCase().startsWith(term);
-                        } 
+                        }
                     }
                 });
                 matches.sort();

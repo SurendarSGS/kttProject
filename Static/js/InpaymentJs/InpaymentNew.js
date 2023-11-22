@@ -314,6 +314,16 @@ function ReferenceDocument() {
   }
 }
 
+function HeaderRefernceOut() {
+  if ($('#ReferenceDocuments').prop('checked')) {
+    console.log("This condition its true");
+    $('#licence1').focus()
+  }
+  else {
+    $('#HeaderNext').focus()
+
+  }
+}
 function OutItemAddCasc(Table, NAME) {
   var rowAdd = `<tr>
           <td><input type="text" class="inputStyle" name="${NAME}"></td>
@@ -4306,4 +4316,13 @@ function TotalCalculation() {
   $('#CostInsurenceFreightSum').val(total.toFixed(2))
   const gst = total * (Number($('#InvoiceGstCharge').val()) / 100)
   $('#InvoiceGstSum').val(gst.toFixed(2))
+}
+
+function CopyImporter() {
+  const ImporterCode = $('#ImporterCode').val().trim()
+  if (ImporterCode === '') {
+    alert("EMPTY IMPORTER CODE CHECK THE IMPORTER")
+  }
+  $('#InvoiceImportCode').val(ImporterCode);
+  InvoiceImporterOut()
 }

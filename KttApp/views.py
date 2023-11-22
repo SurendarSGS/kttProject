@@ -21,7 +21,7 @@ class SqlDb:
  
 def Login(request):
     context = {}
-   
+    Username = request.POST.get('Username')
     if request.method == "POST":
         Username = request.POST.get('Username')
         pswd = request.POST.get('Password')
@@ -46,10 +46,12 @@ def Login(request):
         else:
             context.update({'Error': "Enter Correct Password and Username"})
     else:
-        print("Log Out")
-        upd = ManageUser.objects.get(UserName=request.session['Username'])
-        upd.LoginStatus = 'False'
-        upd.save()
+        try:
+            print("Log Out")
+            upd = ManageUser.objects.get(UserName=Username)
+            upd.LoginStatus = 'False'
+            upd.save()
+        except : pass
     return render(request, "LoginPage/Login.html", context)
   
 def Home(request):
