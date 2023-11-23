@@ -21,7 +21,7 @@
     <script src="{% static 'js/jquery.js'%}"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Delete Button Icon Package-->
- 
+
     <!-- AutoComplete Packages -->
     <link rel="stylesheet" type="text/css" href="{% static 'css/JqueryAutocomplete.css' %}">
     <!-- AutoComplete Packages -->
@@ -101,10 +101,12 @@
                             <li><a class="dropdown-item" href="#">SHIPPING DOCUMENT</a></li>
                             <li><a class="dropdown-item" href="#">ITEM TRANSHIPMENT</a></li>
                         </ul>
-                    </li> 
+                    </li>
                 </ul>
                 <div class="row mt-3">
-                    <div class="text-light"><p id="sg-time"></p></div>
+                    <div class="text-light">
+                        <p id="sg-time"></p>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col text-light">
@@ -136,7 +138,7 @@
     <div class="container-fluid text-danger text-center">
         <div class="row mt-3">
             <div class="btn-group">
-                <a href="/InpaymentNew/NEW/" style="width: 140px;font-size:10px;" class="btn1">New</a>&nbsp;&nbsp;
+                <a href="/InpaymentNew/NEW/" style="width: 140px;font-size:10px;text-decoration: none;" class="btn1">New</a>&nbsp;&nbsp;
                 <input id="SubmitH" type="button" value="TRANSMIT" class="btn1"
                     style="width: 140px;font-size:10px;background-color: indianred;" onclick="XmlSubmit()">&nbsp;&nbsp;
                 <input id="PrintGstH" type="button" value="PRINT GST" class="btn1" style="width: 140px;font-size:10px;"
@@ -172,9 +174,9 @@
     </div>
     <div class="container-fluid">
         <div class="row mt-3">
-            <div class="col-11"></div>
-            <div class="col-1">
-                <div class="dropdown">
+            <div class="col-10"></div>
+            <div class="col-1" style="margin-left: 100px;">
+                <div class="dropdown" >
                     <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
                         id="ShowColumns">
                         ShowColumns
@@ -265,64 +267,63 @@
             </div>
         </div>
     </div>
-    <div class="container-fluid" style="padding-top: 1px;">
-        <table id="inpaymentTable">
-            <thead>
-                <tr>
-                    <th><input type="checkbox" onclick="ListAllCheckSubmit()" id="ListAllCheckSubmitId"></th>
-                    <th>DELETE</th>
-                    <th>EDIT</th>
-                    <th>VIEW</th>
-                    <th>JOB ID</th>
-                    <th>MSG ID</th>
-                    <th>DEC DATE</th>
-                    <th>DEC TYPE</th>
-                    <th>CREATE</th>
-                    <th>DEC ID</th>
-                    <th>ETA</th>
-                    <th>PERMIT NO</th>
-                    <th>IMPORTER</th>
-                    <th>HAWB</th>
-                    <th>MAWB/OBL</th>
-                    <th>POL</th>
-                    <th>MSG TYPE</th>
-                    <th>TPT</th>
-                    <th>PRE PMT</th>
-                    <th>X REF</th>
-                    <th>INT REM</th>
-                    <th>GST AMT</th>
-                    <th>STATUS</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                    <th><input type="text" class="inputStyle"></th>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+    <table id="inpaymentTable" style="font-size: 10px;">
+        <thead>
+            <tr>
+                <th style="padding: 3px;"><input type="checkbox" onclick="ListAllCheckSubmit()" id="ListAllCheckSubmitId"></th>
+                <th style="padding: 3px;">DELETE</th>
+                <th style="padding: 3px;">EDIT</th>
+                <th style="padding: 3px;">VIEW</th>
+                <th>JOB ID</th>
+                <th>MSG ID</th>
+                <th>DECDATE</th>
+                <th>DECTYPE</th>
+                <th>CREATE</th>
+                <th>DECID</th>
+                <th style="padding: 2px 30px;">ETA</th>
+                <th>PERMITNO</th>
+                <th style="padding: 2px 100px;">IMPORTER</th>
+                <th style="padding: 2px 40px;">HAWB</th>
+                <th>MAWB/OBL</th>
+                <th>POL</th>
+                <th>MSGTYPE</th>
+                <th>TPT</th>
+                <th>PREPMT</th>
+                <th>XREF</th>
+                <th>INTREM</th>
+                <th>GSTAMT</th>
+                <th>STATUS</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+            </tr>
+        </tfoot>
+    </table>
+
     <script>
         var listBoxData;
         $(document).ready(function () {
@@ -411,6 +412,7 @@
                 "autoWidth": false,
                 'columnDefs': [{
                     'targets': 0,
+                    'width': "2",
                     'searchable': false,
                     'orderable': false,
                     'render': function (data, type, full, meta) {
@@ -419,7 +421,6 @@
                 },
                 {
                     'targets': 1,
-                    "width": "10px",
                     "className": "text-center",
                     'render': function (data, type, full, meta) {
                         return `<i class="fa-solid fa-trash-can" style="color: #ff0000;" onclick = "ClickedFunction('${data}')"></i>`
@@ -427,7 +428,7 @@
                 },
                 {
                     'targets': 2,
-                    "width": "10px",
+                    "width": "5",
                     "className": "text-center",
                     'render': function (data, type, full, meta) {
                         if (full.STATUS == "NEW" || full.STATUS == "DRF") {
@@ -439,39 +440,54 @@
                 },
                 {
                     'targets': 3,
-                    "width": "10px",
+                    "width": "10",
                     "className": "text-center",
                     'render': function (data, type, full, meta) {
                         return `<i class="fa-regular fa-eye" style="color: #ff0000;" onclick = "InpaymentShow('${data}')" ></i>`
                     }
                 },
                 {
-                    "width": "50px",
+                    // "width": "50px",
                     "targets": [4, 9, 16, 17, 18, 19],
                     "className": "text-center",
                     "visible": false,
                 },
                 {
-                    "width": "50px",
+                    // "width": "50px",
                     "targets": 5,
                     "className": "text-center"
                 },
                 {
-                    "width": "100px",
+                    // "width": "40px",
                     "targets": 6,
                     "className": "text-center"
                 },
                 {
-                    "width": "50px",
+                    // "width": "30px",
+                    "targets": 7,
+                    "className": "text-center"
+                },
+                {
+                    // "width": "100px",
+                    "targets": 11,
+                    "className": "text-center"
+                },
+                {
+                    // "width": "150px",
+                    "targets": 9,
+                    "className": "text-center"
+                },
+                {
+                    // "width": "50px",
                     "targets": 10,
                     "className": "text-center"
                 },
                 {
-                    "width": "300px",
+                    // "width": "300px",
                     "targets": 12,
                 },
                 {
-                    "width": "100px",
+                    // "width": "100px",
                     "targets": 16,
                 },
                 ],
@@ -916,22 +932,22 @@
 
     <script>
         function updateTime() {
-          var now = new Date();
-          var hours = now.getHours();
-          var minutes = now.getMinutes();
-          var seconds = now.getSeconds();
-    
-          hours = (hours < 10) ? '0' + hours : hours;
-          minutes = (minutes < 10) ? '0' + minutes : minutes;
-          seconds = (seconds < 10) ? '0' + seconds : seconds;
-    
-          var timeString = hours + ':' + minutes + ':' + seconds + ' ' + (hours >= 12 ? 'PM' : 'AM');
-          
-          document.getElementById('sg-time').innerHTML = "SG TIME:"+timeString;
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+
+            hours = (hours < 10) ? '0' + hours : hours;
+            minutes = (minutes < 10) ? '0' + minutes : minutes;
+            seconds = (seconds < 10) ? '0' + seconds : seconds;
+
+            var timeString = hours + ':' + minutes + ':' + seconds + ' ' + (hours >= 12 ? 'PM' : 'AM');
+
+            document.getElementById('sg-time').innerHTML = "SG TIME:" + timeString;
         }
         setInterval(updateTime, 1000);
         updateTime();
-      </script>
+    </script>
 </body>
 
 </html>
