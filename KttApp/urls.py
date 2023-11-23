@@ -45,7 +45,7 @@ urlpatterns = [
     path('InpaymentPrintStatus/<PermitId>/',PrintStatus.PrintStatus),
     path('InpaymentDownloadCcpZip/<data>/',DownloadCcp.InpaymentDownload),
     path('InpaymentDownloadData/<data>/',DownloadData.InpaymentDownloadData),
-    path('InpaymentCcpPdfUrl/<Data>/',PrintCcp.PdfCcp),
+    # path('InpaymentCcpPdfUrl/<Data>/',PrintCcp.PdfCcp),
     path('LoadingPartyModels/',views.LoadingPartyModels),
     path('inpaymentItemDelHblHawb/',views.InpaymentItemDelHblHawb),
     path('ContainerDel/<arg>/',views.ContainerDel),
@@ -55,7 +55,8 @@ urlpatterns = [
     path("CpcLoad/",CpcLoadClass.as_view()),
     path("InvoiceInpayment/<PermitId>/",InvoiceInpayment.as_view()),
     path("ItemInpayment/<PermitId>/",ItemInpayment.as_view()),
-    path("InPaymentItemLoad/",InPaymentItemLoad.as_view())
+    path("InPaymentItemLoad/",InPaymentItemLoad.as_view()),
+    path("InpaymentCcpPdfUrl/<Data>/",InPaymentCcp.as_view())
 
 ]
  

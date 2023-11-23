@@ -1211,11 +1211,11 @@ class InNonPaymentCcp(View,SqlDb):
 
             if PermitValues['PermitNumber'] == "":
                 PermitBar = "DRAFT"
-                OldFilename = f"/Users/Public/printCcpFIles/{PermitBar}1.pdf"
+                OldFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}1.pdf"
                 
             else:
                 PermitBar = PermitValues['PermitNumber']
-                OldFilename = f"/Users/Public/printCcpFIles/{PermitBar}1.pdf"
+                OldFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}1.pdf"
                 barcode = code39.Standard39(PermitValues['PermitNumber'], barHeight=36.0, barWidth=1.1, baseline=9.0,size=12.0, N=3.0, X=1.0, StartsStopText=False, Extended=False)
 
             p = canvas.Canvas(OldFilename, pagesize=(595, 841))
@@ -1642,7 +1642,7 @@ class InNonPaymentCcp(View,SqlDb):
                         DescX = lftcol
                         itemy = itemyF(itemy)
                         Dcount += 1
-                    if (D+1) % 50 == 0 :
+                    if (D+1) % 50 == 0 : 
                         DescX = lftcol
                         itemy = itemyF(itemy)
                         Dcount += 1
@@ -1907,7 +1907,7 @@ class InNonPaymentCcp(View,SqlDb):
                     page.merge_page(new_pdf.pages[2])
                 output.add_page(page)
             
-            NewFilename = f"/Users/Public/printCcpFIles/{PermitBar}.pdf"
+            NewFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}.pdf"
             output_stream = open(NewFilename, "wb")
             output.write(output_stream)
             output_stream.close()
@@ -1934,7 +1934,7 @@ class InNonPaymentCcp(View,SqlDb):
                 pageObj = pdfReader.getPage(pageNum)
                 pdfWriter.addPage(pageObj)
 
-        MergeFiles = '/Users/Public/printCcpFIles/MergedFiles.pdf'
+        MergeFiles = 'D:/Users/Public/PDFFilesKtt/MergedFiles.pdf'
         pdfOutputFile = open(MergeFiles, 'wb')
         pdfWriter.write(pdfOutputFile)
 
@@ -2956,11 +2956,11 @@ class DownloadCcpInNon(View,SqlDb):
 
             if PermitValues['PermitNumber'] == "":
                 PermitBar = "DRAFT"
-                OldFilename = f"/Users/Public/printCcpFIles/{PermitBar}1.pdf"
+                OldFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}1.pdf"
                 
             else:
                 PermitBar = PermitValues['PermitNumber']
-                OldFilename = f"/Users/Public/printCcpFIles/{PermitBar}1.pdf"
+                OldFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}1.pdf"
                 barcode = code39.Standard39(PermitValues['PermitNumber'], barHeight=36.0, barWidth=1.1, baseline=9.0,size=12.0, N=3.0, X=1.0, StartsStopText=False, Extended=False)
 
             p = canvas.Canvas(OldFilename, pagesize=(595, 841))
@@ -3652,7 +3652,7 @@ class DownloadCcpInNon(View,SqlDb):
                     page.merge_page(new_pdf.pages[2])
                 output.add_page(page)
             
-            NewFilename = f"/Users/Public/printCcpFIles/{PermitBar}.pdf"
+            NewFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}.pdf"
             output_stream = open(NewFilename, "wb")
             output.write(output_stream)
             output_stream.close()

@@ -109,21 +109,16 @@ def PdfCcp(request, Data):
                 rely -= 100
         else:
             p.drawString(lftcol, rely, relVal)
-        rely = rely-10
+            rely = rely-10
         p.drawString(lftcol, rely, Inheader.ReleaseLocation)
-        rely = rely-10
-        p.drawString(lftcol, rely, "LICENCE NO:")
+        p.drawString(lftcol, 250, "LICENCE NO:")
         licence = ((Inheader.License).upper()).split(',')
-        rely = rely-10
-        p.drawString(lftcol, rely, licence[0])
-        rely = rely-10
-        p.drawString(lftcol, rely, licence[1])
-        rely = rely-10
-        p.drawString(lftcol, rely, licence[2])
-        rely = rely-10
-        p.drawString(lftcol, rely, licence[3])
-        rely = rely-10
-        p.drawString(lftcol, rely, licence[4])
+
+        p.drawString(lftcol, 240, licence[0])
+        p.drawString(lftcol, 230, licence[1])
+        p.drawString(lftcol, 220, licence[2])
+        p.drawString(lftcol, 210, licence[3])
+        p.drawString(lftcol, 200, licence[4])
         p.drawString(
             lftcol, 50,  "--------------------------------------------------------------------------------")
         p.drawString(lftcol, 40,  ("UNIQUE REF : {} {} {}").format((Declarant.cruei).upper(), (Inheader.MSGId[:8]).upper(), (Inheader.MSGId[8:]).upper()))
@@ -209,9 +204,8 @@ def PdfCcp(request, Data):
             p.drawString(rgtcol, rely, recVal)
             rely = rely-10
         p.drawString(rgtcol, rely, Inheader.RecepitLocation)
-        rely = rely-10
-        p.drawString(rgtcol, rely, "CUSTOMS PROCEDURE CODE (CPC) : ")
-        rely = rely
+        p.drawString(rgtcol, 250, "CUSTOMS PROCEDURE CODE (CPC) : ")
+        rely = 240
         for i in Cpc:
             p.drawString(rgtcol, rely, i['CpcType'])
             rely -= 10

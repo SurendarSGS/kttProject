@@ -7,7 +7,7 @@ class ManageUser(models.Model):
     Password = models.CharField(max_length=550)
     ConfirmPassword = models.CharField(max_length=550) 
     Department = models.CharField(max_length=550)
-    Telephone = models.CharField(max_length=550)
+    Telephone = models.CharField(max_length=550) 
     Fax = models.CharField(max_length=550)
     Mobile = models.CharField(max_length=550)
     Email = models.CharField(max_length=550)

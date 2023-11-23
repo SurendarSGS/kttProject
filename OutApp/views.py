@@ -262,7 +262,7 @@ class OutHscode(View,SqlDb):
     def get(self,request):
         SqlDb.__init__(self)
         self.cursor.execute("select * from HSCode")
-        headers = [i[0] for i in self.cursor.description]
+        headers = [i[0] for i in self.cursor.description] 
         return JsonResponse({"hscode" : (pd.DataFrame(list(self.cursor.fetchall()), columns=headers)).to_dict('records')})
     
 class OutItem(View,SqlDb):

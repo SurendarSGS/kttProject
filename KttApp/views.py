@@ -3,7 +3,7 @@ from .models import *
 from django.http import JsonResponse
 from django .http import HttpResponse
 from openpyxl import load_workbook
-import pymssql
+# import pymssql
 import pandas as pd
 import json
 from django.db.models import Sum, Min
@@ -12,6 +12,12 @@ from rest_framework import viewsets,filters
 from .serializers import *
 from django_filters.rest_framework  import DjangoFilterBackend
 from django.db import connections
+from reportlab.pdfgen import canvas
+import io
+from reportlab.graphics.barcode import code39
+from PyPDF2 import PdfFileWriter, PdfFileReader
+import os
+from decimal import *
 
 class SqlDb:
     def __init__(self, database_name='default'):
@@ -47,7 +53,6 @@ def Login(request):
             context.update({'Error': "Enter Correct Password and Username"})
     else:
         try:
-            print("Log Out")
             upd = ManageUser.objects.get(UserName=Username)
             upd.LoginStatus = 'False'
             upd.save()
@@ -347,8 +352,7 @@ def ItemExcelUpload(request):
                 OptionalSumtotal='0.00',
                 OptionalSumExchage='0.00'
             ))
-        except Exception as e:
-            print("the Errro is: " + str(e))
+        except Exception as e:pass
 
     for index, row in CascInfo.iterrows():
         if row['ProductCode'] != "":
@@ -810,3 +814,822 @@ class InPaymentItemLoad(View,SqlDb):
             "hsCode" : (pd.DataFrame(list(self.hsCode), columns=['HSCode','Description','UOM','Typeid','DUTYTYPID','Inpayment','InnonPayment','Out','Co','Transhipment','RPNEXPORT','DuitableUom','Excisedutyuom','Excisedutyrate','Customsdutyuom','Customsdutyrate','Kgmvisible'])).to_dict('records'),#,'ImpControll ,'OutControll','TransControll'<---This Field Add Only Kaizen Portal  '
             "chkHsCode" : (pd.DataFrame(list(self.chkHsCode), columns=["HSCode"])).to_dict('records'),
         })
+    
+class InPaymentCcp(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+    def get(self,request,Data):
+        pdfFiles = []
+        for ID in Data.split(","):
+            self.cursor.execute("SELECT * FROM InHeaderTbl WHERE PermitId = '{}' ".format(ID))
+
+            InNonHeaderData = self.cursor.fetchall()
+
+            PermitValues = (pd.DataFrame(list(InNonHeaderData), columns=[i[0] for i in self.cursor.description]).to_dict('records'))[0]
+        
+            lftcol = 50
+            rgtcol = 280
+            self.countPage = 1
+
+            if PermitValues['PermitNumber'] == "":
+                PermitBar = "DRAFT"
+                OldFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}1.pdf"
+                
+            else:
+                PermitBar = PermitValues['PermitNumber']
+                OldFilename = f"D:/Users/Public/PDFFilesKtt/{PermitBar}1.pdf"
+                barcode = code39.Standard39(PermitValues['PermitNumber'], barHeight=36.0, barWidth=1.1, baseline=9.0,size=12.0, N=3.0, X=1.0, StartsStopText=False, Extended=False)
+            
+            buffer = io.BytesIO()
+            p = canvas.Canvas(buffer, pagesize=(595, 841))
+            p.setTitle(PermitBar)
+            inpstrtdate = ""
+            inpEndate = ""
+
+            p.setFont('Courier-Bold', 10)
+            p.drawString(480, 750, PermitBar)
+
+            if PermitValues['PermitNumber'] != "":
+                barcode.drawOn(p, 330, 760)
+
+            p.setFont('Courier', 10)
+            p.drawString(400, 750, "PERMIT NO : ")
+
+            p.drawString(rgtcol, 700, "CARGO CLEARANCE PERMIT")
+            p.drawString(460, 700, ("PG : {} OF").format(self.countPage))
+            self.countPage += 1
+
+            if PermitValues['prmtStatus'] =="AMD":
+                p.drawString(lftcol, 670, "MESSAGE TYPE      : IN-PAYMENT UPDATED PERMIT")
+            else: 
+                p.drawString(lftcol, 670, "MESSAGE TYPE      : IN-PAYMENT PERMIT")
+                
+            p.drawString(lftcol, 660, "DECLARATION TYPE  : " + (str(PermitValues["DeclarationType"])[6:]).upper())
+
+            p.drawString(lftcol, 630, "IMPORTER:")
+
+            self.cursor.execute(f"SELECT Name,Name1,Cruei FROM Importer WHERE code = '{PermitValues['ImporterCompanyCode']}' ")
+            ImportData = self.cursor.fetchone()
+            ImportDataCruei = ImportData[2]
+            ImportData = str(ImportData[0])+str(ImportData[1])
+
+            if len(ImportData) >= 35:
+                p.drawString(lftcol, 620, (ImportData[:35]).upper())
+                p.drawString(lftcol, 610, (ImportData[35:]).upper())
+            else:
+                p.drawString(lftcol, 620, (ImportData).upper())
+            p.drawString(lftcol, 600, str(ImportDataCruei).upper())
+
+            p.drawString(lftcol, 590, "EXPORTER:")
+            # self.cursor.execute(f"SELECT Name,Name1,Cruei FROM InnonExporter WHERE code = '' ")
+            # ExportData = self.cursor.fetchone()
+            ExportData = None
+            if ExportData is not None :
+                ExportDataCruei = ExportData[2]
+                ExportData = str(ExportData[0])+str(ExportData[1])
+
+                if len(ImportData) >= 35:
+                    p.drawString(lftcol, 580, (ExportData[:35]).upper())
+                    p.drawString(lftcol, 570, (ExportData[35:]).upper())
+                else:
+                    p.drawString(lftcol, 580, (ExportData).upper())
+                p.drawString(lftcol, 560, str(ExportDataCruei).upper())
+
+            p.drawString(lftcol, 550, "HANDLING AGENT: ")
+            p.drawString(lftcol, 540, " ")
+            p.drawString(lftcol, 530, " ")
+            p.drawString(lftcol, 520, " ")
+            p.drawString(lftcol, 510, " ")
+            p.drawString(lftcol, 500, "PORT OF LOADING/NEXT PORT OF CALL:")
+
+            self.cursor.execute(f"SELECT PortCode,PortName FROM LoadingPort WHERE PortCode = '{PermitValues['LoadingPortCode']}'")
+            NextPort = self.cursor.fetchone()
+            if NextPort is not None:
+                p.drawString(lftcol, 490, str(NextPort[1]).upper())
+
+            p.drawString(lftcol, 480, "PORT OF DISCHARGE/FINAL PORT OF CALL ")
+
+            # self.cursor.execute(f"SELECT PortCode,PortName FROM LoadingPort WHERE PortCode = '{PermitValues['DischargePort']}'")
+            # DischargePort = self.cursor.fetchone()
+            DischargePort = None
+            if DischargePort is not None:
+                p.drawString(lftcol, 470, str(DischargePort[1]).upper())
+
+            p.drawString(lftcol, 460, "COUNTRY OF FINAL DESTINATION:")
+            # if PermitValues['FinalDestinationCountry'] != "--Select--":
+            #     p.drawString(lftcol, 450, str(PermitValues['FinalDestinationCountry']).split(":")[0])
+
+            p.drawString(lftcol, 440, "INWARD CARRIER AGENT: ")
+
+            InWard = "SELECT Name,Name1 FROM InnonInwardCarrierAgent where Code=%s"
+            self.cursor.execute(InWard,(PermitValues['InwardCarrierAgentCode'],))
+            InwardData = self.cursor.fetchone()
+            if InwardData:
+                InwardData = str(InwardData[0])+str(InwardData[1])
+
+                if len(InwardData) >= 35:
+                    p.drawString(lftcol, 430, (InwardData[:35]).upper().replace("\n"," "))
+                    p.drawString(lftcol, 420, (InwardData[35:70]).upper().replace("\n"," "))
+                    p.drawString(lftcol, 410, (InwardData[70:]).upper().replace("\n"," "))
+                else:
+                    p.drawString(lftcol, 430, (InwardData).upper().replace("\n"," "))
+
+            p.drawString(lftcol, 400, "OUTWARD CARRIER AGENT: ")
+
+
+            # OutWard = "SELECT Name,Name1 FROM InnonOutwardCarrierAgent where Code=%s"
+            # self.cursor.execute(OutWard,(PermitValues['OutwardCarrierAgentCode'],))
+            # OutwardData = self.cursor.fetchone()
+            OutwardData = None
+            if OutwardData is not None:
+                OutwardData = str(OutwardData[0])+str(OutwardData[1])
+
+                if len(OutwardData) >= 35:
+                    p.drawString(lftcol, 390, (OutwardData[:35]).upper().replace("\n"," "))
+                    p.drawString(lftcol, 380, (OutwardData[35:70]).upper().replace("\n"," "))
+                    p.drawString(lftcol, 370, (OutwardData[70:]).upper().replace("\n"," "))
+                else:
+                    p.drawString(lftcol, 390, (OutwardData).upper().replace("\n"," "))
+
+            p.drawString(lftcol, 360, "PLACE OF RELEASE: ")
+
+            ReleaseY = 350
+            ReleaseX = lftcol
+            RelaseVal = str(PermitValues['ReleaseLocName'] ).replace("\n" , '')
+
+            for Re in range(len(RelaseVal)):
+                p.drawString(ReleaseX, ReleaseY, str(RelaseVal[Re]))
+                ReleaseX += 6
+
+                if Re %32 == 0 and Re != 0:
+                    ReleaseY -= 10
+                    ReleaseX = lftcol
+
+            ReleaseY -= 10 
+
+            p.drawString(lftcol, ReleaseY, PermitValues['ReleaseLocation'])
+            ReleaseY -= 10
+            p.drawString(lftcol, ReleaseY, "LICENCE NO:")
+            ReleaseY -= 10
+
+            licence = (str(PermitValues['License']).upper()).split(',')
+            try:
+                p.drawString(lftcol, ReleaseY, licence[0])
+                ReleaseY -=10
+                p.drawString(lftcol, ReleaseY, licence[1])
+                ReleaseY -=10
+                p.drawString(lftcol, ReleaseY, licence[2])
+                ReleaseY -=10
+                p.drawString(lftcol, ReleaseY, licence[3])
+                ReleaseY -=10
+                p.drawString(lftcol, ReleaseY, licence[4])
+                ReleaseY -=10
+            except:pass
+            p.drawString(lftcol, 50,  "--------------------------------------------------------------------------------")
+            
+            Declarant = "SELECT Cruei FROM DeclarantCompany where tradenetmailboxId=%s"
+            self.cursor.execute(Declarant,(PermitValues['TradeNetMailboxID'],))
+            DeclarData = self.cursor.fetchone()
+            
+            p.drawString(lftcol, 40,  ("UNIQUE REF : {} {} {}").format((DeclarData[0]).upper(), str(PermitValues['MSGId'][:8]).upper(), str(PermitValues['MSGId'][8:]).upper()))
+
+            if PermitValues['prmtStatus'] =="AMD":
+                self.cursor.execute(f"SELECT StartDate,EndDate FROM Inpmt where PermitNumber = '{PermitValues['PermitNumber']}' AND MsgId = '{PermitValues['MSGId']}' ")
+                StartEnd = self.cursor.fetchone()
+            else:
+                self.cursor.execute(f"SELECT StartDate,EndDate FROM Inpmt where PermitNumber = '{PermitValues['PermitNumber']}' ")
+                StartEnd = self.cursor.fetchone()
+
+            if StartEnd is not None:
+                inpstrtdate = datetime.strptime(str(StartEnd[0]), '%Y-%m-%d').strftime('%d/%m/%Y')
+                inpEndate = datetime.strptime(str(StartEnd[1]), '%Y-%m-%d').strftime('%d/%m/%Y')
+
+
+            rgy = 630
+            p.drawString(rgtcol, rgy, ("VALIDITY PERIOD      : {} - ").format(inpstrtdate))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("                       {}").format(inpEndate))
+            rgy -= 20
+
+            totalGross = "{:.3f}".format(float(PermitValues["TotalGrossWeight"]))
+
+            p.drawString(rgtcol, rgy, ("TOTAL GROSS WT/UNIT  : {:>18}/{}").format(totalGross, PermitValues["TotalGrossWeightUOM"]))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("TOTAL OUTER PACK/UNIT: {:>18}/{}").format(PermitValues["TotalOuterPack"], PermitValues["TotalOuterPackUOM"]))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("TOT EXCISE DUT PAYABLE  : S${:>17}").format(PermitValues["TotalExDutyAmt"]))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("TOT CUSTOMS DUT PAYABLE : S${:>17}").format(PermitValues["TotalCusDutyAmt"]))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("TOT OTHER TAX PAYABLE   : S${:>17}").format(PermitValues["TotalODutyAmt"]))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("TOTAL GST AMT           : S${:>17}").format(PermitValues["TotalGSTTaxAmt"]))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("TOTAL AMOUNT PAYABLE    : S${:>17}").format(PermitValues["TotalAmtPay"]))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("CARGO PACKING TYPE: {} ").format(((PermitValues['CargoPackType'])[3:]).upper()))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, "IN TRANSPORT IDENTIFIER: ")
+            rgy -= 10
+
+            
+            if PermitValues['InwardTransportMode'] == "4 : Air":
+                transidval = PermitValues['AircraftRegNo']
+                CoveyanceNo = PermitValues["FlightNO"]
+                mastebill = PermitValues["MasterAirwayBill"]
+            elif PermitValues['InwardTransportMode'] == "1 : Sea":
+                transidval = PermitValues['VesselName']
+                CoveyanceNo = PermitValues['VoyageNumber']
+                mastebill = PermitValues["OceanBillofLadingNo"]
+            else:
+                transidval = PermitValues['TransportId']
+                CoveyanceNo = PermitValues['ConveyanceRefNo']
+                mastebill = ""
+
+            p.drawString(rgtcol, rgy, transidval.upper())
+            rgy -= 10
+            p.drawString(rgtcol, rgy, ("CONVEYANCE REFERENCE NO: {} ").format(CoveyanceNo.upper()))
+            rgy -= 10
+            p.drawString(rgtcol, rgy, "OBL/MAWB NO: ")
+            rgy -= 10
+            p.drawString(rgtcol, rgy, PermitValues['OceanBillofLadingNo'])
+            rgy -= 10
+            if str(PermitValues['ArrivalDate'].strftime('%d/%m/%Y')) != "01/01/1900":
+                p.drawString(rgtcol, rgy, "ARRIVAL DATE         : {}".format((PermitValues['ArrivalDate']).strftime('%d/%m/%Y')))
+            else:
+                p.drawString(rgtcol, rgy, "ARRIVAL DATE         : {}".format((PermitValues['ArrivalDate']).strftime('%d/%m/%Y')))
+
+            rgy -= 10
+            p.drawString(rgtcol, rgy, "OU TRANSPORT IDENTIFIER: ")
+            rgy -= 10
+
+            if PermitValues['InwardTransportMode'] == "4 : Air":
+                Outransport = PermitValues['AircraftRegNo']
+                conveno = PermitValues["FlightNO"]
+                mastebill = PermitValues["MasterAirwayBill"]
+            
+            elif PermitValues['InwardTransportMode'] == "1 : Sea":
+                Outransport = PermitValues['VesselName']
+                conveno = PermitValues["VoyageNumber"]
+                mastebill = PermitValues["OceanBillofLadingNo"]
+            else:
+                Outransport = PermitValues['TransportId']
+                conveno = PermitValues["ConveyanceRefNo"]
+                mastebill = ""
+
+            # p.drawString(rgtcol, rgy, str(Outransport).upper())
+            rgy -= 10
+            p.drawString(rgtcol, rgy, "CONVEYANCE REFERENCE NO:  ")
+            rgy -= 10
+            p.drawString(rgtcol, rgy, "OBL/MAWB/UCR NO: ")
+            rgy -= 10
+            # p.drawString(rgtcol, rgy, ""+str(mastebill).upper())
+            rgy -= 10
+
+            if False:
+                p.drawString(rgtcol, rgy, "DEPARTURE DATE       : "+str(PermitValues['DepartureDate'].strftime('%d/%m/%Y')))
+            else:
+                p.drawString(rgtcol, rgy, "DEPARTURE DATE       : ")
+            rgy -= 20
+
+            p.drawString(rgtcol, rgy, "CERTIFICATE NO:  ")
+            rgy -= 30
+
+            p.drawString(rgtcol, rgy, "PLACE OF RECEIPT:")
+            rgy -= 10
+
+            ReleaseY = rgy
+            ReleaseX = rgtcol
+            ReciptVal = str(PermitValues['RecepitLocName'] ).replace("\n" , '')
+
+            for Re in range(len(ReciptVal)):
+                p.drawString(ReleaseX, ReleaseY, str(ReciptVal[Re]))
+                ReleaseX += 6
+
+                if Re %32 == 0 and Re != 0:
+                    ReleaseY -= 10
+                    ReleaseX = rgtcol
+
+            ReleaseY -= 10
+
+            p.drawString(rgtcol, ReleaseY, PermitValues['RecepitLocation'])
+            ReleaseY -= 10
+            p.drawString(rgtcol, ReleaseY, "CUSTOMS PROCEDURE CODE (CPC) : ")
+            ReleaseY -= 10
+            rely = ReleaseY
+
+            self.cursor.execute(f"SELECT DISTINCT CPCType FROM InNonCPCDtl WHERE PermitId='{PermitValues['PermitId']}' ")
+            CpcData = self.cursor.fetchall()
+
+            for cpc in CpcData:
+                p.drawString(rgtcol, rely, str(cpc[0]))
+                rely -= 10
+
+            if PermitValues['Cnb'] == "True" or PermitValues['Cnb'] == "true":
+                p.drawString(rgtcol, rely, str("CNB"))
+
+            #-------------------------------------------Heading Page Complete-----------------------------------------------#
+
+            p.showPage()
+
+            snox = 50
+            hscodex = 100
+            currentx = 180
+            prviousx = 320
+            makingx = 50
+            cityx = 120
+            brandx = 220
+            itemy = 820
+
+            def itemyF(itemy):
+                if itemy <= 70:
+                    itemy = 820
+                    p.showPage()
+                    p.setFont('Courier', 10)
+                else:
+                    itemy -= 10
+                if itemy <= 820 and itemy >= 700:
+                    p.setFont('Courier', 10)
+                    p.drawString(rgtcol, itemy, "CARGO CLEARANCE PERMIT ")
+                    p.drawString(460, itemy, ("PG : {} OF ").format(self.countPage))
+                    self.countPage += 1
+                    itemy -= 10
+                    p.drawString(lftcol, itemy, "PERMIT NO : " +str(PermitBar))
+                    p.drawString(rgtcol, itemy, "======================")
+                    itemy -= 10
+                    p.drawString(rgtcol, itemy, "(CONTINUATION PAGE)")
+                    itemy -= 20
+                    p.drawString(lftcol, itemy, "CONSIGNMENT DETAILS")
+                    itemy -= 10
+                    p.drawString(lftcol, itemy, "--------------------------------------------------------------------------------")
+                    itemy -= 10
+
+                    p.drawString(lftcol, itemy, "S/NO     HS CODE      CURRENT LOT NO         PREVIOUS LOT NO                ")
+                    itemy -= 10
+
+                    p.drawString(lftcol, itemy, "MARKING    CTY OF ORIGIN    BRAND NAME       MODEL                            ")
+                    itemy -= 10
+
+                    self.cursor.execute(f"SELECT count(InHAWBOBL) FROM ItemDtl WHERE PermitId = '{PermitValues['PermitId']}' AND InHAWBOBL != '' ")
+                    ItemHeadData = self.cursor.fetchone()
+
+                    # if  ItemHeadData[0] is not None:
+                    #     p.drawString(lftcol, itemy, "IN HAWB/HUCR/HBL")
+                    #     itemy -= 10
+                    
+                    p.drawString(lftcol, itemy, "PACKING/GOODS DESCRIPTION                    HS QUANTITY & UNIT               ")
+                    itemy -= 10
+
+                    p.drawString(lftcol, itemy, "                                             CIF/FOB VALUE (S$)               ")
+                    itemy -= 10
+
+                    self.cursor.execute(f"SELECT sum(LSPValue) FROM ItemDtl WHERE PermitId = '{PermitValues['PermitId']}' AND InHAWBOBL != '' ")
+                    LspData = self.cursor.fetchone()
+                    if str(LspData[0]) != str("0.00") and LspData[0]:
+                        p.drawString(lftcol, itemy, "                                             LSP VALUE (S$)                   ")
+                        itemy -= 10
+
+                    p.drawString(lftcol, itemy, "                                             GST AMOUNT (S$)                  ")
+                    itemy -= 10
+
+                    self.cursor.execute(f"SELECT count(DutiableUOM),sum(DutiableQty),sum(UnitPrice),sum(ExciseDutyRate),sum(CustomsDutyAmount) FROM ItemDtl WHERE PermitId = '{PermitValues['PermitId']}' AND InHAWBOBL != '--Select--' ")
+                    DutyUom = self.cursor.fetchone()
+
+                    if  DutyUom[0] is not None and Decimal(DutyUom[1]) != Decimal("0.0000"):
+                        p.drawString(lftcol, itemy, "                                             DUT QTY/WT/VOL & UNIT            ")
+                        itemy -= 10
+
+                    if Decimal(DutyUom[2] != Decimal("0.00")):
+                        p.drawString(lftcol, itemy, "                                             UNIT PRICE & CODE                 ")
+                        itemy -= 10
+
+                    if Decimal(DutyUom[3] != Decimal("0.00")):
+                        p.drawString(lftcol, itemy, "                                             EXCISE DUTY PAYABLE (S$)          ")
+                        itemy -= 10
+
+                    if Decimal(DutyUom[4] != Decimal("0.00")):
+                        p.drawString(lftcol, itemy, "                                             CUSTOMS DUTY PAYABLE(S$)          ")
+                        itemy -= 10
+
+                    p.drawString(snox, itemy, "MANUFACTURER'S NAME ")
+                    itemy -= 10
+                    p.drawString( snox, itemy, '-------------------------------------------------------------------------------')
+                    itemy -= 10
+                    p.drawString(lftcol, 50,  "--------------------------------------------------------------------------------")
+                    p.drawString(lftcol, 40,  ("UNIQUE REF : {} {} {}").format(str(DeclarData[0]).upper(), str(PermitValues['MSGId'][:8]).upper(), str(PermitValues['MSGId'][8:]).upper()))
+
+                return itemy
+            
+            def Cascfunction(Item,CascId,Sno,itemy):
+                self.cursor.execute(f"SELECT ProductCode,Quantity,ProductUOM FROM Cascdtl WHERE ItemNo = '{Item['ItemNo']}' AND PermitId = '{Item['PermitId']}' AND CascId = '{CascId}' ")
+                CascData = self.cursor.fetchone()
+                if CascData is not None:
+                    p.drawString(lftcol, itemy,  "--------------------------------------------------------------------------------")
+                    itemy = itemyF(itemy)
+                    p.drawString(lftcol, itemy, 'S/NO')
+                    p.drawString(lftcol+70, itemy, 'CA/SC PRODUCT CODE ')
+                    p.drawString(lftcol+280, itemy, 'CA/SC PRODUCT QTY & UNIT')
+                    itemy = itemyF(itemy)
+                    p.drawString(lftcol, itemy, '   {}'.format(Sno))
+                    p.drawString(lftcol+70, itemy, str(CascData[0]).upper())
+                    if str(CascData[1]) != "0.0000":
+                        p.drawString(lftcol+280, itemy, ('{:10d}.{} {}').format(int(CascData[1]), str(CascData[1]).split(".")[1], CascData[2]))
+                    itemy = itemyF(itemy)
+                    p.drawString(lftcol, itemy,  "--------------------------------------------------------------------------------")
+
+                return itemy
+
+            itemy = itemyF(itemy)
+            self.cursor.execute("SELECT * FROM  ItemDtl WHERE PermitId = '{}' ORDER BY ItemNo".format(PermitValues['PermitId']))
+            self.item = self.cursor.fetchall()
+            ItemValues = (pd.DataFrame(list(self.item), columns=[i[0] for i in self.cursor.description])).to_dict('records')
+            
+            for Item in ItemValues:
+                p.drawString(lftcol, itemy, f"{'%02d' % Item['ItemNo']}     {Item['HSCode']}      {Item['CurrentLot']}         {Item['PreviousLot']}                ")
+                itemy = itemyF(itemy)
+
+                if Item['Making'] != "--Select--":
+                    p.drawString(makingx, itemy, (str(Item['Making'])[:2]).upper())
+                p.drawString(cityx-40, itemy, str(Item['Contry']).upper())
+                p.drawString(brandx-105, itemy, str(Item['Brand']).upper())
+                p.drawString(prviousx, itemy, str(Item['Model']).upper())
+                itemy = itemyF(itemy)
+
+                if Item["InHAWBOBL"] != '':
+                    p.drawString(lftcol, itemy, str(Item['InHAWBOBL']).upper())
+                    itemy = itemyF(itemy)
+
+                inp = 0
+                if int(Item['OPQty']) > 0:
+                    inp = inp+10
+                    p.drawString(lftcol+40, itemy, str(Item['OPQty']).upper())
+                    p.drawString(lftcol+70, itemy, str(Item['OPUOM']).upper())
+                    if int(Item['IPQty']) > 0:
+                        p.drawString(lftcol+100, itemy, str(Item['IPQty']).upper())
+                        p.drawString(lftcol+130, itemy, str(Item['IPUOM']).upper())
+                    itemy = itemyF(itemy)
+
+                if int(Item['InPqty']) > 0 :
+                    inp = inp+10
+                    p.drawString(lftcol+40, itemy, str(Item['InPqty']).upper())
+                    p.drawString(lftcol+70, itemy, str(Item['InPUOM']).upper())
+                    if int(Item['ImPQty']) > 0:
+                        p.drawString(lftcol+100, itemy, str(Item['ImPQty']).upper())
+                        p.drawString(lftcol+130, itemy, str(Item['ImPUOM']).upper())
+                    itemy = itemyF(itemy)
+
+                def Inf(iny):
+                    return inp+iny
+
+                DescriptionItem = Item['Description'].upper()
+                DescX = lftcol
+                Dcount = 1
+                HSQtyName = True
+                CiFob = True
+                Lsp = True
+                GstAmd = True
+                TotDutiable = True
+                ExciseAmd = True
+                CustomDuty = True
+                OtherDuty = True
+            
+                for D in range(len(DescriptionItem)):
+                    if DescriptionItem[D] != "\n":
+                        p.drawString(DescX, itemy, DescriptionItem[D])
+                    DescX +=6
+                    if "\n" == DescriptionItem[D]:
+                        DescX = lftcol
+                        itemy = itemyF(itemy)
+                        Dcount += 1
+                    if (D+1) % 50 == 0 : 
+                        DescX = lftcol
+                        itemy = itemyF(itemy)
+                        Dcount += 1
+
+                    if Dcount == 1 and HSQtyName:
+                        p.drawString(prviousx+100, Inf(itemy), ('{:8d}.{} {}').format(int(Item['HSQty']), str(Item['HSQty']).split(".")[1], Item['HSUOM']))
+                        HSQtyName = False
+
+                    if Dcount == 2 and CiFob:
+                        p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format( int(Item['CIFFOB']), str(Item['CIFFOB']).split(".")[1]))
+                        CiFob = False
+
+                    if Dcount == 3 and Lsp:
+                        Dcount += 1 
+                        if Decimal(Item['LSPValue']) != Decimal("0.00"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['LSPValue']), str(Item['LSPValue']).split(".")[1]))
+                            Lsp = False
+                    if Dcount == 4 and GstAmd:
+                        p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['GSTAmount']), str(Item['GSTAmount']).split(".")[1]))
+                        GstAmd = False
+
+                    if Dcount == 5 and TotDutiable:
+                        Dcount += 1 
+                        if Decimal(Item['DutiableQty']) != Decimal("0.0000"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:8d}.{} {}').format(int(Item['DutiableQty']), str( Item['DutiableQty']).split(".")[1], Item['DutiableUOM']))
+                            TotDutiable = False
+
+                    if Dcount == 6 and ExciseAmd:
+                        Dcount += 1 
+                        if Decimal(Item['ExciseDutyAmount']) != Decimal("0.00"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['ExciseDutyAmount']), str(Item['ExciseDutyAmount']).split(".")[1]))
+                            ExciseAmd = False
+                    
+                    if Dcount == 7 and CustomDuty:
+                        Dcount += 1
+                        if Decimal(Item['CustomsDutyAmount']) != Decimal("0.00"): 
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['CustomsDutyAmount']), str(Item['CustomsDutyAmount']).split(".")[1]))
+
+                    if Dcount == 8 and OtherDuty:
+                        Dcount += 1
+                        if Decimal(Item['OtherTaxAmount']) != Decimal("0.00"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['OtherTaxAmount']), str(Item['OtherTaxAmount']).split(".")[1]))
+                            OtherDuty = False
+                else:
+                    if Dcount <= 1:
+                        p.drawString(prviousx+100, Inf(itemy), ('{:8d}.{} {}').format(int(Item['HSQty']), str(Item['HSQty']).split(".")[1], Item['HSUOM']))
+                        itemy = itemyF(itemy)
+                    if Dcount <= 2:
+                        p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format( int(Item['CIFFOB']), str(Item['CIFFOB']).split(".")[1]))
+                        itemy = itemyF(itemy)
+
+                    if Dcount <= 3:
+                        if Decimal(Item['LSPValue']) != Decimal("0.00"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['LSPValue']), str(Item['LSPValue']).split(".")[1]))
+                            itemy = itemyF(itemy)
+
+                    if Dcount <= 4:
+                        p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['GSTAmount']), str(Item['GSTAmount']).split(".")[1]))
+                        itemy = itemyF(itemy)
+
+                    if Dcount <= 5:
+                        if Decimal(Item['DutiableQty']) != Decimal("0.0000"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:8d}.{} {}').format(int(Item['DutiableQty']), str( Item['DutiableQty']).split(".")[1], Item['DutiableUOM']))
+                            itemy = itemyF(itemy)
+
+                    if Dcount <= 6:
+                        if Decimal(Item['ExciseDutyAmount']) != Decimal("0.00"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['ExciseDutyAmount']), str(Item['ExciseDutyAmount']).split(".")[1]))
+                            itemy = itemyF(itemy)
+
+                    if Dcount <= 7:
+                        if Decimal(Item['CustomsDutyAmount']) != Decimal("0.00"): 
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['CustomsDutyAmount']), str(Item['CustomsDutyAmount']).split(".")[1]))
+                            itemy = itemyF(itemy)
+
+                    if Dcount <= 8:
+                        if Decimal(Item['OtherTaxAmount']) != Decimal("0.00"):
+                            p.drawString(prviousx+100, Inf(itemy), ('{:10d}.{}').format(int(Item['OtherTaxAmount']), str(Item['OtherTaxAmount']).split(".")[1]))
+                            itemy = itemyF(itemy)
+                
+                itemy = itemyF(itemy+inp+10)
+                self.cursor.execute(f"SELECT SupplierCode FROM InvoiceDtl WHERE PermitId = '{Item['PermitId']}' AND InvoiceNo = '{Item['InvoiceNo']}' ")
+                InvoiceData = self.cursor.fetchone()
+                if InvoiceData != "":
+                    self.cursor.execute(f"SELECT Name,Name1 FROM SUPPLIERMANUFACTURERPARTY WHERE code = '{InvoiceData[0]}' ")
+                    SupplyData = self.cursor.fetchone()
+                    if SupplyData is not None:
+                        SupplyData = (str(SupplyData[0]) + str(SupplyData[1])).upper()
+                        p.drawString(lftcol, itemy, (SupplyData)[:50])
+                        itemy = itemyF(itemy)
+                        if len(SupplyData) >= 50:
+                            p.drawString(lftcol, itemy, (SupplyData)[50:])
+                            itemy = itemyF(itemy)
+
+                self.cursor.execute(f"SELECT * FROM Cascdtl WHERE ItemNo = '{Item['ItemNo']}' AND PermitId = '{Item['PermitId']}'")
+                CascCheck = self.cursor.fetchall()
+
+                if len(CascCheck) != 0:
+                    itemy = Cascfunction(Item,'Casc1',"01",itemy)
+                    itemy = Cascfunction(Item,'Casc2',"02",itemy)
+                    itemy = Cascfunction(Item,'Casc3',"03",itemy)
+                    itemy = Cascfunction(Item,'Casc4',"04",itemy)
+                    itemy = Cascfunction(Item,'Casc5',"05",itemy)
+
+                if str(Item['EngineCapcity']) != str("0.00") and str(Item['EngineCapcity']) != "":
+                    p.drawString(snox, itemy, '-------------------------------------------------------------------------------')
+                    itemy = itemyF(itemy)
+                    p.drawString(lftcol, itemy, 'S/NO')
+                    p.drawString(lftcol+70, itemy, 'ENGINE NO/CHASSIS NO ')
+                    itemy = itemyF(itemy)
+                    p.drawString(lftcol, itemy, ("   {}").format("%02d" % Item['ItemNo']))
+                    p.drawString(lftcol+70, itemy, str(Item['EngineCapcity']))
+                    itemy = itemyF(itemy)
+                    p.drawString(snox, itemy, '-------------------------------------------------------------------------------')
+                
+                p.drawString(snox, itemy, '-------------------------------------------------------------------------------')
+                itemy = itemyF(itemy)-20
+                p.drawString(snox, itemy, '-------------------------------------------------------------------------------')
+                itemy = itemyF(itemy)
+
+            def itemyF1(itemy):
+                if itemy <= 60:
+                    itemy = 820
+                    p.showPage()
+                    p.setFont('Courier', 10)
+                else:
+                    itemy -= 10
+                if itemy <= 820 and itemy >= 780:
+                    p.setFont('Courier', 10)
+                    p.drawString(rgtcol, itemy, "CARGO CLEARANCE PERMIT ")
+                    p.drawString(460, itemy, ("PG : {} OF").format(self.countPage))
+                    self.countPage += 1
+                    itemy -= 10
+                    p.drawString(lftcol, itemy, "PERMIT NO : "+PermitBar)
+                    p.drawString(rgtcol, itemy, "======================")
+                    itemy -= 10
+                    p.drawString(rgtcol, itemy, "(CONTINUATION PAGE)")
+                    itemy -= 20
+                    p.drawString(lftcol, itemy, "CONSIGNMENT DETAILS")
+                    itemy -= 10
+                    p.drawString(lftcol, itemy, "--------------------------------------------------------------------------------")
+                    itemy -= 10
+                    p.drawString(lftcol, 50,  "--------------------------------------------------------------------------------")
+                    p.drawString(lftcol, 40,  ("UNIQUE REF : {} {} {}").format((DeclarData[0]).upper(), str(PermitValues['MSGId'][:8]).upper(), str(PermitValues['MSGId'][8:]).upper()))
+                return itemy
+            
+            TradeRemark = str(PermitValues['TradeRemarks']).upper()
+            # itemy = itemyF1(itemy)
+            if TradeRemark != "":
+                p.drawString(lftcol, itemy, "TRADER’s REMARKS")
+                itemy = itemyF1(itemy)
+            TradeX = lftcol
+            for Tr in range(len(TradeRemark)):
+                if TradeRemark[Tr] != "\n":
+                    p.drawString(TradeX, itemy, TradeRemark[Tr])
+                TradeX += 6
+                if (Tr + 1) % 80 == 0 or TradeRemark[Tr] == "\n":
+                    TradeX = lftcol
+                    itemy = itemyF1(itemy)
+
+            else:itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "-------------------------------------------------------------------------------")
+
+            self.cursor.execute(f"SELECT RowNo,ContainerNo,size,weight,SealNo FROM ContainerDtl WHERE PermitId = '{PermitValues['PermitId']}' ")
+            ContainerData = self.cursor.fetchall()
+
+            if len(ContainerData) != 0:
+                itemy = itemyF1(itemy)
+                p.drawString(lftcol, itemy, "CONTAINER IDENTIFIERS")
+                itemy = itemyF1(itemy)
+                p.drawString(lftcol, itemy, "-------------------------------------------------------------------------------")
+                itemy = itemyF1(itemy)
+                for Cont in ContainerData:
+                    p.drawString(lftcol, itemy, ("   {})").format("%02d" % Cont[0]))
+                    p.drawString(lftcol+50, itemy, str(Cont[1]).upper())
+                    p.drawString(lftcol+130, itemy, ("{}  {}").format(Cont[2][:3], Cont[2][3:5]))
+                    p.drawString(lftcol+200, itemy, (str(Cont[3]))[:3])
+                    p.drawString(lftcol+240, itemy, str(Cont[4]))
+                    itemy = itemyF1(itemy)
+            
+            p.drawString(lftcol, itemy, "-------------------------------------------------------------------------------")
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "NO UNAUTHORISED ADDITION/AMENDMENT TO THIS PERMIT MAY BE MADE AFTER APPROVAL")
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "-------------------------------------------------------------------------------")
+            itemy = itemyF1(itemy-10)
+            p.drawString(lftcol, itemy, "NAME OF COMPANY:")
+            Declarant = "SELECT name,DeclarantName,DeclarantCode,DeclarantTel FROM DeclarantCompany where tradenetmailboxId=%s"
+            self.cursor.execute(Declarant,(PermitValues['TradeNetMailboxID'],))
+            DeclarData = self.cursor.fetchone()
+            p.drawString(lftcol+110, itemy, (DeclarData[0])[:67])
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol+110, itemy, (DeclarData[0])[67:])
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "DECLARANT NAME :")
+            p.drawString(lftcol+110, itemy, (DeclarData[1])[:67])
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol+110, itemy, (DeclarData[1])[67:])
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "DECLARANT CODE :")
+            p.drawString(lftcol+110, itemy, "XXXX"+(DeclarData[2])[-5:])
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "TEL NO         : ")
+            p.drawString(lftcol+110, itemy, (DeclarData[3]))
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "-------------------------------------------------------------------------------")
+            itemy = itemyF1(itemy)
+            p.drawString(lftcol, itemy, "CONTROLLING AGENCY/CUSTOMS CONDITIONS ")
+            itemy = itemyF1(itemy)
+
+            if PermitValues['prmtStatus'] == "AMD":
+                self.cursor.execute(f"SELECT Conditioncode,ConditionDescription FROM Inpmt WHERE PermitNumber = '{PermitValues['PermitNumber']}' AND MsgId = '{PermitValues['MSGId']}' ORDER BY SNO")
+            else:
+                self.cursor.execute(f"SELECT Conditioncode,ConditionDescription FROM Inpmt WHERE PermitNumber = '{PermitValues['PermitNumber']}' ORDER BY SNO")
+            ControllingData = self.cursor.fetchall()
+
+            for Control in ControllingData:
+                p.setFont('Courier-Bold', 10)
+                p.drawString(lftcol, itemy, Control[0])
+                p.drawString(lftcol+30, itemy, "-")
+                p.setFont('Courier', 10)
+
+                p.drawString(lftcol+40, itemy, (Control[1])[:73])
+                itemy = itemyF1(itemy)
+                if len((Control[1])) > 73:
+                    p.drawString(lftcol, itemy, (Control[1])[73:153])
+                    itemy = itemyF1(itemy)
+                if len((Control[1])) > 153:
+                    p.drawString(lftcol, itemy, (Control[1])[153:233])
+                    itemy = itemyF1(itemy)
+                if len((Control[1])) > 233:
+                    p.drawString(lftcol, itemy, (Control[1])[233:313])
+                    itemy = itemyF1(itemy)
+                if len((Control[1])) > 313:
+                    p.drawString(lftcol, itemy, (Control[1])[313:393])
+                    itemy = itemyF1(itemy)
+                if len((Control[1])) > 393:
+                    p.drawString(lftcol, itemy, (Control[1])[393:473])
+                    itemy = itemyF1(itemy)
+                if len((Control[1])) > 473:
+                    p.drawString(lftcol, itemy, (Control[1])[473:])
+                    itemy = itemyF1(itemy)
+            
+            draft = PermitBar
+            if draft == "DRAFT":
+                draft = f"Draft_{PermitValues['MSGId']}"
+                filename = f"D:/Users/Public/PDFFilesKtt/1{draft}.pdf"
+            else:
+                filename = f"D:/Users/Public/PDFFilesKtt/1{draft}.pdf"
+            p.setTitle(draft)
+
+            p.save()
+    
+            try:
+                with open(filename, 'wb') as f:
+                    f.write(buffer.getbuffer())
+            except Exception as e:
+                pass
+            buffer.seek(0)
+            buffer.close()
+            
+            existing_pdf = PdfFileReader(open(filename, "rb"))
+            output = PdfFileWriter()
+
+            packet = io.BytesIO()
+            can = canvas.Canvas(packet, pagesize=(595, 841))
+            can.setFont('Courier', 10)
+            can.drawString(520, 700, str(len(existing_pdf.pages)))
+            can.showPage()
+            can.setFont('Courier', 10)
+            can.drawString(520, 810, str(len(existing_pdf.pages)))
+            can.showPage()
+            can.setFont('Courier', 10)
+            can.drawString(520, 820, str(len(existing_pdf.pages)))
+            can.save()
+
+            packet.seek(0)
+            new_pdf = PdfFileReader(packet)
+            for i in range(len(existing_pdf.pages)):
+                if i == 0:
+                    page = existing_pdf.pages[i]
+                    page.merge_page(new_pdf.pages[0])
+                elif i == 1:
+                    page = existing_pdf.pages[i]
+                    page.merge_page(new_pdf.pages[1])
+                else:
+                    page = existing_pdf.pages[i]
+                    page.merge_page(new_pdf.pages[2])
+                output.add_page(page)
+
+            output_stream = open(f"D:/Users/Public/PDFFilesKtt/{draft}.pdf", "wb")#f"D:/Users/Public/PDFFilesKtt/{draft}.pdf
+            output.write(output_stream)
+            output_stream.close()
+
+            file_path = f"D:/Users/Public/PDFFilesKtt/{draft}1.pdf"
+
+            if os.path.exists(file_path):
+                os.remove(file_path)
+
+            pdfFiles.append(f"D:/Users/Public/PDFFilesKtt/{draft}.pdf")
+
+        pdfWriter = PdfFileWriter()
+
+        for file in pdfFiles:
+            pdfFile = open(file, 'rb')
+            pdfReader = PdfFileReader(pdfFile)
+
+            for pageNum in range(pdfReader.numPages):
+                pageObj = pdfReader.getPage(pageNum)
+                pdfWriter.addPage(pageObj)
+
+
+
+        pdfOutputFile = open('D:/Users/Public/PDFFilesKtt/MergedFiles.pdf', 'wb')
+        pdfWriter.write(pdfOutputFile)
+
+        pdfOutputFile.close()
+        pdfFile.close()
+
+
+        with open(f"D:/Users/Public/PDFFilesKtt/MergedFiles.pdf", 'rb') as pdf_file:
+            pdf_data = pdf_file.read()
+
+        response = HttpResponse(pdf_data, content_type='application/pdf')
+        if len(pdfFiles) > 1:
+            response['Content-Disposition'] = f'attachment; filename="InpayMultiply.pdf"'
+        else:
+            response['Content-Disposition'] = f'attachment; filename="{draft}.pdf"'
+
+        return response
