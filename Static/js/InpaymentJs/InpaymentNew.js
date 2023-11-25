@@ -2034,6 +2034,7 @@ function ItemEdit(Arg) {
       dutiableQtyFunction();
       ItemCascEdit(i.ItemNo);
       $('#itmeDescription').val(i.Description);
+      // $('#ItemHsCode').focus()
       break;
     }
   }
