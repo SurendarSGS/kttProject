@@ -410,7 +410,7 @@ input::-webkit-inner-spin-button {
 }
 
 #inpaymentTable tbody tr:hover {
-    font-size: 11px;
+    font-size: 10px;
     background-color: rgb(153, 251, 194);
     color: rgb(16, 48, 2);
 }
@@ -632,4 +632,12 @@ input::-webkit-inner-spin-button {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+#CopyImporterbtn{
+    background-color: rgb(25, 135, 84);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding:4px 10px;
 }

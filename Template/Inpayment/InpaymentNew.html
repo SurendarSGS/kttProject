@@ -58,7 +58,7 @@
                         <div class="col-4">DECLARATION TYPE</div>
                         <div class="col-8">
                             <select class="Dropdown HighLight" id="declarationType"
-                                onchange="DeclarationChange(this.value)">
+                                onchange="DeclarationChange(this.value)" tabindex="1">
                                 <option selected>--Select--</option>
                                 {% for i in DeclarationType %}
                                 <option>{{i.Name}}</option>
@@ -70,14 +70,14 @@
                     <div class="row mt-3">
                         <div class="col-4">PREVIOUS PERMIT NO</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" id="PreviousPermitNo" autocomplete="given-name">
+                            <input type="text" class="inputStyle" id="PreviousPermitNo" tabindex="2">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">CARGO PACK TYPE</div>
                         <div class="col-8">
                             <select class="Dropdown HighLight" id="CargoPackType"
-                                onchange="CargoPackTypeChange(this.value)">
+                                onchange="CargoPackTypeChange(this.value)" tabindex="3">
                                 <option selected>--Select--</option>
                                 {% for i in CargoType%}
                                 <option>{{i.Name}}</option>
@@ -90,7 +90,7 @@
                         <div class="col-4">INWARD TRANSPORT MODE</div>
                         <div class="col-8">
                             <select class="Dropdown HighLight" id="inwardTranseportMode"
-                                onchange="InwardTrasnPortModeChange()">
+                                onchange="InwardTrasnPortModeChange()" tabindex="4">
                                 <option selected>--Select--</option>
                                 {% for i in InwardTransportMode %}
                                 <option>{{i.Name}}</option>
@@ -103,7 +103,7 @@
                     <div class="row mt-3">
                         <div class="col-4">DECLARING FOR</div>
                         <div class="col-8">
-                            <select class="Dropdown HighLight" id="DeclaringFor">
+                            <select class="Dropdown HighLight" id="DeclaringFor" tabindex="5">
                                 <option selected>--Select--</option>
                                 {% for i in DeclaringFor %}
                                 <option>{{i.Name}}</option>
@@ -115,7 +115,7 @@
                     <div class="row mt-3">
                         <div class="col-4">BG INDICATOR</div>
                         <div class="col-8">
-                            <select class="Dropdown" id="BgIndicator">
+                            <select class="Dropdown" id="BgIndicator" tabindex="6">
                                 <option selected>--Select--</option>
                                 {% for i in BgIndicator %}
                                 <option>{{i.Name}}</option>
@@ -125,18 +125,24 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="OverRideExchangeRate">OVERRIDE EXCHANGE RATE</label></div>
-                        <div class="col-8"><input type="checkbox" id="OverRideExchangeRate" value="False"
-                                onclick="CheckFunction('OverRideExchangeRate')"></div>
+                        <div class="col-8">
+                            <input type="checkbox" id="OverRideExchangeRate" value="False"
+                                onclick="CheckFunction('OverRideExchangeRate')" tabindex="7">
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="SupplyIndicator">SUPPLY INDICATOR</label></div>
-                        <div class="col-8"><input type="checkbox" id="SupplyIndicator" value="False"
-                                onclick="CheckFunction('SupplyIndicator')"></div>
+                        <div class="col-8">
+                            <input type="checkbox" id="SupplyIndicator" value="False"
+                                onclick="CheckFunction('SupplyIndicator')" tabindex="8">
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="ReferenceDocuments">REFERENCE DOCUMENT</label></div>
-                        <div class="col-8"><input type="checkbox" id="ReferenceDocuments" value="False"
-                                onclick="ReferenceDocument()" onblur="HeaderRefernceOut()"></div>
+                        <div class="col-8">
+                            <input type="checkbox" id="ReferenceDocuments" value="False" onclick="ReferenceDocument()"
+                                tabindex="9">
+                        </div>
                     </div>
                     <div class="row mt-3 ">
                         <div class="col-4">PERMIT ID</div>
@@ -244,22 +250,27 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence1"
-                                onblur="$('#licence2').focus()"></div>
+                        <div class="col-4">
+                            <input type="text" class="inputStyle LicenceHide" id="licence1" tabindex="10">
+                        </div>
                         <div class="col-1"></div>
-                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence4"
-                                onblur="$('#licence5').focus()"></div>
+                        <div class="col-4">
+                            <input type="text" class="inputStyle LicenceHide" id="licence4" tabindex="13">
+                        </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence2"
-                                onblur="$('#licence3').focus()"></div>
+                        <div class="col-4">
+                            <input type="text" class="inputStyle LicenceHide" id="licence2" tabindex="11">
+                        </div>
                         <div class="col-1"></div>
-                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence5"
-                                onblur="$('#HeaddocumentType').focus()"></div>
+                        <div class="col-4">
+                            <input type="text" class="inputStyle LicenceHide" id="licence5" tabindex="14">
+                        </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-4"><input type="text" class="inputStyle LicenceHide" id="licence3"
-                                onblur="$('#licence4').focus()"></div>
+                        <div class="col-4">
+                            <input type="text" class="inputStyle LicenceHide" id="licence3" tabindex="12">
+                        </div>
                         <div class="col-1"></div>
                     </div>
                 </div>
@@ -276,16 +287,21 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-5">
-                            <select class="Dropdown" id="HeaddocumentType">
+                            <select class="Dropdown" id="HeaddocumentType" tabindex="15">
                                 <option selected>--Select--</option>
                                 {% for i in DocumentAttachmentType%}
                                 <option>{{i.Name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-4"><input type="file" class="inputChooseFile" id="HeadAttach"></div>
-                        <div class="col-2"><button type="button" class="ButtonClick"
-                                onclick="HeaderDocumentAttch()">ATTACH</button></div>
+                        <div class="col-4">
+                            <input type="file" class="inputChooseFile" id="HeadAttach">
+                        </div>
+                        <div class="col-2">
+                            <button type="button" class="ButtonClick" onclick="HeaderDocumentAttch()"
+                                tabindex="16">ATTACH
+                            </button>
+                        </div>
                     </div>
                     <div class="row mt-3" style="font-size: 9px;color: red;">
                         TOTAL SIZE SHOULD NOT EXCEED 20000 (KB)
@@ -313,7 +329,7 @@
                 <div class="col-4"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('PartyTab')"
-                        id="HeaderNext">NEXT</button></div>
+                        id="HeaderNext" tabindex="17">NEXT</button></div>
                 <div class="col-4"></div>
             </div>
             <br>
@@ -350,25 +366,25 @@
                         <button type="button" class="btn" style="font-weight: bold;" onclick="ImporterSave()">+</button>
                     </div>
                     <div class="col-1">
-                        <input type="text" class="inputStyle  " placeholder="CODE" id="ImporterCode"
+                        <input type="text" class="inputStyle  " placeholder="CODE" id="ImporterCode" tabindex="1"
                             onfocus="ImporterFocusIN('#ImporterCode')"
                             onfocusout="ImportFocusOutFunction('#ImporterCode')">
                         <span id="ImportCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle HighLight " placeholder="CRUEI" id="ImporterCruei"
-                            style="width: 80%;" onfocus="TrimKeyUp('ImporterCruei')">
+                            tabindex="2" style="width: 80%;" onfocus="TrimKeyUp('ImporterCruei')">
                         <span class=" ErrColor" style="display: none;" id="ImporterCrueiError">FILL IMPORTER
                             CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle HighLight" placeholder="NAME" id="ImporterName"
-                            style="width: 80%;" onfocus="TrimKeyUp('ImporterName')">
+                            tabindex="3" style="width: 80%;" onfocus="TrimKeyUp('ImporterName')">
                         <span class=" ErrColor" style="display: none;" id="importerNameError">FILL IMPORTER NAME</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" placeholder="NAME1" id="ImporterName1" style="width: 80%;"
-                            onfocus="TrimKeyUp('ImporterName1')">
+                            onfocus="TrimKeyUp('ImporterName1')" tabindex="4">
 
                     </div>
                 </div>
@@ -383,24 +399,24 @@
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="inwardCarrierAgentCode"
-                            onfocus="InwardFocusIN()" onfocusout="InwardFocusOut()">
+                            onfocus="InwardFocusIN()" onfocusout="InwardFocusOut()" tabindex="5">
                         <span id="InwardCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle" placeholder="CRUEI" id="inwardCarrierAgentCruei"
-                            onfocus="TrimKeyUp('inwardCarrierAgentCruei')" style="width: 80%;">
+                            onfocus="TrimKeyUp('inwardCarrierAgentCruei')" style="width: 80%;" tabindex="6">
                         <span class="ErrColor" style="display: none;" id="inwardCarrierAgentCrueiError"> INWARD CARRIER
                             AGENT CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" placeholder="NAME" id="inwardCarrierAgentName"
-                            onfocus="TrimKeyUp('inwardCarrierAgentName')" style="width: 80%;">
+                            onfocus="TrimKeyUp('inwardCarrierAgentName')" style="width: 80%;" tabindex="7">
                         <span class="ErrColor" style="display: none;" id="inwardCarrierAgentNameError">INWARD CARRIER
                             AGENT NAME</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" placeholder="NAME1" id="inwardCarrierAgentName1"
-                            onfocus="TrimKeyUp('inwardCarrierAgentName1')" style="width: 80%;">
+                            onfocus="TrimKeyUp('inwardCarrierAgentName1')" style="width: 80%;" tabindex="8">
                     </div>
                 </div>
             </div>
@@ -413,22 +429,22 @@
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="FreightForwarderCode"
-                            onfocus="FrightFrwdFocusIN()" onfocusout="FrightFocusOut()">
+                            onfocus="FrightFrwdFocusIN()" onfocusout="FrightFocusOut()" tabindex="9">
                         <span id="FrightCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle" id="FreightForwarderCruei" placeholder="CRUEI"
-                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderCruei')">
+                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderCruei')" tabindex="10">
                         <span class=" ErrColor" style="display: none;">PLEASE FILL FREIGHT FORWARDER CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" id="FreightForwarderName" placeholder="NAME"
-                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderName')">
+                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderName')" tabindex="11">
                         <span class=" ErrColor" style="display: none;">PLEASE FILL FREIGHT FORWARDER NAME</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" id="FreightForwarderName1" placeholder="NAME1"
-                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderName1')">
+                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderName1')" tabindex="12">
                     </div>
                 </div>
             </div>
@@ -441,41 +457,51 @@
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="claimantPartyCode"
-                            onfocus="ClaimentFocusIN()" onfocusout="ClaimentFocusOut()">
+                            onfocus="ClaimentFocusIN()" onfocusout="ClaimentFocusOut()" tabindex="13">
                         <span id="ClaimantCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle" placeholder="CRUEI" id='claimantPartyCruie'
-                            style="width: 80%;" onfocus="TrimKeyUp('claimantPartyCruie')">
+                            style="width: 80%;" onfocus="TrimKeyUp('claimantPartyCruie')" tabindex="14">
                         <span class=" ErrColor" style="display: none;" id="ClaimantError">PLEASE FILL CLAIMANT PARTY
                             DETAILS</span>
                     </div>
-                    <div class="col-3"><input type="text" class="inputStyle" placeholder="NAME" id="claimantPartyName"
-                            style="width: 80%;" onfocus="TrimKeyUp('claimantPartyName')"> </div>
-                    <div class="col-3"><input type="text" class="inputStyle" placeholder="NAME1" id='claimantPartyName1'
-                            style="width: 80%;" onfocus="TrimKeyUp('claimantPartyName1')"> </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="NAME" id="claimantPartyName" tabindex="15"
+                            style="width: 80%;" onfocus="TrimKeyUp('claimantPartyName')">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="NAME1" id='claimantPartyName1'
+                            style="width: 80%;" onfocus="TrimKeyUp('claimantPartyName1')" tabindex="16">
+                    </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-2"></div>
                     <div class="col-1"></div>
                     <div class="col-1"><input type="text" name="claimantPartyID1" class="inputStyle"
-                            placeholder="CLAIMANT ID" id='claimantPartyID1' onfocus="TrimKeyUp('claimantPartyID1')">
+                            placeholder="CLAIMANT ID" id='claimantPartyID1' onfocus="TrimKeyUp('claimantPartyID1')"
+                            tabindex="17">
                     </div>
-                    <div class="col-5"><input type="text" name="claimantPartyName2" class="inputStyle"
-                            placeholder="CLAIMANT NAME" id='claimantPartyName2' style="width: 89%;"
-                            onfocus="TrimKeyUp('claimantPartyName2')"> </div>
+                    <div class="col-5">
+                        <input type="text" name="claimantPartyName2" class="inputStyle" placeholder="CLAIMANT NAME"
+                            id='claimantPartyName2' style="width: 89%;" onfocus="TrimKeyUp('claimantPartyName2')"
+                            tabindex="18">
+                    </div>
                 </div>
             </div>
 
             <div class="row mt-5">
                 <div class="col-4"></div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('HeaderTab')"
-                        type="button">PREVIOUS</button>
+                <div class="col-2">
+                    <button class="MoveOnButtons" onclick="TabHead('HeaderTab')" type="button">PREVIOUS</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('CargoTab')"
-                        type="button">NEXT</button> </div>
+                <div class="col-2">
+                    <button class="MoveOnButtons" onclick="TabHead('CargoTab')" type="button" tabindex="19"
+                        id="PartyNextBtn">NEXT</button>
+                </div>
             </div>
-            <br><br>
+            <br>
+            <br>
         </div>
         <!---------------------------------------------------Cargo--------------------------------------------------->
         <div id="Cargo" style="display:none">
@@ -490,7 +516,7 @@
                         <div class="row mt-3">
                             <div class="col-3"><label for="CargoTotalOuterPack">TOTAL OUTER PACK</label></div>
                             <div class="col-4">
-                                <input type="text" class="inputStyle HighLight" id="CargoTotalOuterPack"
+                                <input type="number" class="inputStyle HighLight" id="CargoTotalOuterPack"
                                     style="width: 90%;">
                                 <span class="ErrColor" id="CargoTotalOuterPackSpan" style="display: none;">FILL TOTAL
                                     OUTER PACKL</span>
@@ -509,7 +535,7 @@
                         <div class="row mt-3">
                             <div class="col-3"><label for="CargoTotalGrossweight">TOTAL GROSS WEIGHT</label></div>
                             <div class="col-4">
-                                <input type="text" class="inputStyle HighLight" id="CargoTotalGrossweight"
+                                <input type="number" class="inputStyle HighLight" id="CargoTotalGrossweight"
                                     style="width: 90%;" onfocusout="CargoGross()">
                                 <span class="ErrColor" id="CargoTotalGrossweightSpanInput" style="display: none;">FILL
                                     TOTAL GROSS WEIGHT</span>
@@ -529,7 +555,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-3"><label for="CargoPermitGrossWeight">PERMIT GROSS WEIGHT</label></div>
-                            <div class="col-8"><input type="text" class="inputStyle" id="CargoPermitGrossWeight"
+                            <div class="col-8"><input type="number" class="inputStyle" id="CargoPermitGrossWeight"
                                     style="width: 86%;"></div>
                         </div>
                     </div>
@@ -662,8 +688,11 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-3"><label for="CargoBlanketDate">BLANKET START DATE</label></div>
-                            <div class="col-7"><input type="text" id="CargoBlanketDate" class="inputStyle"
-                                    onfocusout="InvoiceDateFunction('CargoBlanketDate')"></div>
+                            <div class="col-7">
+                                <input type="text" id="CargoBlanketDate" class="inputStyle"
+                                    onfocusout="InvoiceDateFunction('CargoBlanketDate')"
+                                    onblur="$('#cargoNextBtn').focus()">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -754,8 +783,8 @@
                 <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('PartyTab')"
                         type="button">PREVIOUS</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('InvoiceTab')"
-                        type="button">NEXT</button> </div>
+                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('InvoiceTab')" type="button"
+                        id="cargoNextBtn">NEXT</button> </div>
             </div>
             <br><br>
         </div>
@@ -769,19 +798,20 @@
                         <button type="button" class="btn" style="font-weight: bold;" onclick="SupplierSave()">+</button>
                     </div>
                     <div class="col-1"><input type="text" class="inputStyle" style="width: 90%;" placeholder="CODE"
-                            id="InvoiceSupplierCode" onfocus="SupplyFocusIN()" onfocusout="SupplyFocusOut()">
+                            id="InvoiceSupplierCode" onfocus="SupplyFocusIN()" onfocusout="SupplyFocusOut()"
+                            tabindex="1">
                         <span id="SupplierCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
                     </div>
                     <div class="col-2"><input type="text" class="inputStyle" style="width: 70%;" placeholder="CRUEI"
-                            id="InvoiceCruei" onfocus="TrimKeyUp('InvoiceCruei')"></div>
+                            id="InvoiceCruei" onfocus="TrimKeyUp('InvoiceCruei')" tabindex="2"></div>
                     <div class="col-3">
                         <input type="text" class="inputStyle HighLight" style="width: 70%;" placeholder="NAME"
-                            id="InvoiceName" onfocus="TrimKeyUp('InvoiceName')"><br>
+                            id="InvoiceName" onfocus="TrimKeyUp('InvoiceName')" tabindex="3"><br>
                         <span class="ErrColor" style="display: none;" id="InvoiceNameSpan">PLEASE FILL THE SUPPLIER
                             NAME</span>
                     </div>
                     <div class="col-3"><input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1"
-                            id="InvoiceName1" onfocus="TrimKeyUp('InvoiceName1')"></div>
+                            id="InvoiceName1" onfocus="TrimKeyUp('InvoiceName1')" tabindex="4"></div>
                 </div>
                 <div class="row mt-3 InvoiceImporterEmpty">
                     <div class="col-2 mt-2"><label for="InvoiceImportCode">IMPORTER</label></div>
@@ -793,27 +823,27 @@
                     <div class="col-1">
                         <input type="text" class="inputStyle HighLight" style="width: 90%;" placeholder="CODE"
                             id="InvoiceImportCode" onfocus="ImporterFocusIN('#InvoiceImportCode')"
-                            onfocusout="InvoiceImporterOut()"><br>
+                            onfocusout="InvoiceImporterOut()" tabindex="5"><br>
                         <span class="ErrColor" style="display: none;" id="InvoiceImportCodeSpan">PLEASE CHECK THE PARTY
                             IMPORTER</span>
                         <span id="InImporterCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle HighLight" style="width: 70%;" placeholder="CRUEI"
-                            id="InvoiceImportCruei" onfocus="TrimKeyUp('InvoiceImportCruei')"><br>
+                            id="InvoiceImportCruei" onfocus="TrimKeyUp('InvoiceImportCruei')" tabindex="6"><br>
                         <span class="ErrColor" style="display: none;" id="InvoiceImportCrueiSpan">PLEASE FILL THE
                             IMPORTER CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle HighLight" style="width: 70%;" placeholder="NAME"
-                            id="InvoiceImportName" onfocus="TrimKeyUp('InvoiceImportName')"><br>
+                            id="InvoiceImportName" onfocus="TrimKeyUp('InvoiceImportName')" tabindex="7"><br>
                         <span class="ErrColor" style="display: none;" id="InvoiceImportNameSpan">PLEASE FILL THE
                             IMPORTER NAME</span>
                     </div>
-                    <div class="col-3">
+                    <div class="col-3" style="display: flex;gap: 10px;align-items: center;">
                         <input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1"
-                            id="InvoiceImportName1" onfocus="TrimKeyUp('InvoiceImportName1')">
-                        <button type="button" class="ButtonClick mt-2" onclick="CopyImporter()">Copy Importer</button>
+                            id="InvoiceImportName1" onfocus="TrimKeyUp('InvoiceImportName1')" tabindex="8">
+                        <button type="button" id="CopyImporterbtn" onclick="CopyImporter()">CopyImporter</button>
                     </div>
                 </div>
             </div>
@@ -831,32 +861,34 @@
                     <div class="col-1"><label for="InvoiceDate">INVOICE DATE</label></div>
                     <div class="col-2">
                         <input type="text" class="inputStyle HighLight" id="InvoiceDate"
-                            onfocusout="InvoiceDateFunction('InvoiceDate')"><br>
+                            onfocusout="InvoiceDateFunction('InvoiceDate')" tabindex="9"><br>
                         <span class="ErrColor" style="display: none;" id="InvoiceDateSpan">PLEASE FILL THE INVOICE
                             DATE</span>
                     </div>
                     <div class="col-1"></div>
                     <div class="col-2">
-                        <input type="checkbox" id="InvoiceAdVal" value="Flase" onclick="CheckFunction('InvoiceAdVal')">
+                        <input type="checkbox" id="InvoiceAdVal" value="Flase" onclick="CheckFunction('InvoiceAdVal')"
+                            tabindex="10">
                         <label for="InvoiceAdVal">AD VALOREM INDICATOR</label>
                     </div>
                     <div class="col-2">
                         <input type="checkbox" id="InvoicePreferential" value="Flase"
-                            onclick="CheckFunction('InvoicePreferential')">
+                            onclick="CheckFunction('InvoicePreferential')" tabindex="11">
                         <label for="InvoicePreferential">PREFERENTIAL DUTY RATE INDICATOR</label>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="col-1"><label for="InvoiceNumber">INVOICE NUMBER</label></div>
                     <div class="col-2">
-                        <input type="text" id="InvoiceNumber" class="inputStyle HighLight"><br>
+                        <input type="text" id="InvoiceNumber" class="inputStyle HighLight" tabindex="12"><br>
                         <span class="ErrColor" style="display: none;" id="InvoiceNumberSpan">PLEASE FILL THE INVOICE
                             Number</span>
                     </div>
                     <div class="col-1"></div>
                     <div class="col-1"><label for="InvoiceTermType">TERM TYPE</label></div>
                     <div class="col-2">
-                        <select id="InvoiceTermType" class="Dropdown" onchange="InvoiceTermChange(this.value)">
+                        <select id="InvoiceTermType" class="Dropdown" onchange="InvoiceTermChange(this.value)"
+                            tabindex="13">
                             <option selected>--Select--</option>
                             {% for i in invoiceTermType %}
                             <option value="{{i.Name}}">{{i.Name}}</option>
@@ -866,7 +898,7 @@
                     <div class="col-1"></div>
                     <div class="col-2"><label for="InvoiceRelationShip">SUPPLIER IMPORTER RELATIONSHIP</label></div>
                     <div class="col-2">
-                        <select id="InvoiceRelationShip" class="Dropdown">
+                        <select id="InvoiceRelationShip" class="Dropdown" tabindex="14">
                             <option selected>--Select--</option>
                             <option value="Ordinary Importer">Ordinary Importer</option>
                             <option value="Agency">Agency</option>
@@ -891,7 +923,7 @@
                             <td>INVOICE VALUE</td>
                             <td></td>
                             <td>
-                                <select class="Dropdown HighLight" style="width:70%" id="InvoiceCurrency"
+                                <select class="Dropdown HighLight" style="width:70%" id="InvoiceCurrency" tabindex="15"
                                     onchange="InvoiceCurrencyFocusOut(this.value,'#InvoiceExRate','#InvoiceExRate')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
@@ -904,7 +936,7 @@
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
                                     id="InvoiceExRate" disabled></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
-                                    id="InvoiceAmount"
+                                    id="InvoiceAmount" tabindex="16"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
                             </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
@@ -917,7 +949,7 @@
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }" disabled>
                             </td>
                             <td>
-                                <select class="Dropdown" style="width:70%" id="OtherCurrency"
+                                <select class="Dropdown" style="width:70%" id="OtherCurrency" tabindex="17"
                                     onchange="InvoiceCurrencyFocusOut(this.value,'#OtherExRate','#OtherCharges')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
@@ -925,21 +957,29 @@
                                     {% endfor %}
                                 </select>
                             </td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherExRate"
-                                    disabled></td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherAmount"
-                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }"></td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
-                                    id="OtherSumAmount" disabled></td>
+                            <td>
+                                <input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherExRate"
+                                    disabled>
+                            </td>
+                            <td>
+                                <input type="number" value="0.00" class="inputStyle" style="width:50%" id="OtherAmount"
+                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }" tabindex="18">
+                            </td>
+                            <td>
+                                <input type="number" value="0.00" class="inputStyle" style="width:50%"
+                                    id="OtherSumAmount" disabled>
+                            </td>
                         </tr>
                         <tr id="InvoiceFrightRow">
                             <td><label for="InvoiceFrightCheck">FREIGHT VALUE ( <input type="checkbox"
                                         id="InvoiceFrightCheck" disabled> INCL. OTHER VALUE )</label> </td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
-                                    id="FrightCharges"
-                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }" disabled></td>
                             <td>
-                                <select class="Dropdown" style="width:70%" id="FrightCurrency"
+                                <input type="number" value="0.00" class="inputStyle" style="width:50%"
+                                    id="FrightCharges"
+                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }" disabled>
+                            </td>
+                            <td>
+                                <select class="Dropdown" style="width:70%" id="FrightCurrency" tabindex="19"
                                     onchange="InvoiceCurrencyFocusOut(this.value,'#FrightExRate','#FrightCharges')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
@@ -949,8 +989,10 @@
                             </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="FrightExRate"
                                     disabled></td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:50%" id="FrightAmount"
-                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }"></td>
+                            <td>
+                                <input type="number" value="0.00" class="inputStyle" style="width:50%" id="FrightAmount"
+                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }" tabindex="20">
+                            </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:50%"
                                     id="FrightSumAmount" disabled></td>
                         </tr>
@@ -966,7 +1008,7 @@
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
                             </td>
                             <td>
-                                <select class="Dropdown" style="width:70%" id="InsurenceCurrency"
+                                <select class="Dropdown" style="width:70%" id="InsurenceCurrency" tabindex="21"
                                     onchange="InvoiceCurrencyFocusOut(this.value,'#InsurenceExRate','#InsurenceCharges')">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
@@ -980,7 +1022,7 @@
                             </td>
                             <td>
                                 <input type="number" value="0.00" class="inputStyle" style="width:50%"
-                                    id="InsurenceAmount"
+                                    id="InsurenceAmount" tabindex="22"
                                     onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
                             </td>
                             <td>
@@ -1025,12 +1067,12 @@
                 <div class="col-2"></div>
                 <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('CargoTab')"
                         type="button">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="InvoiceSave()" type="button"
+                <div class="col-2"><button class="MoveOnButtons" onclick="InvoiceSave()" type="button" tabindex="23"
                         id="AddInvoiceBtn">ADD INVOICE</button></div>
                 <div class="col-2"><button class="MoveOnButtons" onclick="InvoiceReset()" type="button">RESET</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('ItemTab')"
-                        type="button">NEXT</button> </div>
+                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('ItemTab')" type="button"
+                        tabindex="24" id="InvoiceNextBtn">NEXT</button> </div>
             </div>
             <table id="InvoiceTable" style="width: 100%;" class="mt-5">
                 <thead>
@@ -1060,8 +1102,7 @@
             <div class="row">
                 <div class="col-7"></div>
                 <div class="col-5">
-                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSave('NewItem')">ADD
-                        ITEM</button>
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSave('NewItem')" tabindex="27">ADD ITEM</button>
                     <button type="button" style="width:24%;" class="ButtonClick"
                         onclick="PreviousItem()">PREVIOUS</button>
                     <input type="text" style="display: inline;width:24%;" class="inputStyle" id="ItemNextItemID">
@@ -1113,7 +1154,7 @@
                             <div class="col-4">HS CODE</div>
                             <div class="col-8">
                                 <input type="text" class="inputStyle HighLight" id="ItemHsCode" onfocus="HsOnFocus()"
-                                    onfocusout="HsOnFocusOut()">
+                                    onfocusout="HsOnFocusOut()" tabindex="1">
                                 <span class="ErrColor" id="HsCodeSpan" style="display: none;">FILL HSCODE</span>
                             </div>
                         </div>
@@ -1123,7 +1164,7 @@
                             <div class="col-4">DESCRIPTION</div>
                             <div class="col-8">
                                 <textarea class="inputStyle HighLight" id="itmeDescription" style="height: 70px;"
-                                    onfocus="TrimKeyUp('itmeDescription')"></textarea>
+                                    onfocus="TrimKeyUp('itmeDescription')" tabindex="2"></textarea>
                                 <span class="ErrColor" id="itmeDescriptionSpan" style="display: none;">FILL
                                     DESCRIPTION</span>
                             </div>
@@ -1136,7 +1177,7 @@
                                     onclick="$('#CountryPopUp').show()"></div>
                             <div class="col-3">
                                 <input type="text" class="inputStyle HighLight" id="itemCOO1" onfocus="CountryFocusIN()"
-                                    onfocusout="CountryFocusOut()">
+                                    onfocusout="CountryFocusOut()" tabindex="3">
                                 <span class="ErrColor" id="itemCOO1Error" style="display: none;">FILL COO</span>
                             </div>
                             <div class="col-5"><input type="text" class="inputStyle" id="itemCOO2" disabled></div>
@@ -1152,7 +1193,7 @@
                                 <label for="itemDgIndicator">DG INDICATOR</label>
                             </div>
                             <div class="col-4">
-                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')">
+                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')" tabindex="4">
                                 <label for="itemUnBrand">UNBRANDED</label>
                             </div>
                         </div>
@@ -1161,7 +1202,7 @@
                         <div class="row">
                             <div class="col-4 ">BRAND </div>
                             <div class="col-8">
-                                <input type="text" class="inputStyle HighLight" id="itemBrandInput">
+                                <input type="text" class="inputStyle HighLight" id="itemBrandInput" tabindex="5">
                                 <span class="ErrColor" id="itemBrandInputSpan" style="display: none;">FILL BRAND</span>
                             </div>
                         </div>
@@ -1170,7 +1211,7 @@
                         <div class="row">
                             <div class="col-4 ">MODEL</div>
                             <div class="col-8">
-                                <input type="text" class="inputStyle" id="itemModel">
+                                <input type="text" class="inputStyle" id="itemModel" tabindex="6">
                             </div>
                         </div>
                     </div>
@@ -1180,7 +1221,7 @@
                         <div class="row">
                             <div class="col-5 ">VEHICLE TYPE</div>
                             <div class="col-7">
-                                <select class="Dropdown" id="VehicalTypeUom">
+                                <select class="Dropdown" id="VehicalTypeUom" tabindex="7">
                                     <option selected>--Select--</option>
                                     {% for i in VehicalType %}
                                     <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1192,10 +1233,10 @@
                     <div class="row mt-3" id="EngineCapacityShow" style="display: none;">
                         <div class="row">
                             <div class="col-5 ">ENGINE CAPACITY</div>
-                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00">
+                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00" tabindex="8">
                             </div>
                             <div class="col-3">
-                                <select class="Dropdown" id="EngineCapacityUom">
+                                <select class="Dropdown" id="EngineCapacityUom" tabindex="9">
                                     <option selected>--Select--</option>
                                     {% for i in EngineCapacity %}
                                     <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1208,7 +1249,7 @@
                         <div class="row">
                             <div class="col-5 ">ORIGINAL REGISTRATION DATE</div>
                             <div class="col-7"><input type="text" class="inputStyle" id="OriginalRegistrationDate"
-                                    onfocusout="InvoiceDateFunction('OriginalRegistrationDate')"></div>
+                                    onfocusout="InvoiceDateFunction('OriginalRegistrationDate')" tabindex="10"></div>
                         </div>
                     </div>
                     <div class="row mt-3" id="itemDutiableQtyNone" style="display: none;">
@@ -1216,10 +1257,10 @@
                             <div class="col-5 ">DUTIABLE QUANTITY</div>
                             <div class="col-4">
                                 <input type="number" class="inputStyle" id="itemDuitableQty" value="0.00"
-                                    onfocusout="dutiableQtyFunction()">
+                                    onfocusout="dutiableQtyFunction()" tabindex="11">
                             </div>
                             <div class="col-3">
-                                <select class="Dropdown" id="ItemDutiableUom">
+                                <select class="Dropdown" id="ItemDutiableUom" disabled>
                                     <option selected>--Select--</option>
                                     {% for i in totalOuterPack %}
                                     <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1233,10 +1274,10 @@
                             <div class="col-5 ">TOTAL DUTIABLE QUANTITY</div>
                             <div class="col-4">
                                 <input type="number" class="inputStyle" id="ItemTotalDutiableQtyInput"
-                                    onfocusout="totalDutiableQtyFunction()" value="0.00">
+                                    onfocusout="totalDutiableQtyFunction()" value="0.00" tabindex="12">
                             </div>
                             <div class="col-3">
-                                <select class="Dropdown" id="itemTotalDuitableUom">
+                                <select class="Dropdown" id="itemTotalDuitableUom" disabled>
                                     <option selected>--Select--</option>
                                     {% for i in totalOuterPack %}
                                     <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1250,7 +1291,7 @@
                             <div class="col-5 ">INVOICE QUANTITY</div>
                             <div class="col-7">
                                 <input type="number" class="inputStyle" onfocusout="itemInvoiceQuantityFunction()"
-                                    value="0.00" id="itemInvoiceQuantity">
+                                    value="0.00" id="itemInvoiceQuantity" tabindex="13">
                             </div>
                         </div>
                     </div>
@@ -1259,12 +1300,12 @@
                             <div class="col-5 ">HS QUANTITY</div>
                             <div class="col-4">
                                 <input type="number" class="inputStyle HighLight" id="ItemHsQtyInput"
-                                    onfocusout="HsQuantityError()" value="0.00">
+                                    onfocusout="HsQuantityError()" value="0.00" tabindex="14">
                                 <span class="ErrColor" id="itemHsQuantityInputSpan" style="display: none;">FILL HS
                                     QUANTITY</span>
                             </div>
                             <div class="col-3">
-                                <select class="Dropdown HighLight" id="itemHsQuantity">
+                                <select class="Dropdown HighLight" id="itemHsQuantity" disabled>
                                     <option selected>--Select--</option>
                                     {% for i in totalOuterPack %}
                                     <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1279,7 +1320,7 @@
                             <div class="col-5 ">ALCHOHOL PERCENTAGE (%)</div>
                             <div class="col-7">
                                 <input type="number" class="inputStyle" id="itemAlchoholPer" value="0.00"
-                                    onfocusout="itemAlchoholCalculationFunction()">
+                                    onfocusout="itemAlchoholCalculationFunction()" tabindex="15">
                             </div>
                         </div>
                     </div>
@@ -1296,12 +1337,12 @@
                         <div class="row mt-2">
                             <div class="col-3">
                                 <input type="checkbox" id="packing_details"
-                                    onclick="ItemCascShowAll('#packing_details','.PackingDetails')">
+                                    onclick="ItemCascShowAll('#packing_details','.PackingDetails')" tabindex="16">
                                 <label for="packing_details">PACKING INFO</label>
                             </div>
                             <div class="col-3">
                                 <input type="checkbox" id="itemCascID" value="False"
-                                    onclick="ItemCascShowAll('#itemCascID','.OutItemCascHide')">
+                                    onclick="ItemCascShowAll('#itemCascID','.OutItemCascHide')" onblur="ItemCascOut()" tabindex="17">
                                 <label class="" for="itemCascID">ITEM CASC</label>
                             </div>
                             <div class="col-4">
@@ -1387,7 +1428,7 @@
                     <div class="row mt-3">
                         <div class="row">
                             <div class="col-5 ">INVOICE NUMBER </div>
-                            <div class="col-7"> <select class="Dropdown" id="ItemInvoiceNumber"
+                            <div class="col-7"> <select class="Dropdown" id="ItemInvoiceNumber" tabindex="25"
                                     onchange="invoiceNumberFunction()"></select>
                             </div>
                         </div>
@@ -1450,7 +1491,7 @@
                             <div class="col-5 ">TOTAL LINE AMOUNT</div>
                             <div class="col-7">
                                 <input type="number" class="inputStyle HighLight" id="iteminvoiceTotalLineAmount"
-                                    value="0.00" onfocusout="invoiceTotalLineAmountFunction()">
+                                    value="0.00" onfocusout="invoiceTotalLineAmountFunction()" tabindex="26">
                                 <span class="ErrColor" id="iteminvoiceTotalLineAmountSpan" style="display: none;">FILL
                                     AMOUNT</span>
                             </div>
@@ -1604,15 +1645,14 @@
                                     <img src="{% static 'IMG/search.png' %}" width="24px"
                                         onclick="ItemCascSearch('itemProductCode1','product1CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode1"
-                                        onfocus="ProductFocusIn1('#itemProductCode1','#ProductDesc1','#product1CodeCopyUom')">
+                                        onfocus="ProductFocusIn1('#itemProductCode1','#ProductDesc1','#product1CodeCopyUom')" tabindex="18">
                                 </div>
-                                <div class="col-2"><button class="btn1" type="button"
-                                        onclick="CopyHsQuantity('product1CodeCopyInput','product1CodeCopyUom')">COPY OF
-                                        HS-QUANTITY</button></div>
+                                <div class="col-2"><button class="btn1" type="button"  tabindex="19"
+                                        onclick="CopyHsQuantity('product1CodeCopyInput','product1CodeCopyUom')">COPY OF HS-QUANTITY</button></div>
                                 <div class="col-1"><input type="number" class="inputStyle" value="0.00"
-                                        id="product1CodeCopyInput"></div>
+                                        id="product1CodeCopyInput" tabindex="20"></div>
                                 <div class="col-2">
-                                    <select class="Dropdown" id="product1CodeCopyUom">
+                                    <select class="Dropdown" id="product1CodeCopyUom" onblur="product1CodeCopyUomOnblur()" tabindex="21">
                                         <option selected>--Select--</option>
                                         {% for i in totalOuterPack %}
                                         <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1637,9 +1677,9 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><input type="text" class="inputStyle" name="cascName1"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="22"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="23"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="24"></td>
                                                 <td><i class="material-icons" style="color:red">delete</i></td>
                                             </tr>
                                         </tbody>
@@ -2104,7 +2144,7 @@
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('ItemTab')">PREVIOUS</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
-                        onclick="TabHead('SummaryTab')">NEXT</button></div>
+                        onclick="TabHead('SummaryTab')" id="cpcNextBtn">NEXT</button></div>
                 <div class="col-3"></div>
             </div>
         </div>
@@ -2188,7 +2228,7 @@
             <div class="container-fluid mt-5">
                 <div class="row">
                     <div class="col-1">TRADER REMARKS</div>
-                    <div class="col-2"><button class="ButtonClick" style="width: 100%;" type="button"
+                    <div class="col-2"><button class="ButtonClick" style="width: 100%;" type="button" id="summarypreviousbtn"
                             onclick="summaryPreviousFunction()">PREVIOUS PERMITNO</button></div>
                     <div class="col-1"><button class="ButtonClick" style="width: 100%;" type="button"
                             onclick="summaryEXRateFunction()">EX.RATE</button></div>
@@ -3296,6 +3336,8 @@
                 $('#itemCOO1').val(`{{i.CountryCode|escapejs}}`)
                 $('#itemCOO2').val(`{{i.Description|escapejs}}`)
             }
+            $('#itemUnBrand').focus();
+            backspaceEvent('itemCOO1', 'itmeDescription')
             "{% endfor %}"
         }
     }
@@ -3973,3 +4015,4 @@
     });
 </script>
 {% endblock%}
+

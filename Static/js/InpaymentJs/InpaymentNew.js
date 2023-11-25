@@ -176,23 +176,28 @@ function TabHead(ID) {
   if (ID == 'CargoTab') {
     $("#CargoTab").addClass('HeadTabStyleChange')
     $('#Cargo').show()
+    $('#CargoTotalOuterPack').focus()
   }
   if (ID == 'InvoiceTab') {
     $("#InvoiceTab").addClass('HeadTabStyleChange')
     $('#Invoice').show()
+    $('#InvoiceSupplierCode').focus()
   }
   if (ID == 'ItemTab') {
     $("#ItemTab").addClass('HeadTabStyleChange')
     $('#Item').show()
+    $('#ItemHsCode').focus()
   }
   if (ID == 'CpcTab') {
     $("#CpcTab").addClass('HeadTabStyleChange')
     $('#Cpc').show()
+    $('#cpcNextBtn').focus()
   }
   if (ID == 'SummaryTab') {
     $("#SummaryTab").addClass('HeadTabStyleChange')
     $('#Summary').show();
     SummaryLoad();
+    $('#summarypreviousbtn').focus()
   }
   if (ID == 'AmendTab') {
     $("#AmendTab").addClass('HeadTabStyleChange')
@@ -316,11 +321,10 @@ function ReferenceDocument() {
 
 function HeaderRefernceOut() {
   if ($('#ReferenceDocuments').prop('checked')) {
-    console.log("This condition its true");
-    $('#licence1').focus()
+    $('#licence1').attr('tabindex', 10);
   }
   else {
-    $('#HeaderNext').focus()
+    $('#HeaderNext').attr('tabindex', 10);
 
   }
 }
@@ -824,6 +828,7 @@ function InvoiceSave() {
         InvoiceLoadData();
         InvoiceReset();
         $('#Loading').hide();
+        $('#InvoiceNextBtn').focus()
       }
     })
   }
@@ -1019,6 +1024,23 @@ function HsOnFocusOut() {
   $('#itemDutiableQtyNone').hide();
   $('#itemAlchoholNone').hide();
   $('#OptimalCharges').hide();
+  $("#itmeDescription").val("")
+  $('#itemDutiableQtyNone input').val("0.00");
+  $('#itemDutiableQtyNone select').val("--Select--");
+  $('#itemAlchoholNone input').val("0.00");
+  $('#itemAlchoholNone select').val("--Select--");
+  $('#itemExciseDutyInput1').val("0.00");
+  $('#itemCustomsDutyInput1').val("0.00");
+  $('#itemExciseDutyInput2').val("0.00");
+  $('#itemCustomsDutyInput2').val("0.00");
+  $('#VehicalTypeUom').val('--Select--');
+  $('#EngineCapacity').val('0.00');
+  $('#EngineCapacityUom').val('--Select--');
+  $('#OriginalRegistrationDate').val('');
+  $('#OptionalChrgeUOM').val('--Select--');
+  $('#Optioncahrge').val('0.00');
+  $('#OptionalSumtotal').val('0.00');
+  $('#OptionalSumExchage').val('0.00');
   let code = ($('#ItemHsCode').val()).split(":")
   if ($('#ItemHsCode').val() != "") {
     for (var i of ItemHsCodeData) {
@@ -1033,7 +1055,7 @@ function HsOnFocusOut() {
         } else {
           document.getElementById('itemCascID').checked = false;
           ItemCascShowAll('#itemCascID', '.OutItemCascHide')
-          document.getElementById('packing_details').checked = true;
+          document.getElementById('packing_details').checked = false;
           ItemCascShowAll('#packing_details', '.PackingDetails')
           //itemCascFunction();
         }
@@ -1129,7 +1151,7 @@ function HsOnFocusOut() {
         }
         if (code[0].startsWith('87')) {
           for (var i of ChkHsCode) {
-            if (code[0] == i.HsCode) {
+            if (code[0] == i.HSCode) {
               $('#VehicalTypeShow').show();
               $('#EngineCapacityShow').show();
               $('#OriginalShow').show();
@@ -1146,25 +1168,6 @@ function HsOnFocusOut() {
         }
       }
     }
-  }
-  else {
-    $("#itmeDescription").val("")
-    $('#itemDutiableQtyNone input').val("0.00");
-    $('#itemDutiableQtyNone select').val("--Select--");
-    $('#itemAlchoholNone input').val("0.00");
-    $('#itemAlchoholNone select').val("--Select--");
-    $('#itemExciseDutyInput1').val("0.00");
-    $('#itemCustomsDutyInput1').val("0.00");
-    $('#itemExciseDutyInput2').val("0.00");
-    $('#itemCustomsDutyInput2').val("0.00");
-    $('#VehicalTypeUom').val('--Select--');
-    $('#EngineCapacity').val('0.00');
-    $('#EngineCapacityUom').val('--Select--');
-    $('#OriginalRegistrationDate').val('');
-    $('#OptionalChrgeUOM').val('--Select--');
-    $('#Optioncahrge').val('0.00');
-    $('#OptionalSumtotal').val('0.00');
-    $('#OptionalSumExchage').val('0.00');
   }
 }
 
@@ -1591,7 +1594,6 @@ function totalDutiableQtyFunction() {
     }
     itemAlchoholCalculationFunction();
   }
-
 }
 
 function ItemValiDation(VALID, SPANID) {
@@ -1724,6 +1726,7 @@ function ItemSave(NEW_ITEM) {
           $('#ITEMNUMBER').val($('#ItemNextItemID').val());
         }
         $('#Loading').hide();
+        $('#ItemHsCode').focus()
       }
     })
   }
@@ -2046,9 +2049,9 @@ function CascEditUpdate(proCode, CopyInput, CopyUom, TableName, InputName, Data)
   $(CopyInput).val(Data.Quantity);
   $(CopyUom).val(Data.ProductUOM);
   var cascTab = `<tr>
-              <td><input type="text" class="inputStyle" name="${InputName}" value = ${Data.CascCode1}></td>
-              <td><input type="text" class="inputStyle" name="${InputName}" value = ${Data.CascCode2}></td>
-              <td><input type="text" class="inputStyle" name="${InputName}" value = ${Data.CascCode3}></td>
+              <td><input type="text" class="inputStyle" name="${InputName}" value = '${Data.CascCode1}' tabindex="22"></td>
+              <td><input type="text" class="inputStyle" name="${InputName}" value = '${Data.CascCode2}' tabindex="23"></td>
+              <td><input type="text" class="inputStyle" name="${InputName}" value = '${Data.CascCode3}' tabindex="24"></td>
               <td class="OutItemCascDeleteButton" onclick = "ItemCascDelete('${Data.id}','${Data.PermitId}')"><i class="material-icons" style="color:red">delete</i></td>
           </tr>`;
   if (InputName == "cascName1") {
@@ -3332,12 +3335,23 @@ function ImportFocusOutFunction(arg) {
         $('#InvoiceImportCruei').val(i.CRUEI);
         $('#InvoiceImportName').val(i.Name);
         $('#InvoiceImportName1').val(i.Name1);
-        $("#inwardCarrierAgentCode").focus()
+        $('#inwardCarrierAgentCode').focus();
       }
     }
   }
 }
 
+// $(document).ready(function() {
+
+//   $('input').keydown(function(e) {
+//     if (e.shiftKey && e.keyCode == 9) {  // Shift+Tab key combination
+//       e.preventDefault(); // Prevent the default behavior of Shift+Tab
+//       var focusedTabIndex = parseInt($(':focus').attr('tabindex'));
+//       var newTabIndex = focusedTabIndex === 1 ? 2 : 1;
+//       $('[tabindex="' + newTabIndex + '"]').focus();
+//     }
+//   });
+// });
 function ImporterSave() {
   $("#ImportCodeSpan").hide();
   if ($('#ImporterCode').val() == "") {
@@ -3410,9 +3424,18 @@ function InvoiceImporterOut() {
         $('#InvoiceImportCruei').val(i.CRUEI);
         $('#InvoiceImportName').val(i.Name);
         $('#InvoiceImportName1').val(i.Name1);
+        $("#InvoiceDate").focus()
+        backspaceEvent('InvoiceImportCode', 'InvoiceName1')
       }
     }
   }
+}
+
+function ItemCascOut() {
+  if ($('#itemCascID').prop('checked')) {
+    $('#itemProductCode1').focus()
+  }
+  backspaceEvent('itemCascID', 'packing_details')
 }
 
 function ImporterSearch(Data) {
@@ -3515,10 +3538,28 @@ function InwardFocusOut() {
         $('#inwardCarrierAgentCruei').val(i.CRUEI);
         $('#inwardCarrierAgentName').val(i.Name);
         $('#inwardCarrierAgentName1').val(i.Name1);
-        $("#FreightForwarderCode").focus();
+        $("#FreightForwarderCode").focus()
+        backspaceEvent('inwardCarrierAgentCode', 'ImporterName1')
       }
     }
   }
+}
+
+function itemProductCodeonblur() {
+  backspaceEvent('itemProductCode1', 'packing_details')
+}
+
+function product1CodeCopyUomOnblur(){
+  $('[name="cascName1"]:first').focus();
+  backspaceEvent('product1CodeCopyUom', 'product1CodeCopyInput')
+}
+
+function backspaceEvent(Id, PreviousID) {
+  $('#' + Id).keydown(function (event) {
+    if (event.shiftKey && event.key === 'Tab') {
+      $("#" + PreviousID).focus()
+    }
+  });
 }
 
 function InwardCarrierSave() {
@@ -3623,6 +3664,8 @@ function FrightFocusOut() {
         $('#FreightForwarderCruei').val(i.CRUEI);
         $('#FreightForwarderName').val(i.Name);
         $('#FreightForwarderName1').val(i.Name1);
+        $('#PartyNextBtn').focus()
+        backspaceEvent('FreightForwarderCode', 'inwardCarrierAgentName1')
       }
     }
   }
@@ -3844,6 +3887,8 @@ function SupplyFocusOut() {
         $('#InvoiceCruei').val(i.CRUEI);
         $('#InvoiceName').val(i.Name);
         $('#InvoiceName1').val(i.Name1);
+        $('#InvoiceImportCode').focus()
+        // backspaceEvent('FreightForwarderCode','inwardCarrierAgentName1')
       }
     }
   }
