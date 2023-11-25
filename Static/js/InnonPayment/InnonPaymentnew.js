@@ -6,6 +6,7 @@ $(document).ready(function () {
   $("#INNONPAYMENT a").css("color", "green");
   $("#INPAYMENT").css("background-color", "rgb(25, 135, 84)");
   $("#INPAYMENT a").css("color", "white");
+  $('#declarationType').focus();
 });
 
 function TabHead(ID) {
@@ -32,10 +33,12 @@ function TabHead(ID) {
   if (ID == "HeaderTab") {
     $("#HeaderTab").addClass("HeadTabStyleChange");
     $("#Header").show();
+    $('#declarationType').focus();
   }
   if (ID == "PartyTab") {
     $("#PartyTab").addClass("HeadTabStyleChange");
     $("#Party").show();
+    $('#InNonImporterCode').focus();
   }
   if (ID == "CargoTab") {
     $("#CargoTab").addClass("HeadTabStyleChange");
@@ -157,7 +160,6 @@ function DeclarationChange() {
     $("#cargoStartDateVisible").show();
     $("#cargoEndDateVisible").show();
   } else if (Dname == "REX : FOR RE-EXPORT") {
-    console.log("Yhis REX TRUE")
     $("#ItemOutHawbHblShow").show();
     $("#OutwardVisible").show();
     $("#ExporterVisible").show();
@@ -518,7 +520,8 @@ function InNonImporterOut() {
         $("#InNonImporterName").val(i.Name);
         $("#InNonImporterName1").val(i.Name1);
         InNonInvoiceImporterOut(Value);
-        $("#InwardCode").focus();
+        var nextIndex = parseInt($('#InNonImporterCode').attr('tabindex')) + 4;
+        $('[tabindex="' + nextIndex + '"]').focus();
       }
     }
   }
@@ -531,7 +534,13 @@ function InNonExporterIn() {
   }
   Autocomplete1(myValues, "#ExporterCode");
 }
-
+function backspaceEvent(Id, PreviousID) {
+  $('#' + Id).keydown(function (event) {
+    if (event.shiftKey && event.key === 'Tab') {
+      $("#" + PreviousID).focus()
+    }
+  });
+}
 function InNonExporterOut() {
   let Value = $("#ExporterCode").val().trim();
   if (Value == "") {
@@ -542,7 +551,9 @@ function InNonExporterOut() {
         $("#ExporterCruei").val(i.CRUEI);
         $("#ExporterName").val(i.Name);
         $("#ExporterName1").val(i.Name1);
-        $("#InwardCode").focus();
+        var nextIndex = parseInt($('#ExporterCode').attr('tabindex')) + 4;
+        $('[tabindex="' + nextIndex + '"]').focus();
+        backspaceEvent('ExporterCode', 'InNonImporterName1')
       }
     }
   }
@@ -566,6 +577,9 @@ function InwardFocusOut() {
         $("#InwardCruei").val(i.CRUEI);
         $("#InwardName").val(i.Name);
         $("#InwardName1").val(i.Name1);
+        var nextIndex = parseInt($('#InwardCode').attr('tabindex')) + 4;
+        $('[tabindex="' + nextIndex + '"]').focus();
+        backspaceEvent('InwardCode', 'InNonImporterName1')
       }
     }
   }
@@ -612,7 +626,6 @@ function FrightFocusOut() {
         $("#FreightForwarderCruei").val(i.CRUEI);
         $("#FreightForwarderName").val(i.Name);
         $("#FreightForwarderName1").val(i.Name1);
-        $("#ConsignCode").focus()
       }
     }
   }
@@ -1751,13 +1764,13 @@ function OtherChargesInNonCalculation() {
   let InvoiceTot = $("#InvoiceSumAmountInNon").val();
   let OtherExRate = $("#OtherExRateInNon").val();
 
-  if (OtherCharge != "" && parseInt(OtherCharge) > 0 ) {
+  if (OtherCharge != "" && parseInt(OtherCharge) > 0) {
     if (OtherCurrency != "--Select--") {
       $("#OtherSumAmountInNon").val(((InvoiceTot * OtherCharge) / 100).toFixed(2)
       );
       let OtherSum = $("#OtherSumAmountInNon").val();
       $("#OtherAmountInNon").val((OtherSum / OtherExRate).toFixed(4));
-    } 
+    }
     else {
       $("#OtherSumAmountInNon").val(((InvoiceTot * OtherCharge) / 100).toFixed(2));
     }
@@ -2135,7 +2148,7 @@ function InNonInvoiceImporterSave() {
         Name: name.trim(),
         Name1: name1.trim(),
         TouchUser: $("#INONUSERNAME").val(),
-        TouchTime: TOUCHTIME, 
+        TouchTime: TOUCHTIME,
         csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
       },
       success: function (response) {
@@ -2315,7 +2328,7 @@ function InvoiceLoadInNon() {
 function InvoiceEditInNon(SNO) {
   for (var Inv of InvoiceData) {
     if (Inv.SNo == SNO) {
-      InvoiceResetInNon(); 
+      InvoiceResetInNon();
       $("#InvoiceSerialInNon").val(Number(Inv.SNo).toString().padStart(3, "0"));
       $("#InvoiceNumber").val(Inv.InvoiceNo);
       $("#InvoiceTermTypeInNon").val(Inv.TermType);
@@ -2485,7 +2498,7 @@ function ItemHscodeFocusOut(HsVal) {
       if (Hs.HSCode == HsVal) {
         let UOm = Hs.UOM;
         typeid = Hs.DUTYTYPID;
-        if ($("#ItemDescriptionInNon").val() == ""  || $('#ItemItemCodeInNon')  != "") {
+        if ($("#ItemDescriptionInNon").val() == "" || $('#ItemItemCodeInNon') != "") {
           $("#ItemDescriptionInNon").val(Hs.Description);
         }
         $("#ItemHsQtyUom").val(UOm);
@@ -2870,7 +2883,7 @@ function PreferntialLoad(Val) {
   }
   $("#itemPreferntialCode").html(drop);
 }
-function itemPreferntialCodeOut() { 
+function itemPreferntialCodeOut() {
   let Pref = $("#itemPreferntialCode").val()
   if (Pref == "PRF : if goods are imported under preferential duty rates") {
     $("#TxtCustomsDutyRate").val("0.00")
@@ -3304,7 +3317,7 @@ function ItemLoad() {
   $("#ITEMNUMBER").val(ItemData.length + 1);
   $("#summaryNoOfItems").val(Number(ItemData.length).toString().padStart(3, "0"));
   if (ItemData.length > 0) {
-    var Tab = ""; 
+    var Tab = "";
     for (var Itm of ItemData) {
       Tab += `
       <tr>

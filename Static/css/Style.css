@@ -497,7 +497,8 @@ input::-webkit-inner-spin-button {
 }
 
 .Container {
-    margin: 50px 160px;
+
+    margin: 50px 80px;
     background-color: cornsilk;
 }
 

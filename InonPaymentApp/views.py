@@ -116,7 +116,7 @@ class InonPaymentEdit(View,SqlDb):
             PermitNumber = InNonHeaderData[0][-10]
 
             context = { 
-                "Username" : request.session['Username'] ,
+                "UserName" : request.session['Username'] ,
                 "PermitIdInNon":self.PermitIdInNon,
                 "JobId" : self.JobId,
                 "RefId" : self.RefId,
@@ -3791,5 +3791,4 @@ class DownloadDataInNon(View,SqlDb):
         wb.save(response)
 
         return response
-
 
