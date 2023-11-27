@@ -1,5 +1,8 @@
 const NowDate = new Date();
 const TOUCHTIME = NowDate.toISOString().slice(0, 19).replace("T", " ");
+window.onload = function() {
+  document.getElementById('declarationType').focus();
+};
 
 $(document).ready(function () {
   $("#INNONPAYMENT").css("background-color", "white");
@@ -3327,6 +3330,7 @@ function ItemSaveInNon(MoveVal) {
             ItemEditInNon(EditValue)
           }
         }
+        $('#ItemHsCodeInNon').focus()
       },
     });
   } else {

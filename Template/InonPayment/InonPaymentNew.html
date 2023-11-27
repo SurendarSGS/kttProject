@@ -1,16 +1,6 @@
 {% extends 'Inpayment/InpaymentList.html' %}
 {% load static %}
 {% block content %}
-<style>
-    #CopyImporterbtn1 {
-        background-color: rgb(25, 135, 84);
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 4px 10px;
-    }
-</style>
-
 <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
@@ -1435,7 +1425,7 @@
             <div class="row">
                 <div class="col-7"></div>
                 <div class="col-5">
-                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSaveInNon('NEWMOVE')">ADD
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSaveInNon('NEWMOVE')" tabindex="26">ADD
                         ITEM</button>
                     <button type="button" style="width:24%;" class="ButtonClick"
                         onclick="ItemSaveInNon('PREVIOUSMOVE')">PREVIOUS</button>
@@ -1491,7 +1481,7 @@
                                 <input type="text" class="inputStyle HighLight" id="ItemHsCodeInNon" tabindex="1"
                                     onfocus="ItemHscodeFocusIn()" onfocusout="ItemHscodeFocusOut(this.value)">
                                 <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
-                                <p style="color: red;" id="HsCodeLoadingId">PLEASE WAIT A MINIUTE</p>
+                                <p style="color: rgb(50, 167, 0)(216, 28, 28);" id="HsCodeLoadingId">PLEASE WAIT A MINIUTE</p>
                             </div>
                         </div>
                     </div>
