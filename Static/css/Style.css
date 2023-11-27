@@ -633,7 +633,7 @@ input::-webkit-inner-spin-button {
     gap: 8px;
 }
 
-#CopyImporterbtn {
+#CopyImporterbtn,.CopyImporterbtn1 {
     background-color: rgb(25, 135, 84);
     color: white;
     border: none;

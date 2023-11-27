@@ -43,14 +43,17 @@ function TabHead(ID) {
   if (ID == "CargoTab") {
     $("#CargoTab").addClass("HeadTabStyleChange");
     $("#Cargo").show();
+    $('#InNonTotOuterPackInput').focus();
   }
   if (ID == "InvoiceTab") {
     $("#InvoiceTab").addClass("HeadTabStyleChange");
     $("#Invoice").show();
+    $('#SupplierCodeInNon').focus();
   }
   if (ID == "ItemTab") {
     $("#ItemTab").addClass("HeadTabStyleChange");
     $("#Item").show();
+    $('#ItemHsCodeInNon').focus()
   }
   if (ID == "CpcTab") {
     $("#CpcTab").addClass("HeadTabStyleChange");
@@ -534,10 +537,11 @@ function InNonExporterIn() {
   }
   Autocomplete1(myValues, "#ExporterCode");
 }
-function backspaceEvent(Id, PreviousID) {
+function backspaceEvent(Id) {
   $('#' + Id).keydown(function (event) {
     if (event.shiftKey && event.key === 'Tab') {
-      $("#" + PreviousID).focus()
+      var nextIndex = parseInt($('#' + Id).attr('tabindex')) - 1;
+      $('[tabindex="' + nextIndex + '"]').focus();
     }
   });
 }
@@ -553,7 +557,7 @@ function InNonExporterOut() {
         $("#ExporterName1").val(i.Name1);
         var nextIndex = parseInt($('#ExporterCode').attr('tabindex')) + 4;
         $('[tabindex="' + nextIndex + '"]').focus();
-        backspaceEvent('ExporterCode', 'InNonImporterName1')
+        backspaceEvent('ExporterCode')
       }
     }
   }
@@ -579,7 +583,7 @@ function InwardFocusOut() {
         $("#InwardName1").val(i.Name1);
         var nextIndex = parseInt($('#InwardCode').attr('tabindex')) + 4;
         $('[tabindex="' + nextIndex + '"]').focus();
-        backspaceEvent('InwardCode', 'InNonImporterName1')
+        backspaceEvent('InwardCode')
       }
     }
   }
@@ -603,6 +607,9 @@ function OutWardFocusOut() {
         $("#OutWardCarreirCRUEI").val(i.CRUEI);
         $("#OutWardCarreirName").val(i.Name);
         $("#OutWardCarreirName1").val(i.Name1);
+        var nextIndex = parseInt($('#OutWardCarreirCode').attr('tabindex')) + 4;
+        $('[tabindex="' + nextIndex + '"]').focus();
+        backspaceEvent('OutWardCarreirCode')
       }
     }
   }
@@ -626,6 +633,9 @@ function FrightFocusOut() {
         $("#FreightForwarderCruei").val(i.CRUEI);
         $("#FreightForwarderName").val(i.Name);
         $("#FreightForwarderName1").val(i.Name1);
+        var nextIndex = parseInt($('#FreightForwarderCode').attr('tabindex')) + 4;
+        $('[tabindex="' + nextIndex + '"]').focus();
+        backspaceEvent('FreightForwarderCode')
       }
     }
   }
@@ -656,6 +666,9 @@ function ConsigneFocusOut() {
         $("#ConsignSubDivision").val(i.ConsigneeSubDivi);
         $("#ConsignPostal").val(i.ConsigneePostal);
         $("#ConsignCountryCode").val(i.ConsigneeCountry);
+        var nextIndex = parseInt($('#ConsignCode').attr('tabindex')) + 4;
+        $('[tabindex="' + nextIndex + '"]').focus();
+        backspaceEvent('ConsignCode')
         break;
       }
     }
@@ -682,6 +695,9 @@ function InNonClaimentFocusOut() {
         $("#Claimant_Name2").val(i.Name2);
         $("#ClaimantName1").val(i.ClaimantName);
         $("#ClaimantName2").val(i.ClaimantName1);
+        var nextIndex = parseInt($('#ClaimantName').attr('tabindex')) + 4;
+        $('[tabindex="' + nextIndex + '"]').focus();
+        backspaceEvent('ClaimantName')
         break;
       }
     }
@@ -1210,8 +1226,8 @@ $(document).ready(function () {
       LoadingPort = response.loadingPort;
       Country = response.country;
       InNonVessel = response.vessel;
-      NextPort = response.nextPort;
-      LastPort = response.lastPort;
+      NextPort = response.loadingPort;
+      LastPort = response.loadingPort;
       InNonTotOuterPackDropFunction(response.TotOuterPack);
       InNonFinalDestinationCountry(response.country);
       InNonOutVesselFunction(response.vessel);
@@ -1260,7 +1276,7 @@ function InNonReleaseFocusOut(val) {
     $("#InNonReleaseText").val("");
   } else {
     for (var i of ReleaseLocation) {
-      if (val == i.locationCode) {
+      if (val.trim().toUpperCase() == (i.locationCode).trim().toUpperCase()) {
         let Desc = (i.description).replaceAll("\n", "")
         $("#InNonReleaseText").val(`${Desc}`);
       }
@@ -1328,7 +1344,7 @@ function InNonReciptFocusOut(val) {
     $("#InNonReciptInputText").val("");
   } else {
     for (var i of ReceiptLocation) {
-      if (val == i.locationCode) {
+      if (val.trim().toUpperCase() == (i.locationCode).trim().toUpperCase()) {
         $("#InNonReciptInputText").val(i.description);
       }
     }
@@ -1349,7 +1365,7 @@ function InNonStorageFocusOut() {
     $("#InNonStorageInputText").val("");
   } else {
     for (var i of StorageLocation) {
-      if (val == i.StorageCode) {
+      if (val.trim().toUpperCase() == (i.StorageCode).trim().toUpperCase()) {
         $("#InNonStorageInputText").val(i.description);
       }
     }
@@ -1365,12 +1381,12 @@ function InNonLoadingPortFocusIn() {
 }
 
 function InNonLoadingPortFocusout() {
-  let val = $("#InNonLoadingPortInput").val().trim();
+  let val = $("#InNonLoadingPortInput").val().trim().toUpperCase();
   if (val == "") {
     $("#InNonLoadingPortText").val("");
   } else {
     for (var i of LoadingPort) {
-      if (val == i.PortCode) {
+      if (val == (i.PortCode).trim().toUpperCase()) {
         $("#InNonLoadingPortText").val(i.PortName);
       }
     }
@@ -1437,7 +1453,7 @@ function InNonDisachargePortFocusOut(val) {
     $("#InNonDisachargeText").val("");
   } else {
     for (var i of LoadingPort) {
-      if (val == i.PortCode) {
+      if (val.trim().toUpperCase() == (i.PortCode).trim().toUpperCase()) {
         $("#InNonDisachargeText").val(i.PortName);
       }
     }
@@ -1474,7 +1490,7 @@ function InNonLoadingNextPortFocusOut(val) {
     $("#InNonNextPortText").val("");
   } else {
     for (var i of NextPort) {
-      if (val == i.PortCode) {
+      if (val.trim().toUpperCase() == (i.PortCode).trim().toUpperCase()) {
         $("#InNonNextPortText").val(i.PortName);
       }
     }
@@ -1494,7 +1510,7 @@ function InNonLoadingLastPortFocusOut(val) {
     $("#InNonLastPortText").val("");
   } else {
     for (var i of LastPort) {
-      if (val == i.PortCode) {
+      if (val.trim().toUpperCase() == (i.PortCode).trim().toUpperCase()) {
         $("#InNonLastPortText").val(i.PortName);
       }
     }
@@ -2261,6 +2277,7 @@ function InvoiceSaveInNon() {
         InvoiceData = response.invoice;
         InvoiceLoadInNon();
         alert(response.Result);
+        $('[tabindex="24"]').focus();
       },
     });
   }
@@ -2325,6 +2342,10 @@ function InvoiceLoadInNon() {
   }
 }
 
+function CopyImporterInvoice(){
+  $('#InvoiceImporterCodeInNon').val($('#InNonImporterCode').val())
+  InNonInvoiceImporterOut($('#InNonImporterCode').val())
+}
 function InvoiceEditInNon(SNO) {
   for (var Inv of InvoiceData) {
     if (Inv.SNo == SNO) {
@@ -2403,6 +2424,7 @@ function InvoiceDeleteInNon(SNO) {
 var InhouseItemCode = [];
 var HsCode = [];
 var ChkHsCode = [];
+var HsCodeLoading = [];
 $(document).ready(function () {
   $.ajax({
     url: "/InNonItemLoad/",
@@ -2414,6 +2436,13 @@ $(document).ready(function () {
       InhouseItemCode = response.inhouseItemCode;
       HsCode = response.hsCode;
       ChkHsCode = response.chkHsCode;
+      for (var i of HsCode) {
+        HsCodeLoading.push(i.HSCode + ":" + i.Description);
+      }
+      $('#HsCodeLoadingId').hide()
+      document.getElementById('ItemHsCodeInNon').addEventListener('input', function () {
+        Autocomplete1(HsCodeLoading, "#ItemHsCodeInNon");
+      })
     },
   });
 });
@@ -2450,12 +2479,13 @@ function ItemItemCodeInNonOut(val) {
 }
 
 function ItemHscodeFocusIn() {
-  var myValues = [];
-  for (var i of HsCode) {
-    myValues.push(i.HSCode + ":" + i.Description);
-  }
-  Autocomplete1(myValues, "#ItemHsCodeInNon");
+  // Autocomplete1(HsCodeLoading, "#ItemHsCodeInNon");
 }
+
+// document.getElementById('ItemHsCodeInNon').addEventListener('input', function () {
+//   Autocomplete1(HsCodeLoading, "#ItemHsCodeInNon");
+
+// })
 
 function ItemInNonDelHblHawb() {
   $("#Loading").show();
@@ -2622,7 +2652,7 @@ function ItemCooIn() {
 
 function ItemCooOut(Val) {
   for (var i of Country) {
-    if (i.CountryCode == Val) {
+    if ((i.CountryCode).trim().toUpperCase() == Val.trim().toUpperCase()) {
       $("#ItemCooInputText").val(i.Description);
       break;
     }

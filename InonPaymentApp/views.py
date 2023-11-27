@@ -429,11 +429,6 @@ class InNonCargoLoad(View,SqlDb):
         self.cursor.execute("SELECT Name FROM CommonMaster WHERE TypeId = 14 AND StatusID = 1 ORDER BY Name")
         self.vessel = self.cursor.fetchall()
 
-        self.cursor.execute("SELECT Top 10 PortCode,PortName,Country FROM LoadingPort ORDER BY Id DESC")
-        self.nextPort = self.cursor.fetchall()
-
-        self.cursor.execute("SELECT Top 10 PortCode,PortName,Country FROM LoadingPort ORDER BY Id")
-        self.lastPort = self.cursor.fetchall()
 
     def get(self,request):
        
@@ -445,9 +440,7 @@ class InNonCargoLoad(View,SqlDb):
             "loadingPort" : (pd.DataFrame(list(self.loadingPort), columns=["PortCode","PortName","Country"])).to_dict('records'),
             "country" : (pd.DataFrame(list(self.country), columns=["CountryCode","Description"])).to_dict('records'),
             "vessel" : (pd.DataFrame(list(self.vessel), columns=["Name"])).to_dict('records'),
-            "nextPort" : (pd.DataFrame(list(self.nextPort), columns=["PortCode","PortName","Country"])).to_dict('records'),
-            "lastPort" : (pd.DataFrame(list(self.lastPort), columns=["PortCode","PortName","Country"])).to_dict('records'),
-        })
+            })
     
 class InNonInvoiceLoad(View,SqlDb):
     def __init__(self):

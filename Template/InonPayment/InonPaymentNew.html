@@ -1,6 +1,15 @@
 {% extends 'Inpayment/InpaymentList.html' %}
 {% load static %}
 {% block content %}
+<style>
+    #CopyImporterbtn1 {
+        background-color: rgb(25, 135, 84);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 10px;
+    }
+</style>
 
 <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
@@ -1169,22 +1178,22 @@
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" style="width: 90%;" placeholder="CODE"
-                            id="SupplierCodeInNon" onfocus="InNonSupplierIn()"
+                            id="SupplierCodeInNon" onfocus="InNonSupplierIn()" tabindex="1"
                             onfocusout="InNonSupplierOut(this.value)"><br>
                         <span class="ErrColor" id="SupplierCodeInNonSpan">FILL CODE</span>
                     </div>
                     <div class="col-2">
-                        <input type="text" class="inputStyle" style="width: 70%;" placeholder="CRUEI"
+                        <input type="text" class="inputStyle" style="width: 70%;" placeholder="CRUEI" tabindex="2"
                             id="SupplierCrueiInNon">
                         <span class="ErrColor" id="SupplierCrueiInNonSpan">FILL CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle HighLight" style="width: 70%;" placeholder="NAME"
-                            id="SupplierNameInNon"><br>
+                            tabindex="3" id="SupplierNameInNon"><br>
                         <span class="ErrColor" id="SupplierNameInNonSpan">FILL NAME</span>
                     </div>
                     <div class="col-3">
-                        <input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1"
+                        <input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1" tabindex="4"
                             id="SupplierName1InNon">
                     </div>
                 </div>
@@ -1198,24 +1207,26 @@
                     </div>
                     <div class="col-1">
                         <input type="text" style="width: 90%;" class="inputStyle HighLight" placeholder="CODE"
-                            id="InvoiceImporterCodeInNon" onfocus="InNonInvoiceImporterIn()"
+                            id="InvoiceImporterCodeInNon" onfocus="InNonInvoiceImporterIn()" tabindex="5"
                             onfocusout="InNonInvoiceImporterOut(this.value)"><br>
                         <span class="ErrColor" id="InvoiceImporterCodeInNonSpan1">CHECK PARTY IMPORTER</span><br>
                         <span class="ErrColor" id="InvoiceImporterCodeInNonSpan2">FILL CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle HighLight" style="width: 70%;" placeholder="CRUEI"
-                            id="InvoiceImporterCrueiInNon"><br>
+                            tabindex="6" id="InvoiceImporterCrueiInNon"><br>
                         <span class="ErrColor" id="InvoiceImporterCrueiInNonSpan">FILL CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle HighLight" style="width: 70%;" placeholder="NAME"
-                            id="InvoiceImporterNameInNon"><br>
+                            tabindex="7" id="InvoiceImporterNameInNon"><br>
                         <span class="ErrColor" id="InvoiceImporterNameInNonSpan"> FILL NAME</span>
                     </div>
-                    <div class="col-3">
-                        <input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1"
+                    <div class="col-3" style="display: flex;align-items: center;">
+                        <input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1" tabindex="8"
                             id="InvoiceImporterName1InNon">
+
+                        <button type="button" class="CopyImporterbtn1" onclick="CopyImporterInvoice()">COPYIMPORTER</button>
                     </div>
                 </div>
             </div>
@@ -1233,18 +1244,18 @@
                     <div class="col-1"></div>
                     <div class="col-1"><label for="InvoiceDate">INVOICE DATE</label></div>
                     <div class="col-2">
-                        <input type="text" class="inputStyle HighLight" id="InvoiceDateInNon"
+                        <input type="text" class="inputStyle HighLight" id="InvoiceDateInNon" tabindex="9"
                             onfocusout="InvoiceDateFunction('InvoiceDateInNon')"><br>
                         <span class="ErrColor" id="InvoiceDateInNonSpan">PLEASE FILL THE INVOICE DATE</span>
                     </div>
                     <div class="col-1"></div>
                     <div class="col-2">
-                        <input type="checkbox" id="InvoiceAdValInNon" value="Flase"
+                        <input type="checkbox" id="InvoiceAdValInNon" value="Flase" tabindex="10"
                             onclick="CheckFunction('InvoiceAdValInNon')">
                         <label for="InvoiceAdValInNon">AD VALOREM INDICATOR</label>
                     </div>
                     <div class="col-2">
-                        <input type="checkbox" id="InvoicePreferentialInNon" value="Flase"
+                        <input type="checkbox" id="InvoicePreferentialInNon" value="Flase" tabindex="11"
                             onclick="CheckFunction('InvoicePreferentialInNon')">
                         <label for="InvoicePreferentialInNon">PREFERENTIAL DUTY RATE INDICATOR</label>
                     </div>
@@ -1252,13 +1263,13 @@
                 <div class="row mt-3">
                     <div class="col-1"><label for="InvoiceNumber">INVOICE NUMBER</label></div>
                     <div class="col-2">
-                        <input type="text" id="InvoiceNumber" class="inputStyle HighLight"><br>
+                        <input type="text" id="InvoiceNumber" class="inputStyle HighLight" tabindex="12"><br>
                         <span class="ErrColor" id="InvoiceNumberSpan">PLEASE FILL THE INVOICE NUMBER</span>
                     </div>
                     <div class="col-1"></div>
                     <div class="col-1"><label for="InvoiceTermTypeInNon">TERM TYPE</label></div>
                     <div class="col-2">
-                        <select id="InvoiceTermTypeInNon" class="Dropdown"
+                        <select id="InvoiceTermTypeInNon" class="Dropdown" tabindex="13"
                             onchange="InvoiceTermChangeInNon(this.value)">
                             <option selected>--Select--</option>
                         </select>
@@ -1266,7 +1277,7 @@
                     <div class="col-1"></div>
                     <div class="col-2"><label for="InvoiceRelationShip">SUPPLIER IMPORTER RELATIONSHIP</label></div>
                     <div class="col-2">
-                        <select id="InvoiceRelationShip" class="Dropdown">
+                        <select id="InvoiceRelationShip" class="Dropdown" tabindex="14">
                             <option value="--Select--">--Select--</option>
                             <option value="Ordinary Importer">Ordinary Importer</option>
                             <option value="Agency">Agency</option>
@@ -1292,14 +1303,14 @@
                             <td></td>
                             <td>
                                 <select class="Dropdown HighLight" style="width:150px" id="InvoiceCurrencyInNon"
-                                    onchange="InvoiceCurrencyChange(this.value,'InvoiceExRateInNon')">
+                                    tabindex="15" onchange="InvoiceCurrencyChange(this.value,'InvoiceExRateInNon')">
                                     <option selected>--Select--</option>
                                 </select><br>
                                 <span class="ErrColor" id="InvoiceCurrencyInNonSpan">CHOOSE CURRENCY</span>
                             </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="InvoiceExRateInNon" disabled></td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
+                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px" tabindex="16"
                                     id="InvoiceAmountInNon" onkeyup="InvoiceValueAmountCalculation()"> </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="InvoiceSumAmountInNon" disabled></td>
@@ -1307,16 +1318,16 @@
                         <tr id="InvoiceOtherInNon">
                             <td>OTHER VALUE</td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
-                                    id="OtherChargesInNon" onkeyup="OtherChargesInNonCalculation()"></td>
+                                    id="OtherChargesInNon" onkeyup="OtherChargesInNonCalculation()" disabled></td>
                             <td>
-                                <select class="Dropdown" style="width:150px" id="OtherCurrencyInNon"
+                                <select class="Dropdown" style="width:150px" id="OtherCurrencyInNon" tabindex="17"
                                     onchange="InvoiceCurrencyChange(this.value,'OtherExRateInNon')">
                                     <option selected>--Select--</option>
                                 </select>
                             </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="OtherExRateInNon" disabled></td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
+                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px" tabindex="18"
                                     id="OtherAmountInNon" onkeyup="OtherAmountInNonCalculation()"></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="OtherSumAmountInNon" disabled></td>
@@ -1325,16 +1336,16 @@
                             <td><label for="InvoiceFrightCheck">FREIGHT VALUE ( <input type="checkbox"
                                         id="InvoiceFrightCheck"> INCL. OTHER VALUE )</label> </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
-                                    id="FrighChargeInNon" onkeyup="FrighChargeInNonCalculation()"></td>
+                                    id="FrighChargeInNon" onkeyup="FrighChargeInNonCalculation()" disabled></td>
                             <td>
-                                <select class="Dropdown" style="width:150px" id="FrightCurrencyInNon"
+                                <select class="Dropdown" style="width:150px" id="FrightCurrencyInNon" tabindex="19"
                                     onchange="InvoiceCurrencyChange(this.value,'FrightExRateInNon')">
                                     <option selected>--Select--</option>
                                 </select>
                             </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="FrightExRateInNon" disabled></td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
+                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px" tabindex="20"
                                     id="FrightAmountInNon" onkeyup="FrightAmountInNonCalculation()"></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="FrightSumAmountInNon" disabled></td>
@@ -1345,7 +1356,7 @@
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="InsurenceChargeInNon" onkeyup="InsurenceChargeInNonCalculation()"></td>
                             <td>
-                                <select class="Dropdown" style="width:150px" id="InsurenceCurrencyInNon"
+                                <select class="Dropdown" style="width:150px" id="InsurenceCurrencyInNon" tabindex="21"
                                     onchange="InvoiceCurrencyChange(this.value,'InsurenceExRateInNon')">
                                     <option selected>--Select--</option>
                                 </select>
@@ -1353,7 +1364,8 @@
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="InsurenceExRateInNon" disabled></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
-                                    id="InsurenceAmountInNon" onkeyup="InsurenceAmountInNonCalculation()"></td>
+                                    id="InsurenceAmountInNon" onkeyup="InsurenceAmountInNonCalculation()" tabindex="22">
+                            </td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="InsurenceSumAmountInNon" disabled></td>
                         </tr>
@@ -1381,15 +1393,19 @@
             </div>
             <div class="row mt-5">
                 <div class="col-2"></div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('CargoTab')"
-                        type="button">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="InvoiceSaveInNon()" type="button"
-                        id="AddInvoiceBtn">ADD INVOICE</button></div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="InvoiceResetInNon()"
-                        type="button">RESET</button>
+                <div class="col-2">
+                    <button class="MoveOnButtons" onclick="TabHead('CargoTab')" type="button">PREVIOUS</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('ItemTab')"
-                        type="button">NEXT</button> </div>
+                <div class="col-2">
+                    <button class="MoveOnButtons" onclick="InvoiceSaveInNon()" type="button" tabindex="23"
+                        id="AddInvoiceBtn">ADD INVOICE</button>
+                </div>
+                <div class="col-2">
+                    <button class="MoveOnButtons" onclick="InvoiceResetInNon()" type="button">RESET</button>
+                </div>
+                <div class="col-2">
+                    <button class="MoveOnButtons" onclick="TabHead('ItemTab')" tabindex="24" type="button">NEXT</button>
+                </div>
             </div>
             <table id="InvoiceTableInNon" style="width: 100%;" class="mt-5">
                 <thead>
@@ -1472,9 +1488,10 @@
                             <div class="col-8">
                                 <span style="background-color: brown;color: white;display: none;"
                                     id="ControlledItemInNon">CONTROLLED ITEM</span>
-                                <input type="text" class="inputStyle HighLight" id="ItemHsCodeInNon"
+                                <input type="text" class="inputStyle HighLight" id="ItemHsCodeInNon" tabindex="1"
                                     onfocus="ItemHscodeFocusIn()" onfocusout="ItemHscodeFocusOut(this.value)">
                                 <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+                                <p style="color: red;" id="HsCodeLoadingId">PLEASE WAIT A MINIUTE</p>
                             </div>
                         </div>
                     </div>
@@ -1482,7 +1499,7 @@
                         <div class="row">
                             <div class="col-4">DESCRIPTION</div>
                             <div class="col-8">
-                                <textarea class="inputStyle HighLight" id="ItemDescriptionInNon" style="height: 70px;"
+                                <textarea class="inputStyle HighLight" id="ItemDescriptionInNon" style="height: 70px;" tabindex="2"
                                     onfocus="TrimKeyUp('ItemDescriptionInNon')"></textarea>
                                 <span class="ErrColor" id="ItemDescriptionInNonSpan">FILL DESCRIPTION</span>
                             </div>
@@ -1495,7 +1512,7 @@
                                     onclick="ItemCooSearch()"></i></div>
                             <div class="col-3">
                                 <input type="text" class="inputStyle HighLight" id="ItemCooInput" onfocus="ItemCooIn()"
-                                    onfocusout="ItemCooOut(this.value)">
+                                    onfocusout="ItemCooOut(this.value)" tabindex="3">
                                 <span class="ErrColor" id="ItemCooInputSpan">FILL COO</span>
                             </div>
                             <div class="col-5"><input type="text" class="inputStyle" id="ItemCooInputText" disabled>
@@ -1512,7 +1529,7 @@
                                 <label for="itemDgIndicator">DG INDICATOR</label>
                             </div>
                             <div class="col-4">
-                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')">
+                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')" tabindex="4">
                                 <label for="itemUnBrand">UNBRANDED</label>
                             </div>
                         </div>
@@ -1521,7 +1538,7 @@
                         <div class="row">
                             <div class="col-4 ">BRAND </div>
                             <div class="col-8">
-                                <input type="text" class="inputStyle HighLight" id="itemBrandInput">
+                                <input type="text" class="inputStyle HighLight" id="itemBrandInput" tabindex="5">
                                 <span class="ErrColor" id="itemBrandInputSpan">FILL BRAND</span>
                             </div>
                         </div>
@@ -1530,7 +1547,7 @@
                         <div class="row">
                             <div class="col-4 ">MODEL</div>
                             <div class="col-8">
-                                <input type="text" class="inputStyle" id="itemModel">
+                                <input type="text" class="inputStyle" id="itemModel" tabindex="6">
                             </div>
                         </div>
                     </div>
@@ -1540,7 +1557,7 @@
                         <div class="row">
                             <div class="col-5 ">VEHICLE TYPE</div>
                             <div class="col-7">
-                                <select class="Dropdown" id="VehicalTypeUom">
+                                <select class="Dropdown" id="VehicalTypeUom" tabindex="7">
                                     <option selected>--Select--</option>
                                 </select>
                             </div>
@@ -1549,10 +1566,10 @@
                     <div class="row mt-3" id="EngineCapacityShow" style="display: none;">
                         <div class="row">
                             <div class="col-5 ">ENGINE CAPACITY</div>
-                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00">
+                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00" tabindex="8">
                             </div>
                             <div class="col-3">
-                                <select class="Dropdown" id="EngineCapacityUom">
+                                <select class="Dropdown" id="EngineCapacityUom" tabindex="9">
                                     <option selected>--Select--</option>
                                 </select>
                             </div>
@@ -1561,15 +1578,17 @@
                     <div class="row mt-3" id="OriginalShow" style="display: none;">
                         <div class="row">
                             <div class="col-5 ">ORIGINAL REGISTRATION DATE</div>
-                            <div class="col-7"><input type="text" class="inputStyle" id="OriginalRegistrationDate"
-                                    onfocusout="InvoiceDateFunction('OriginalRegistrationDate')"></div>
+                            <div class="col-7">
+                                <input type="text" class="inputStyle" id="OriginalRegistrationDate" tabindex="9"
+                                    onfocusout="InvoiceDateFunction('OriginalRegistrationDate')">
+                                </div>
                         </div>
                     </div>
                     <div class="row mt-3" id="itemDutiableQtyNone" style="display: none;">
                         <div class="row">
                             <div class="col-5 ">DUTIABLE QUANTITY</div>
                             <div class="col-4">
-                                <input type="number" class="inputStyle" id="itemDuitableQty" value="0.00"
+                                <input type="number" class="inputStyle" id="itemDuitableQty" value="0.00" tabindex="10"
                                     onkeyup="itemDuitableQtyOnChange()">
                             </div>
                             <div class="col-3">
@@ -1583,7 +1602,7 @@
                         <div class="row">
                             <div class="col-5 ">TOTAL DUTIABLE QUANTITY</div>
                             <div class="col-4">
-                                <input type="number" class="inputStyle" id="ItemTotalDutiableQtyInput" value="0.00"
+                                <input type="number" class="inputStyle" id="ItemTotalDutiableQtyInput" value="0.00" tabindex="11"
                                     onkeyup="ItemTotalDutiableOnchange()">
                             </div>
                             <div class="col-3">
@@ -1597,7 +1616,7 @@
                         <div class="row">
                             <div class="col-5 ">INVOICE QUANTITY</div>
                             <div class="col-7">
-                                <input type="number" class="inputStyle" value="0.00" id="itemInvoiceQuantity"
+                                <input type="number" class="inputStyle" value="0.00" id="itemInvoiceQuantity" tabindex="12"
                                     onkeyup="itemInvoiceQuantityFunction()">
                             </div>
                         </div>
@@ -1606,7 +1625,7 @@
                         <div class="row">
                             <div class="col-5 "> HS QUANTITY</div>
                             <div class="col-4">
-                                <input type="number" class="inputStyle HighLight" id="ItemHsQtyInput" value="0.00">
+                                <input type="number" class="inputStyle HighLight" id="ItemHsQtyInput" value="0.00" tabindex="13">
                                 <span class="ErrColor" id="ItemHsQtyInputSpan">FILL HS QUANTITY</span>
                             </div>
                             <div class="col-3">
@@ -1621,7 +1640,7 @@
                         <div class="row">
                             <div class="col-5 ">ALCHOHOL PERCENTAGE (%)</div>
                             <div class="col-7">
-                                <input type="number" class="inputStyle" id="itemAlchoholPer" value="0.00"
+                                <input type="number" class="inputStyle" id="itemAlchoholPer" value="0.00" tabindex="14"
                                     onfocusout="txtAlcoholPer_TextChanged()">
                             </div>
                         </div>
@@ -1638,12 +1657,12 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-3">
-                                <input type="checkbox" id="packing_details"
+                                <input type="checkbox" id="packing_details" tabindex="15"
                                     onclick="ItemCascShowAll('#packing_details','.PackingDetails')">
                                 <label for="packing_details">PACKING INFO</label>
                             </div>
-                            <div class="col-3">
-                                <input type="checkbox" id="itemCascID" value="False"
+                            <div class="col-3"> 
+                                <input type="checkbox" id="itemCascID" value="False" tabindex="16"
                                     onclick="ItemCascShowAll('#itemCascID','.OutItemCascHide')">
                                 <label class="" for="itemCascID">ITEM CASC</label>
                             </div>
@@ -1722,7 +1741,7 @@
                         <div class="row">
                             <div class="col-5 ">INVOICE NUMBER </div>
                             <div class="col-7">
-                                <select id="ItemInvoiceNumberInNon" class="inputStyle HighLight"
+                                <select id="ItemInvoiceNumberInNon" class="inputStyle HighLight" tabindex="24"
                                     onchange="ItemInvoiceNumberChange(this.value)">
                                     <option selected>--Select--</option>
                                 </select> <br>
@@ -1779,8 +1798,8 @@
                     <div class="row mt-3">
                         <div class="row">
                             <div class="col-5 ">TOTAL LINE AMOUNT</div>
-                            <div class="col-7">
-                                <input type="number" class="inputStyle HighLight" id="iteminvoiceTotalLineAmount"
+                            <div class="col-7"> 
+                                <input type="number" class="inputStyle HighLight" id="iteminvoiceTotalLineAmount" tabindex="25"
                                     value="0.00" onfocusout="TotalLineAmountCalculation()">
                                 <span class="ErrColor" id="iteminvoiceTotalLineAmountSpan">FILL AMOUNT</span>
                             </div>
@@ -1923,18 +1942,18 @@
                                     <i class="fa-solid fa-magnifying-glass fa-lg"
                                         onclick="ItemCascSearch('itemProductCode1','itemProductCode1Desc','product1CodeCopyUom')"></i>
                                     <input type="text" class="inputStyle HighLight" style="width: 80%;"
-                                        id="itemProductCode1"
+                                        id="itemProductCode1" tabindex="17"
                                         onfocus="ProductFocusIn1('#itemProductCode1','#itemProductCode1Desc','#product1CodeCopyUom')"
                                         onfocusout="ProductFocusOut(this.value,'itemProductCode1Desc')"><br>
                                     <span class="ErrColor" id="itemProductCode1Span">FILL PRODUCT CODE</span>
                                 </div>
-                                <div class="col-2"><button class="btn1" type="button"
+                                <div class="col-2"><button class="btn1" type="button" tabindex="18"
                                         onclick="CopyHsQuantity('product1CodeCopyInput','product1CodeCopyUom')">COPY OF
                                         HS-QUANTITY</button></div>
-                                <div class="col-1"><input type="number" class="inputStyle" value="0.00"
+                                <div class="col-1"><input type="number" class="inputStyle" value="0.00" tabindex="19"
                                         id="product1CodeCopyInput"></div>
                                 <div class="col-2">
-                                    <select id="product1CodeCopyUom" class="inputStyle ">
+                                    <select id="product1CodeCopyUom" class="inputStyle " tabindex="20">
                                         <option selected>--Select--</option>
                                     </select>
                                 </div>
@@ -1958,9 +1977,9 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><input type="text" class="inputStyle" name="cascName1"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="21"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="22"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="23"></td>
                                                 <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
                                                         onclick="DeleteCascTable(this)"></i></td>
                                             </tr>
