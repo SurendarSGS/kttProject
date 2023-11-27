@@ -61,12 +61,14 @@ function TabHead(ID) {
   if (ID == "CpcTab") {
     $("#CpcTab").addClass("HeadTabStyleChange");
     $("#Cpc").show();
+    $('#cpcNextBtn').focus()
   }
   if (ID == "SummaryTab") {
     $("#SummaryTab").addClass("HeadTabStyleChange");
     $("#Summary").show();
     //SummaryLoadInNon()
     SummaryPage();
+    $('#SummaryPreviousPermitBtn').focus()
   }
   if (ID == "AmendTab") {
     $("#AmendTab").addClass("HeadTabStyleChange");
@@ -503,6 +505,7 @@ $(document).ready(function () {
       FrightFocusOut();
       InNonClaimentFocusOut();
       CpcDataLoad();
+      $("#declarationType").focus()
     },
   });
 });
@@ -1240,6 +1243,7 @@ $(document).ready(function () {
       InNonLoadingLastPortFocusOut($("#InNonLastPortInput").val())
       InNonDisachargePortFocusOut($("#InNonDisachargeInput").val())
       TotalOutUom()
+      $("#declarationType").focus()
     },
   });
 });
@@ -1611,6 +1615,7 @@ $(document).ready(function () {
       EngineLoad(Engine);
       PreferntialLoad(Preferntial);
       ItemMakingLoad(Making);
+      $("#declarationType").focus()
     },
   });
 });
@@ -3325,7 +3330,6 @@ function ItemSaveInNon(MoveVal) {
         }
 
         if (MoveVal != "NEWMOVE") {
-          console.log("EditValue True : ", EditValue)
           if (ItemData.length >= 1 && ItemData.length <= ItemData.length) {
             ItemEditInNon(EditValue)
           }
@@ -3391,7 +3395,6 @@ function ItemLoad() {
     SummarySumofItemAmd(ItemCurrAmd)
 
     if ($("#declarationType").val() == "DNG : Duty & GST") {
-      console.log("ITs True")
       let suTot = OtherTaxAmd + GstAmd + ExciseDutyAmd + CustomsDutyAmd;
       $("#summaryTotalPayable").val(suTot.toFixed(2));
     }
@@ -3903,7 +3906,6 @@ function ItemEditAllInNon() {
     });
     ItemResetInNon();
   }
-  console.log(ItemAllDataInNon);
   $("#Loading").show();
   $.ajax({
     type: "POST",
@@ -4043,12 +4045,14 @@ $(document).ready(function () {
       PermitId: $("#PermitIDInNon").val(),
     },
     success: function (response) {
+      $("#declarationType").focus()
       console.log("Container Page Loaded ...!");
       ContainerData = response.ContainerValue;
       ContainerLoad(response.ContainerValue);
       if (ContainerData.length > 0) {
         $("#InpaymentContainerShow").show();
       }
+      $("#declarationType").focus()
     },
   });
 });
@@ -4245,6 +4249,7 @@ $(document).ready(function () {
       console.log("Attach Page Loaded ...!");
       AttachData = response.attachFile;
       AttachLoad(AttachData);
+      $("#declarationType").focus()
     },
   });
 });
