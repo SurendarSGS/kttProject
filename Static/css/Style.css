@@ -45,9 +45,9 @@ input:hover,
 select:hover,
 button:hover,
 img:hover {
-    -webkit-box-shadow: 3px 2px 19px -7px rgb(25, 135, 84);
-    box-shadow: 3px 2px 19px -7px rgb(25, 135, 84);
-    border: 1px solid rgb(25, 135, 84);
+    -webkit-box-shadow: 3px 2px 19px -7px rgb(135, 25, 51);
+    box-shadow: 3px 2px 19px -7px rgb(135, 25, 113);
+    border: 0px solid rgb(128, 25, 135);
 }
 
 input:focus,
@@ -55,15 +55,15 @@ select:focus,
 button:focus,
 img:focus {
     outline: none;
-    -webkit-box-shadow: 3px 2px 19px -7px rgb(25, 135, 84);
-    box-shadow: 3px 2px 19px -7px rgb(25, 135, 84);
-    border: 1px solid rgb(25, 135, 84);
+    -webkit-box-shadow: 3px 2px 19px -7px rgb(126, 25, 135);
+    box-shadow: 3px 2px 19px -7px rgb(135, 25, 106);
+    border: 0px solid rgb(135, 25, 113);
 }
 
 input[type="checkbox"]:focus,
 input[type="checkbox"]:hover {
-    border: 1px solid rgb(25, 135, 84);
-    box-shadow: 0px 0px 5px rgb(25, 135, 84);
+    border: 1px solid rgb(135, 25, 124);
+    box-shadow: 0px 0px 5px rgb(135, 25, 135);
     border-radius: 5px;
 }
 
@@ -242,7 +242,7 @@ i {
 }
 
 #inpaymentTable {
-    font-size: 11px;
+    font-size: 10px;
 }
 
 #ShowColumns {
@@ -266,7 +266,7 @@ input::-webkit-inner-spin-button {
 }
 
 .HighLight {
-    background-color: #d7f8dd;
+    background-color: #a6e3ad;
 }
 
 #summar1 input {

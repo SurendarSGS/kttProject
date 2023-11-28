@@ -42,7 +42,7 @@
                     <div class="row mt-3">
                         <div class="col-4">DECLARATION TYPE</div>
                         <div class="col-8">
-                            <select class="Dropdown" id="DeclarationType" onchange="OutDeclarationChange()">
+                            <select class="Dropdown HighLight" id="DeclarationType" onchange="OutDeclarationChange()">
                                 <option selected>--Select--</option>
                                 {% for i in DeclarationType %}
                                 <option>{{i.Name}}</option>
@@ -59,7 +59,7 @@
                     <div class="row mt-3">
                         <div class="col-4">CARGO PACK TYPE</div>
                         <div class="col-8">
-                            <select class="Dropdown" id="CargoPackType" onchange="OutCargoPackTypeChange()">
+                            <select class="Dropdown HighLight" id="CargoPackType" onchange="OutCargoPackTypeChange()">
                                 <option selected>--Select--</option>
                                 {% for i in CargoType%}
                                 <option>{{i.Name}}</option>
@@ -82,7 +82,7 @@
                     <div class="row mt-3">
                         <div class="col-4">OUTWARD TRANSPORT MODE</div>
                         <div class="col-8">
-                            <select class="Dropdown" id="OutOutwardTransportMode"
+                            <select class="Dropdown HighLight" id="OutOutwardTransportMode"
                                 onchange="OutOutwardTrasnPortModeChange()">
                                 <option selected>--Select--</option>
                                 {% for i in OutWardTransportMode %}
@@ -105,7 +105,7 @@
                     <div class="row mt-3">
                         <div class="col-4">DECLARING FOR</div>
                         <div class="col-8">
-                            <select class="Dropdown" id="DeclaringFor">
+                            <select class="Dropdown HighLight" id="DeclaringFor">
                                 <option selected>--Select--</option>
                                 {% for i in DeclaringFor %}
                                 <option>{{i.Name}}</option>
@@ -435,14 +435,19 @@
                     <img src="{% static 'IMG/search.png' %}" width="24px">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
-                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
-                        id="ExporterCode" onfocus="ExportFocusIn()" onfocusout="ExportFocusOut()"></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
-                        id="ExporterCruei"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
-                        id="ExporterName"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
-                        id="ExporterName1"></div>
+                <div class="col-1">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE" id="ExporterCode"
+                        onfocus="ExportFocusIn()" onfocusout="ExportFocusOut()">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI" id="ExporterCruei">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME" id="ExporterName">
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="ExporterName1">
+                </div>
             </div>
             <div class="row mt-3">
                 <div class="col-2"></div>
@@ -1296,7 +1301,7 @@
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="InvoiceReset()">RESET</button>
                 </div>
                 <div class="col-2">
-                    <button class="MoveOnButtons"  type="button" onclick="TabHead('ItemTab')" tabindex="14">NEXT</button>
+                    <button class="MoveOnButtons" type="button" onclick="TabHead('ItemTab')" tabindex="14">NEXT</button>
                 </div>
                 <div class="col-2"></div>
             </div>
