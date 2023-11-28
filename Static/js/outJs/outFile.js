@@ -1021,6 +1021,7 @@ function InvoiceSave() {
       InvoiceData = response.invoice
       InvoiceReset()
       InvoiceLoadData()
+      $('[tabindex="14"]').focus();
     }
   })
 
@@ -1193,7 +1194,10 @@ function InNonImporeterSearchSelectRow(Arg, Code, Cruei, Name, Name1) {
 
   $("#InNonImporterSerchId").hide();
 }
-
+function CopyExporter(){
+  $('#InviceExporterCode').val($('#ExporterCode').val())
+  InvoiceExporterFocusOut()
+}
 var InhouseData = [];
 var ChkHsCode = [];
 var Country = [];

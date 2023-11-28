@@ -423,7 +423,8 @@
             <div class="row mt-3">
                 <div class="col-2">DECLARANT COMPANY</div>
                 <div class="col-1"></div>
-                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" id="DeclarantCompanyCode"></div>
+                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" id="DeclarantCompanyCode">
+                </div>
                 <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;"></div>
                 <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;"></div>
                 <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;"></div>
@@ -975,7 +976,8 @@
                             <div class="row mt-3">
                                 <div class="col-4"><label for="VesselNationality">VESSEL NATIONALITY</label></div>
                                 <div class="col-7">
-                                    <select class="Dropdown" id="VesselNationality" onfocus="VesselNationalityFocusIn()">
+                                    <select class="Dropdown" id="VesselNationality"
+                                        onfocus="VesselNationalityFocusIn()">
                                         <option selected>--Select--</option>
                                     </select>
                                 </div>
@@ -997,7 +999,8 @@
                             <div class="row mt-3">
                                 <div class="col-3">NEXT PORT</div>
                                 <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
-                                <div class="col-2"><input type="text" class="inputStyle" id="NextPort" onfocus="NextPortFocusIn()" onfocusout="NextPortFocusOut()"></div>
+                                <div class="col-2"><input type="text" class="inputStyle" id="NextPort"
+                                        onfocus="NextPortFocusIn()" onfocusout="NextPortFocusOut()"></div>
                                 <div class="col-5"><input type="text" class="inputStyle" id="NextPortText"></div>
                             </div>
                         </div>
@@ -1005,7 +1008,8 @@
                             <div class="row mt-3">
                                 <div class="col-3">LAST PORT</div>
                                 <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
-                                <div class="col-2"><input type="text" class="inputStyle" id="LastPort" onfocus="LastPortFocusIn()" onfocusout="LastPortFocusOut()"></div>
+                                <div class="col-2"><input type="text" class="inputStyle" id="LastPort"
+                                        onfocus="LastPortFocusIn()" onfocusout="LastPortFocusOut()"></div>
                                 <div class="col-5"><input type="text" class="inputStyle" id="LastPortText"></div>
                             </div>
                         </div>
@@ -1146,22 +1150,27 @@
         <div class="" id="Invoice" style="display:none">
             <div class="row mt-3">
                 <div class="col-2">EXPORTER PARTY</div>
-                <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"
+                <div class="col-1">
+                    <img src="{% static 'IMG/search.png' %}" width="24px"
                         onclick="InNonImporeterSearch(Exporter,'EXPORTER PARTY','InviceExporterCode','InviceExporterCruei','InviceExporterName','InviceExporterName1')">
                 </div>
-                <div class="col-1"><input type="text" id="InviceExporterCode" class="inputStyle" placeholder="CODE"
+                <div class="col-1">
+                    <input type="text" id="InviceExporterCode" class="inputStyle" placeholder="CODE" tabindex="1"
                         style="width : 100%" onfocus="InvoiceExporterFocusIn()" onfocusout="InvoiceExporterFocusOut()">
                 </div>
-                <div class="col-2"><input type="text" id="InviceExporterCruei" class="inputStyle" placeholder="CRUEI"
-                        style="width : 80%">
+                <div class="col-2">
+                    <input type="text" id="InviceExporterCruei" class="inputStyle" placeholder="CRUEI"
+                        style="width : 80%" tabindex="2">
                 </div>
                 <div class="col-3">
                     <input type="text" id="InviceExporterName" class="inputStyle HighLight" placeholder="NAME"
-                        style="width : 80%"><br>
+                        style="width : 80%" tabindex="3"><br>
                     <span id="InviceExporterNameSpan" class="ErrorColor">Please Fill The Name</span>
                 </div>
-                <div class="col-3"><input type="text" id="InviceExporterName1" class="inputStyle" placeholder="NAME1"
-                        style="width : 80%">
+                <div class="col-3" style="display: flex;align-items: center;">
+                    <input type="text" id="InviceExporterName1" class="inputStyle" placeholder="NAME1"
+                        style="width : 80%" tabindex="4">
+                    <button class="CopyImporterbtn1" type="button" onclick="CopyExporter()">COPYEXPORTER</button>
                 </div>
             </div>
             <div class="row mt-4">
@@ -1181,7 +1190,7 @@
                         <div class="col-4">INVOICE NUMBER</div>
                         <div class="col-1"></div>
                         <div class="col-7"><input type="text" class="inputStyle HighLight" style="width: 80%;"
-                                id="InvoiceNumber">
+                                tabindex="8" id="InvoiceNumber">
                             <br><span id="InvoiceNumberSpan" class="ErrorColor ">FILL NUMBER</span>
                         </div>
                     </div>
@@ -1191,14 +1200,14 @@
                         <div class="col-4">INVOICE DATE</div>
                         <div class="col-8">
                             <input type="text" class="inputStyle HighLight" style="width: 80%;" id="InvoiceDate"
-                                onfocusout="InvoiceDateFunction('InvoiceDate')"><br>
+                                tabindex="5" onfocusout="InvoiceDateFunction('InvoiceDate')"><br>
                             <span id="InvoiceDateSpan" class="ErrorColor">FILL DATE</span>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">TERM TYPE</div>
                         <div class="col-8">
-                            <select class="Dropdown" id="InvoiceTermType" style="width: 80%;">
+                            <select class="Dropdown" id="InvoiceTermType" style="width: 80%;" tabindex="9">
                                 <option selected>--Select--</option>
                                 {% for i in InvoiceTermType %}
                                 <option>{{i.Name}}</option>
@@ -1210,12 +1219,12 @@
                 <div class="col-4">
                     <div class="row mt-3">
                         <div class="col-5">
-                            <input type="checkbox" id="AdValoremIndicator" value="False"
+                            <input type="checkbox" id="AdValoremIndicator" value="False" tabindex="6"
                                 onclick="CheckFunction('AdValoremIndicator')">
                             <label for="AdValoremIndicator">AD VALOREM INDICATOR</label>
                         </div>
                         <div class="col-7">
-                            <input type="checkbox" id="PreferentialDutyRateIndicator" value="False"
+                            <input type="checkbox" id="PreferentialDutyRateIndicator" value="False" tabindex="7"
                                 onclick="CheckFunction('PreferentialDutyRateIndicator')">
                             <label for="PreferentialDutyRateIndicator">PREFERENTIAL DUTY RATE INDICATOR</label>
                         </div>
@@ -1223,7 +1232,7 @@
                     <div class="row mt-4">
                         <div class="col-7">SUPPLIER IMPORTER RELATIONSHIP</div>
                         <div class="col-5">
-                            <select class="Dropdown" id="InvoiceSupplierImporter">
+                            <select class="Dropdown" id="InvoiceSupplierImporter" tabindex="10">
                                 <option selected>--Select--</option>
                                 <option>AGENCY</option>
                                 <option>ORDINERY IMPORTER</option>
@@ -1247,7 +1256,7 @@
                             <td>INVOICE VALUE</td>
                             <td></td>
                             <td>
-                                <select class="Dropdown HighLight" id="InvoiceCurrency"
+                                <select class="Dropdown HighLight" id="InvoiceCurrency" tabindex="11"
                                     onchange="InvoiceCurencyChange()">
                                     <option selected>--Select--</option>
                                     {% for i in Currency %}
@@ -1259,7 +1268,7 @@
                             <td><input type="text" class="inputStyle" style="width: 80%;" id="InvoiceExRate" disabled
                                     value="0.00"></td>
                             <td><input type="text" class="inputStyle" style="width: 80%;" id="InvoiceAmount"
-                                    value="0.00" onkeyup="InvoiceCalculation()"></td>
+                                    tabindex="12" value="0.00" onkeyup="InvoiceCalculation()"></td>
                             <td><input type="text" class="inputStyle" style="width: 80%;" id="InvoiceSumAmount" disabled
                                     value="0.00"></td>
                         </tr>
@@ -1277,13 +1286,18 @@
             </div>
             <div class="row mt-3">
                 <div class="col-2"></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button"
-                        onclick="TabHead('CargoTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="InvoiceSave()">ADD INVOICE</button></div>
+                <div class="col-2">
+                    <button class="MoveOnButtons" type="button" onclick="TabHead('CargoTab')">PREVIOUS</button>
+                </div>
+                <div class="col-2">
+                    <button class="MoveOnButtons" type="button" onclick="InvoiceSave()" tabindex="13">
+                        ADD INVOICE</button>
+                </div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="InvoiceReset()">RESET</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" type="button"
-                        onclick="TabHead('ItemTab')">NEXT</button></div>
+                <div class="col-2">
+                    <button class="MoveOnButtons"  type="button" onclick="TabHead('ItemTab')" tabindex="14">NEXT</button>
+                </div>
                 <div class="col-2"></div>
             </div>
             <br>
@@ -2549,7 +2563,8 @@
                         <div class="col-8"><input type="text" class="inputStyle" value="0.00"></div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00"></div>
+                        <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00">
+                        </div>
                     </div>
                 </div>
                 <div class="col-2">
