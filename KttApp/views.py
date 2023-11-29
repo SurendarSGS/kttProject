@@ -393,21 +393,27 @@ def ItemExcelUpload(request):
     return JsonResponse({'Item': Item, 'ItemCasc': ItemCasc, "Result": "Deleted"})
 
 def AllItemUpdate(request):
-    Item = json.loads(request.POST.get('Item'))
-    PermitId = request.POST.get('PermitId')
-    df = pd.DataFrame(Item)
-    s = SqlDb()
-    for _, rows in df.iterrows():
-        Qry = f"UPDATE ItemDtl SET MessageType  = %s  , HSCode  = %s  , Description  = %s  , DGIndicator  = %s  , Contry  = %s  , Brand  = %s  , Model  = %s  , InHAWBOBL  = %s  , DutiableQty  = %s  , DutiableUOM  = %s  , TotalDutiableQty  = %s  , TotalDutiableUOM  = %s  , InvoiceQuantity  = %s  , HSQty  = %s  , HSUOM  = %s  , AlcoholPer  = %s  , InvoiceNo  = %s  , ChkUnitPrice  = %s  , UnitPrice  = %s  , UnitPriceCurrency  = %s  , ExchangeRate  = %s  , SumExchangeRate  = %s  , TotalLineAmount  = %s  , InvoiceCharges  = %s  , CIFFOB  = %s  , OPQty  = %s  , OPUOM  = %s  , IPQty  = %s  , IPUOM  = %s  , InPqty  = %s  , InPUOM  = %s  , ImPQty  = %s  , ImPUOM  = %s  , PreferentialCode  = %s  , GSTRate  = %s  , GSTUOM  = %s  , GSTAmount  = %s  , ExciseDutyRate  = %s  , ExciseDutyUOM  = %s  , ExciseDutyAmount  = %s  , CustomsDutyRate  = %s  , CustomsDutyUOM  = %s  , CustomsDutyAmount  = %s  , OtherTaxRate  = %s  , OtherTaxUOM  = %s  , OtherTaxAmount  = %s  , CurrentLot  = %s  , PreviousLot  = %s  , LSPValue  = %s  , Making  = %s  , ShippingMarks1  = %s  , ShippingMarks2  = %s  , ShippingMarks3  = %s  , ShippingMarks4  = %s  , TouchUser  = %s  , TouchTime  = %s  , VehicleType  = %s  , EngineCapcity  = %s  , EngineCapUOM  = %s  , orignaldatereg  = %s  , OptionalChrgeUOM  = %s  , Optioncahrge  = %s  , OptionalSumtotal  = %s  , OptionalSumExchage  = %s  WHERE ItemNo  = %s AND PermitId  = %s"
-        Val = (rows['MessageType'], rows['HSCode'], rows['Description'], rows['DGIndicator'], rows['Contry'], rows['Brand'], rows['Model'], rows['InHAWBOBL'], rows['DutiableQty'], rows['DutiableUOM'], rows['TotalDutiableQty'], rows['TotalDutiableUOM'], rows['InvoiceQuantity'], rows['HSQty'], rows['HSUOM'], rows['AlcoholPer'], rows['InvoiceNo'], rows['ChkUnitPrice'], rows['UnitPrice'], rows['UnitPriceCurrency'], rows['ExchangeRate'], rows['SumExchangeRate'], rows['TotalLineAmount'], rows['InvoiceCharges'], rows['CIFFOB'], rows['OPQty'], rows['OPUOM'], rows['IPQty'], rows['IPUOM'], rows['InPqty'], rows['InPUOM'], rows['ImPQty'], rows['ImPUOM'], rows['PreferentialCode'], rows['GSTRate'],
-               rows['GSTUOM'], rows['GSTAmount'], rows['ExciseDutyRate'], rows['ExciseDutyUOM'], rows['ExciseDutyAmount'], rows['CustomsDutyRate'], rows['CustomsDutyUOM'], rows['CustomsDutyAmount'], rows['OtherTaxRate'], rows['OtherTaxUOM'], rows['OtherTaxAmount'], rows['CurrentLot'], rows['PreviousLot'], rows['LSPValue'], rows['Making'], rows['ShippingMarks1'], rows['ShippingMarks2'], rows['ShippingMarks3'], rows['ShippingMarks4'], rows['TouchUser'], rows['TouchTime'], rows['VehicleType'], rows['EngineCapcity'], rows['EngineCapUOM'], rows['orignaldatereg'], rows['OptionalChrgeUOM'], rows['Optioncahrge'], rows['OptionalSumtotal'], rows['OptionalSumExchage'], rows['ItemNo'], rows['PermitId'])
-        s.cursor.execute(Qry, Val)
-    s.conn.commit()
-    Item = list(ItemDtl.objects.filter(
-        PermitId=PermitId).order_by('ItemNo').values())
-    ItemCasc = list(Cascdtl.objects.filter( 
-        PermitId=PermitId).order_by('ItemNo').values())
-    return JsonResponse({'Item': Item, 'ItemCasc': ItemCasc, "Result": "updated"})
+    try:
+        Item = json.loads(request.POST.get('Item'))
+        print(Item)
+        PermitId = request.POST.get('PermitId')
+        df = pd.DataFrame(Item)
+        s = SqlDb()
+        for _, rows in df.iterrows():
+            Qry = f"UPDATE ItemDtl SET MessageType  = %s  , HSCode  = %s  , Description  = %s  , DGIndicator  = %s  , Contry  = %s  , Brand  = %s  , Model  = %s  , InHAWBOBL  = %s  , DutiableQty  = %s  , DutiableUOM  = %s  , TotalDutiableQty  = %s  , TotalDutiableUOM  = %s  , InvoiceQuantity  = %s  , HSQty  = %s  , HSUOM  = %s  , AlcoholPer  = %s  , InvoiceNo  = %s  , ChkUnitPrice  = %s  , UnitPrice  = %s  , UnitPriceCurrency  = %s  , ExchangeRate  = %s  , SumExchangeRate  = %s  , TotalLineAmount  = %s  , InvoiceCharges  = %s  , CIFFOB  = %s  , OPQty  = %s  , OPUOM  = %s  , IPQty  = %s  , IPUOM  = %s  , InPqty  = %s  , InPUOM  = %s  , ImPQty  = %s  , ImPUOM  = %s  , PreferentialCode  = %s  , GSTRate  = %s  , GSTUOM  = %s  , GSTAmount  = %s  , ExciseDutyRate  = %s  , ExciseDutyUOM  = %s  , ExciseDutyAmount  = %s  , CustomsDutyRate  = %s  , CustomsDutyUOM  = %s  , CustomsDutyAmount  = %s  , OtherTaxRate  = %s  , OtherTaxUOM  = %s  , OtherTaxAmount  = %s  , CurrentLot  = %s  , PreviousLot  = %s  , LSPValue  = %s  , Making  = %s  , ShippingMarks1  = %s  , ShippingMarks2  = %s  , ShippingMarks3  = %s  , ShippingMarks4  = %s  , TouchUser  = %s  , TouchTime  = %s  , VehicleType  = %s  , EngineCapcity  = %s  , EngineCapUOM  = %s  , orignaldatereg  = %s  , OptionalChrgeUOM  = %s  , Optioncahrge  = %s  , OptionalSumtotal  = %s  , OptionalSumExchage  = %s  WHERE ItemNo  = %s AND PermitId  = %s"
+            Val = (rows['MessageType'], rows['HSCode'], rows['Description'], rows['DGIndicator'], rows['Contry'], rows['Brand'], rows['Model'], rows['InHAWBOBL'], rows['DutiableQty'], rows['DutiableUOM'], rows['TotalDutiableQty'], rows['TotalDutiableUOM'], rows['InvoiceQuantity'], rows['HSQty'], rows['HSUOM'], rows['AlcoholPer'], rows['InvoiceNo'], rows['ChkUnitPrice'], rows['UnitPrice'], rows['UnitPriceCurrency'], rows['ExchangeRate'], rows['SumExchangeRate'], rows['TotalLineAmount'], rows['InvoiceCharges'], rows['CIFFOB'], rows['OPQty'], rows['OPUOM'], rows['IPQty'], rows['IPUOM'], rows['InPqty'], rows['InPUOM'], rows['ImPQty'], rows['ImPUOM'], rows['PreferentialCode'], rows['GSTRate'],
+                rows['GSTUOM'], rows['GSTAmount'], rows['ExciseDutyRate'], rows['ExciseDutyUOM'], rows['ExciseDutyAmount'], rows['CustomsDutyRate'], rows['CustomsDutyUOM'], rows['CustomsDutyAmount'], rows['OtherTaxRate'], rows['OtherTaxUOM'], rows['OtherTaxAmount'], rows['CurrentLot'], rows['PreviousLot'], rows['LSPValue'], rows['Making'], rows['ShippingMarks1'], rows['ShippingMarks2'], rows['ShippingMarks3'], rows['ShippingMarks4'], rows['TouchUser'], rows['TouchTime'], rows['VehicleType'], rows['EngineCapcity'], rows['EngineCapUOM'], rows['orignaldatereg'], rows['OptionalChrgeUOM'], rows['Optioncahrge'], rows['OptionalSumtotal'], rows['OptionalSumExchage'], rows['ItemNo'], rows['PermitId'])
+            s.cursor.execute(Qry, Val)
+        s.conn.commit()
+        Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by('ItemNo').values())
+        ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by('ItemNo').values())
+        return JsonResponse({'Item': Item, 'ItemCasc': ItemCasc, "message": "All Item Updated Successfully!!!"})
+    except : 
+        Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by('ItemNo').values())
+        ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by('ItemNo').values())
+        return JsonResponse({'Item': Item, 
+                                  'ItemCasc': ItemCasc, 
+                                  "message": "Did Not Saved Somthing Error Please check the Records"})
 
 def ItemConsolidate(request):
     permitId = request.POST.get('PermitId')
@@ -1491,7 +1497,7 @@ class InPaymentCcp(View,SqlDb):
             itemy = itemyF1(itemy-10)
             p.drawString(lftcol, itemy, "NAME OF COMPANY:")
             Declarant = "SELECT name,DeclarantName,DeclarantCode,DeclarantTel FROM DeclarantCompany where tradenetmailboxId=%s"
-            self.cursor.execute(Declarant,(PermitValues['TradeNetMailboxID'],))
+            self.cursor.execute(Declarant,(PermitValues['TradeNetMailboxID'],)) 
             DeclarData = self.cursor.fetchone()
             p.drawString(lftcol+110, itemy, (DeclarData[0])[:67])
             itemy = itemyF1(itemy)

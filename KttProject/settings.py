@@ -105,7 +105,7 @@ DATABASES = {
     #     "NAME": "KttDb",#TestPortal#KaizenPortal
     #     "USER": "sa", 
     #     "PASSWORD": "123",
-    #     "HOST": "DESKTOP-6NETCSQ\MSSQLSERVERSS",
+    #     "HOST": "DESKTOP-FKJ2C5R\MSSQLSERVERSS",
     #     'PORT': '',
     #     'OPTIONS': {
     #         'driver': 'ODBC Driver 17 for SQL Server',

@@ -2237,6 +2237,7 @@ function ItemUploadData() {
 }
 
 function ItemEditAll() {
+  $('#Loading').show();
   var ItemAllData = [];
   for (var item of ItemData) {
     ItemEdit(item.ItemNo)
@@ -2322,6 +2323,7 @@ function ItemEditAll() {
     success: function (response) {
       ItemData = response.Item;
       ItemCascData = response.ItemCasc;
+      alert(response.message)
       ItemLoadData();
       $('#Loading').hide();
     }
@@ -2330,23 +2332,29 @@ function ItemEditAll() {
 
 function ItemConsolidate() {
   $('#Loading').show();
-  $.ajax({
-    url: "/InpaymentConsolidate/",
-    type: "POST",
-    data: {
-      PermitId: $("#PermitID").val().toUpperCase(),
-      csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
-    },
-    success: function (response) {
-      ItemData = response.Item;
-      ItemCascData = response.ItemCasc;
-      ItemLoadData();
-      $('#Loading').hide();
-    },
-    error: function (response) {
-      $('#Loading').hide();
-    },
-  });
+  try{
+    $.ajax({
+      url: "/InpaymentConsolidate/",
+      type: "POST",
+      data: {
+        PermitId: $("#PermitID").val().toUpperCase(),
+        csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+      },
+      success: function (response) {
+        ItemData = response.Item;
+        ItemCascData = response.ItemCasc;
+        ItemLoadData();
+        $('#Loading').hide();
+      },
+      error: function (response) {
+        $('#Loading').hide();
+      },
+    });
+  }
+  catch{
+    alert("Somthig error")
+  }
+  
 }
 
 
@@ -4257,7 +4265,7 @@ function itemPreferntialCodeOut() {
     $("#itemCustomsDutyInput2").val("--Select--")
     $("#itemCustomsDutyInput3").val("0.00")
   }
-  dutiableQtyFunction()
+  dutiableQtyFunction() 
 }
 
 
