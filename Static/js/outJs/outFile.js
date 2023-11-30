@@ -177,6 +177,7 @@ function OutCpcHideShow(ID, CLASS, Name) {
 /*--------------------------------Out Change Select Boxes --------------------------------*/
 
 function OutDeclarationChange() {
+  $('#DeclarationTypeSpan').hide()
   var DeclarationVal = $("#DeclarationType").val();
   $("#InwardTransportModeShowHide").show();
   $("#CoTypeShow").show();
@@ -186,6 +187,7 @@ function OutDeclarationChange() {
   } else if (DeclarationVal == "DRT : DIRECT (INCLUDING STORAGE IN FTZ)") {
     $("#InwardTransportModeShowHide").show();
   } else if (DeclarationVal == "--Select--") {
+    $('#DeclarationTypeSpan').show()
   } else {
     $("#InwardTransportModeShowHide").hide();
   }
@@ -234,8 +236,8 @@ function OutInwardTrasnPortModeChange() {
   }
   else {
     $(".CargoRailShow").show();
-    $('#OutCargoObl').html('OBL');
-    $('#OutCargoOblShow').show();
+    $('#OutCargoObl').html('HBL');
+    $('#OutCargoHblShow').show();
   }
 }
 
@@ -303,8 +305,12 @@ function OutCargoPackTypeChange() {
   var PackVal = $('#CargoPackType').val();
   if (PackVal == '9: Containerized') {
     $('#OutContainerShow').show()
+    $('#TotalOuterPackUOM').val("UNT")
+    $('#TotalGrossWeightUOM').val('TNE')
   }
   else {
+    $('#TotalOuterPackUOM').val("PKG")
+    $('#TotalGrossWeightUOM').val('KGM')
     $('#OutContainerShow').hide()
     $('#OutContainerShow span').hide()
     $('#OutContainerShow input').val("")
@@ -1194,7 +1200,7 @@ function InNonImporeterSearchSelectRow(Arg, Code, Cruei, Name, Name1) {
 
   $("#InNonImporterSerchId").hide();
 }
-function CopyExporter(){
+function CopyExporter() {
   $('#InviceExporterCode').val($('#ExporterCode').val())
   InvoiceExporterFocusOut()
 }
@@ -2266,6 +2272,7 @@ function DefrentprintingClick() {
 }
 
 function CnbClick() {
+
   if ($('#OutCnb').prop("checked")) {
     $('#OutCnb').val("True")
   }
@@ -2275,15 +2282,136 @@ function CnbClick() {
 }
 
 function AllDataSave() {
-  let Check = true;
-  let InvoiceCheck = ""
-  if (InvoiceData.length === 0) {
-    Check = false;
-  }
-  if (Check) {
-    OutfinalSave()
+  $('#Header span').hide()
+  $('#Cargo span').hide()
+  $('#Party span').hide()
+  let HeaderCheck = true;
+  let PartyCheck = true;
+  let CargoCheck = true;
+  let FinalCheck = true;
+
+
+  const HeaderId = [
+    ['DeclarationType', 'DeclarationTypeSpan'],
+    ['CargoPackType', 'CargoPackTypeSpan'],
+    ['OutOutwardTransportMode', 'OutOutwardTransportModeSpan'],
+    ['DeclaringFor', 'DeclaringForSpan']
+  ]
+
+  const PartyId = [
+    ['ExporterCruei', 'ExporterCrueiSpan'],
+    ['ExporterName', 'ExporterNameSpan'],
+    ['ExporterCountry', 'ExporterCountrySpan'],
+    ['ConsigneCruei', 'ConsigneCrueispan'],
+    ['ConsigneConName', 'ConsigneConNameSpan'],
+    ['ConsigneAddress', 'ConsigneAddressSpan'],
+    ['ConsigneAddress1', 'ConsigneAddress1Span'],
+    ['ConsigneCity', 'ConsigneCitySpan'],
+    ['ConsignePostal', 'ConsignePostalSpan']
+  ]
+  const CargoID = [
+    ['TotalOuterPack', 'TotalOuterPackSpan'],
+    ['TotalOuterPackUOM', 'TotalOuterPackUOMSpan'],
+    ['TotalGrossWeight', 'TotalGrossWeightSpan'],
+    ['TotalGrossWeightUOM', 'TotalGrossWeightUOMSpan'],
+    ['PermitGrossWeight', 'PermitGrossWeightSpan'],
+    ['ReleaseLocaName', 'ReleaseLocaNameSpan'],
+    ['ReciptLocationCode', 'ReciptLocationCodeSpan'],
+  ]
+
+  for (let i of HeaderId) {
+    if ($(`#${i[0]}`).val() == "--Select--") {
+      $(`#${i[1]}`).show()
+      HeaderCheck = false
+    }
   }
 
+
+  for (let i of PartyId) {
+    if ($(`#${i[0]}`).val().trim() == "") {
+      $(`#${i[1]}`).show()
+      PartyCheck = false
+    }
+  }
+
+  if ($('#OutInwardTransportMode').val() == "1 : Sea") {
+    if ($('#InwardCruei').val().trim() == "") {
+      $('#InwardCrueiSpan').show()
+      PartyCheck = false
+    }
+
+    if ($('#InwardName').val().trim() == "") {
+      $('#InwardNameSpan').show()
+      PartyCheck = false
+    }
+    if ($('#ArrivalDate').val().trim() == "") {
+      console.log(("ITS FIND"));
+      $('#ArrivalDateSpan').show()
+      CargoCheck = false
+    }
+    if ($('#LoadingPortCode').val().trim() == "") {
+      $('#LoadingPortCodeSpan').show()
+      CargoCheck = false
+    }
+    if ($('#VoyageNumber').val().trim() == "") {
+      $('#VoyageNumberSpan').show()
+      CargoCheck = false
+    }
+    if ($('#VesselName').val().trim() == "") {
+      $('#VesselNameSpan').show()
+      CargoCheck = false
+    }
+    if ($('#OceanBillofLadingNo').val().trim() == "") {
+      $('#OceanBillofLadingNoSpan').show()
+      CargoCheck = false
+    }
+
+  }
+
+
+  for (let i of CargoID) {
+    if ($(`#${i[0]}`).val().trim() == "" || $(`#${i[0]}`).val().trim() == "--Select--") {
+      $(`#${i[1]}`).show()
+      CargoCheck = false
+    }
+  }
+
+  let Tag = "";
+  if (!HeaderCheck) {
+    FinalCheck = false
+    Tag += "<h1 class='FinalH1'>PLEASE CHECK THE HEADER PAGE</h1><hr>"
+  }
+  if (!PartyCheck) {
+    FinalCheck = false
+    Tag += "<h1 class='FinalH1'>PLEASE CHECK THE PARTY PAGE</h1><hr>"
+  }
+
+  if (!CargoCheck) {
+    FinalCheck = false
+    Tag += "<h1 class='FinalH1'>PLEASE CHECK THE CARGO PAGE</h1><hr>"
+  }
+
+  if (FinalCheck) {
+    alert("ALL DATA IS CORRECT")
+  }
+  else {
+    // alert("PLEASE FILL THE ALL DATA")
+    ValidationPopUp(Tag)
+  }
+}
+function ValidationPopUp(Tag) {
+  $("#InNonImporterSerchId").show();
+  $("#InNonImporterSerchId").html(`
+  <div class="FinalValidationBG">
+        <div class="FinalValidationBox">
+            <h1 class="FinalHead">PLEASE FILL THE MANDATORY</h1>
+            <hr class = "FinalValidationBGhr">
+            ${Tag}
+            <button type="button" class="ButtonClick" style="margin-left: 40%;" onclick="$('#InNonImporterSerchId').hide()">CLOSE</button>
+        </div>
+    </div>
+    `
+  );
 }
 function OutfinalSave() {
   const url = "/outSaveSubmit/"

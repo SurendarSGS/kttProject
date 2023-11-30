@@ -4815,7 +4815,7 @@ function SavePermit() {
     SavePermitData();
   }
   else {
-    ValidationPopUp(Tag)
+    ValidationPopUp(Tag) 
   }
 }
 

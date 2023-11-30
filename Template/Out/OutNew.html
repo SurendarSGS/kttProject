@@ -48,6 +48,7 @@
                                 <option>{{i.Name}}</option>
                                 {% endfor %}
                             </select>
+                            <span1 id="DeclarationTypeSpan">PLEASE SELECT DECLARATION TYPE</span1>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -65,6 +66,7 @@
                                 <option>{{i.Name}}</option>
                                 {% endfor %}
                             </select>
+                            <span1 id="CargoPackTypeSpan">PLEASE SELECT THE CARGO PACK TYPE</span1>
                         </div>
                     </div>
                     <div class="row mt-3" id="InwardTransportModeShowHide">
@@ -89,6 +91,7 @@
                                 <option>{{i.Name}}</option>
                                 {% endfor %}
                             </select>
+                            <span1 id="OutOutwardTransportModeSpan">PLEASE SELECT OUTWARD TRANSPORT MODE</span1>
                         </div>
                     </div>
                     <div class="row mt-3" id="CoTypeShow">
@@ -111,6 +114,7 @@
                                 <option>{{i.Name}}</option>
                                 {% endfor %}
                             </select>
+                            <span1 id="DeclaringForSpan">PLEASE SELECT THE DECLARING FOR</span1>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -140,37 +144,37 @@
                     <div class="row mt-3">
                         <div class="col-4"><label for="PermitId">PERMIT ID</label></div>
                         <div class="col-8">
-                            <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}">
+                            <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}" disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="Refid">REF ID</label></div>
                         <div class="col-8">
-                            <input type="text" id="Refid" class="inputStyle" value="{{RefId}}">
+                            <input type="text" id="Refid" class="inputStyle" value="{{RefId}}" disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="JobId">JOB ID</label></div>
                         <div class="col-8">
-                            <input type="text" id="JobId" class="inputStyle" value="{{JobId}}">
+                            <input type="text" id="JobId" class="inputStyle" value="{{JobId}}" disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="MSGId">MSG ID</label></div>
                         <div class="col-8">
-                            <input type="text" id="MSGId" class="inputStyle" value="{{MsgId}}">
+                            <input type="text" id="MSGId" class="inputStyle" value="{{MsgId}}" disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="PermitNumber">PERMIT NUMBER</label></div>
                         <div class="col-8">
-                            <input type="text" id="PermitNumber" class="inputStyle" value="{{PermitNumber}}">
+                            <input type="text" id="PermitNumber" class="inputStyle" value="{{PermitNumber}}" disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="prmtStatus">PERMIT Status</label></div>
                         <div class="col-8">
-                            <input type="text" id="prmtStatus" class="inputStyle" value="{{prmtStatus}}">
+                            <input type="text" id="prmtStatus" class="inputStyle" value="{{prmtStatus}}" disabled>
                         </div>
                     </div>
                 </div>
@@ -440,10 +444,16 @@
                         onfocus="ExportFocusIn()" onfocusout="ExportFocusOut()">
                 </div>
                 <div class="col-2">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI" id="ExporterCruei">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
+                        id="ExporterCruei">
+                    <br>
+                    <span1 id="ExporterCrueiSpan">FILL EXPORTER CRUEI</span1>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME" id="ExporterName">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME"
+                        id="ExporterName">
+                    <br>
+                    <span1 id="ExporterNameSpan">FILL EXPORTER NAME</span1>
                 </div>
                 <div class="col-3">
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="ExporterName1">
@@ -466,14 +476,19 @@
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB CODE"
+                <div class="col-2">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB CODE"
                         id="ExporterSubCode">
                 </div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB DIVISION"
+                <div class="col-3">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB DIVISION"
                         id="ExporterSubDivison">
                 </div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="COUNTRY"
+                <div class="col-3">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="COUNTRY"
                         id="ExporterCountry">
+                    <br>
+                    <span1 id="ExporterCountrySpan">FILL THE COUNTRY</span1>
                 </div>
             </div>
             <div class="row mt-3">
@@ -507,14 +522,23 @@
                     <img src="{% static 'IMG/search.png' %}" width="24px">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
-                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
-                        id="InwardCode" onfocus="InwardFocusIn()" onfocusout="InwardFocusOut()"></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
-                        id="InwardCruei"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
-                        id="InwardName"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
-                        id="InwardName1"></div>
+                <div class="col-1">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE" id="InwardCode"
+                        onfocus="InwardFocusIn()" onfocusout="InwardFocusOut()">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
+                        id="InwardCruei">
+                    <br><span1 id="InwardCrueiSpan">FILL THE CRUEI</span1>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME"
+                        id="InwardName">
+                    <br><span1 id="InwardNameSpan">FILL THE NAME</span1>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="InwardName1">
+                </div>
             </div>
             <div class="row mt-3 " style="display: none;" id="OutWardCarrierAgentShow">
                 <div class="col-2 mt-2">OUTWARD CARRIER AGENT</div>
@@ -552,49 +576,72 @@
                     <img src="{% static 'IMG/search.png' %}" width="24px">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
-                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
-                        id="ConsigneCode" onfocus="ConsigneFocusIn()" onfocusout='ConsigneFocusOut()'></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
-                        id="ConsigneCruei"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CON NAME"
-                        id="ConsigneConName">
+                <div class="col-1">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE" id="ConsigneCode"
+                        onfocus="ConsigneFocusIn()" onfocusout='ConsigneFocusOut()'>
                 </div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
-                        id="ConsigneName1"></div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
+                        id="ConsigneCruei">
+                    <br>
+                    <span1 id="ConsigneCrueispan">FILL CRUEI</span1>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CON NAME"
+                        id="ConsigneConName"><br>
+                    <span1 id="ConsigneConNameSpan">FILL CON NAME</span1>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="ConsigneName1">
+                </div>
             </div>
             <div class="row mt-3">
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS"
-                        id="ConsigneAddress">
+                <div class="col-2">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="ADDRESS"
+                        id="ConsigneAddress"><br>
+                    <span1 id="ConsigneAddressSpan">FILL THE ADDRESS</span1>
                 </div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="ADDRESS1"
-                        id="ConsigneAddress1">
+                <div class="col-3">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="ADDRESS1"
+                        id="ConsigneAddress1"><br>
+                    <span1 id="ConsigneAddress1Span">FILL THE ADDRESS1</span1>
                 </div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CITY"
-                        id="ConsigneCity"></div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CITY"
+                        id="ConsigneCity"><br>
+                    <span1 id="ConsigneCitySpan">FILL THE CITY</span1>
+                </div>
             </div>
             <div class="row mt-3">
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB COUNTRY"
+                <div class="col-2">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB COUNTRY"
                         id="ConsigneSubCountry">
                 </div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB DIVISION"
+                <div class="col-3">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="SUB DIVISION"
                         id="ConsigneSubDivison">
                 </div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="COUNTRY"
-                        id="ConsigneCountry">
+                <div class="col-3">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="COUNTRY"
+                        id="ConsigneCountry"><br>
+                    <span1>FILL THE COUNTRY</span1>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="POSTAL"
-                        id="ConsignePostal"></div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="POSTAL"
+                        id="ConsignePostal"><br>
+                    <span1 id="ConsignePostalSpan">FILL THE POSTAL</span1>
+                </div>
                 <div class="col-3"></div>
                 <div class="col-3"></div>
             </div>
@@ -730,34 +777,46 @@
                     <div class="row">
                         <div class="row mt-3">
                             <div class="col-4">TOTAL OUTER PACK</div>
-                            <div class="col-3"><input type="text" class="inputStyle" id="TotalOuterPack"></div>
                             <div class="col-3">
-                                <select class="Dropdown" id="TotalOuterPackUOM">
+                                <input type="text" class="inputStyle HighLight" id="TotalOuterPack"><br>
+                                <span1 id="TotalOuterPackSpan">FILL TOTAL OUTER PACK</span1>
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown HighLight" id="TotalOuterPackUOM">
                                     <option selected>--Select--</option>
                                     {% for i in TotalOuterPack%}
                                     <option>{{i.Name}}</option>
                                     {% endfor %}
                                 </select>
+                                <br>
+                                <span1 id="TotalOuterPackUOMSpan">FILL TOTAL OUTER PACK UOM</span1>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="row mt-3">
                             <div class="col-4">TOTAL GROSS WEIGHT</div>
-                            <div class="col-3"><input type="text" class="inputStyle" id="TotalGrossWeight"></div>
                             <div class="col-3">
-                                <select class="Dropdown" id="DeclarationType" id="TotalGrossWeightUOM">
+                                <input type="text" class="inputStyle HighLight" id="TotalGrossWeight"><br>
+                                <span1 id="TotalGrossWeightSpan">FILL THE TOTAL GROSS WEIGHT</span1>
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown HighLight" id="TotalGrossWeightUOM">
                                     <option selected>--Select--</option>
                                     <option>KGM</option>
                                     <option>TNE</option>
-                                </select>
+                                </select><br>
+                                <span1 id="TotalGrossWeightUOMSpan">FILL THE TOTAL GROSS WEIGHT</span1>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="row mt-3">
                             <div class="col-4">PERMIT GROSS WEIGHT</div>
-                            <div class="col-3"><input type="text" class="inputStyle"></div>
+                            <div class="col-3">
+                                <input type="text" class="inputStyle HighLight" id="PermitGrossWeight">
+                                <span1 id="PermitGrossWeightSpan">FILL THE PERMIT GROSS WEIGHT</span1>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -769,17 +828,31 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-3">RELEASE LOCATION</div>
-                        <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
-                        <div class="col-2"><input type="text" class="inputStyle" id="ReleaseLocaName"
-                                onfocus="ReleaseLocationFocusIn()" onfocusout="ReleaseLocationFocusOut()"></div>
-                        <div class="col-5"><textarea name="" id="ReleaseLocText" class="inputStyle"></textarea></div>
+                        <div class="col-1">
+                            <img src="{% static 'IMG/search.png' %}" width="24px">
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="inputStyle HighLight" id="ReleaseLocaName"
+                                onfocus="ReleaseLocationFocusIn()" onfocusout="ReleaseLocationFocusOut()">
+                            <span1 id="ReleaseLocaNameSpan">FILL THE RELEASE LOCATION</span1>
+                        </div>
+                        <div class="col-5">
+                            <textarea name="" id="ReleaseLocText" class="inputStyle"></textarea>
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-3">RECEIPT LOCATION</div>
-                        <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
-                        <div class="col-2"><input type="text" class="inputStyle" id="ReciptLocationCode"
-                                onfocus="ReciptFocusIn()" onfocusout="ReciptFocusOut()"></div>
-                        <div class="col-5"><textarea id="RecepitLocName" class="inputStyle"></textarea></div>
+                        <div class="col-1">
+                            <img src="{% static 'IMG/search.png' %}" width="24px">
+                        </div>
+                        <div class="col-2">
+                            <input type="text" class="inputStyle HighLight" id="ReciptLocationCode"
+                                onfocus="ReciptFocusIn()" onfocusout="ReciptFocusOut()">
+                            <span1 id="ReciptLocationCodeSpan">FILL THE RECEIPT LOCATION</span1>
+                        </div>
+                        <div class="col-5">
+                            <textarea id="RecepitLocName" class="inputStyle"></textarea>
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-3">STORAGE LOCATION</div>
@@ -812,32 +885,51 @@
                     <div class="container-fluid">
                         <div class="row mt-3">
                             <div class="col-4">ARRIVAL DATE & TIME</div>
-                            <div class="col-4"><input type="text" class="inputStyle" placeholder="Date" id="ArrivalDate"
-                                    onfocusout="InvoiceDateFunction('ArrivalDate')"></div>
-                            <div class="col-2"><input type="text" class="inputStyle" placeholder="Time" id="ArrivalTime"
-                                    onfocusout="InvoiceDateFunction('ArrivalTime')"></div>
+                            <div class="col-4">
+                                <input type="text" class="inputStyle HighLight" placeholder="Date" id="ArrivalDate"
+                                    onfocusout="InvoiceDateFunction('ArrivalDate')">
+                                <br>
+                                <span1 id="ArrivalDateSpan">FILL ARRIVAL DATE</span1>
+                            </div>
+                            <div class="col-2">
+                                <input type="text" class="inputStyle" placeholder="Time" id="ArrivalTime"
+                                    onfocusout="InvoiceDateFunction('ArrivalTime')">
+                            </div>
                         </div>
                     </div>
                     <div class="container-fluid">
                         <div class="row mt-3">
                             <div class="col-3">LOADING PORT</div>
-                            <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"
-                                    onclick="alert('Welcome ')"></div>
-                            <div class="col-2"><input type="text" class="inputStyle" id="LoadingPortCode"
-                                    onfocus="LoadingPortFocusIn()" onfocusout="LoadingPortFocusOut()"></div>
-                            <div class="col-4"><input type="text" class="inputStyle" id="LoadingPortCodeText"></div>
+                            <div class="col-1">
+                                <img src="{% static 'IMG/search.png' %}" width="24px" onclick="alert('Welcome ')">
+                            </div>
+                            <div class="col-2">
+                                <input type="text" class="inputStyle HighLight" id="LoadingPortCode"
+                                    onfocus="LoadingPortFocusIn()" onfocusout="LoadingPortFocusOut()">
+                                    <br>
+                                    <span1 id="LoadingPortCodeSpan">FILL LOADING PORT</span1>
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="inputStyle" id="LoadingPortCodeText">
+                            </div>
                         </div>
                     </div>
                     <div class="container-fluid CargoSeaShow">
                         <div class="row mt-3">
                             <div class="col-4">VOYAGE NUMBER</div>
-                            <div class="col-6"><input type="text" class="inputStyle" id="VoyageNumber"></div>
+                            <div class="col-6">
+                                <input type="text" class="inputStyle HighLight" id="VoyageNumber">
+                                <span1 id="VoyageNumberSpan">FILL VOYAGE NUMBER</span1>
+                            </div>
                         </div>
                     </div>
                     <div class="container-fluid CargoSeaShow">
                         <div class="row mt-3">
                             <div class="col-4">VESSEL NAME</div>
-                            <div class="col-6"><input type="text" class="inputStyle" id="VesselName"></div>
+                            <div class="col-6">
+                                <input type="text" class="inputStyle HighLight" id="VesselName">
+                                <span1 id="VesselNameSpan">FILL THE VESSEL NAME</span1>
+                            </div>
                         </div>
                     </div>
                     <div class="container-fluid CargoRailShow">
@@ -867,7 +959,10 @@
                     <div class="container-fluid" id="OutCargoOblShow">
                         <div class="row mt-3">
                             <div class="col-4" id="OceanBillofLadingNo">OBL</div>
-                            <div class="col-6"><input type="text" class="inputStyle" id="OceanBillofLadingNo"></div>
+                            <div class="col-6">
+                                <input type="text" class="inputStyle HighLight" id="OceanBillofLadingNo"><br>
+                                <span1 id="OceanBillofLadingNoSpan">FILL OBL</span1>
+                            </div>
                         </div>
                     </div>
                     <div class="container-fluid" id="OutCargoHblShow">
@@ -918,7 +1013,7 @@
                                         onfocus="FinalDestinationfocusin()" onfocusout="FinalDestinationfocusout()">
                                         <option selected>--Select--</option>
                                     </select><br>
-                                    <span id="FinalDestinationCountrySpan" style="color: #ff0000;"></span>
+                                    <span1 id="FinalDestinationCountrySpan" style="color: #ff0000;"></span1>
                                 </div>
                             </div>
                         </div>
@@ -1095,9 +1190,9 @@
                                     <td>
                                         <input type='text' class="inputStyle FinDc" name="ContainerNumber"
                                             id="ContainerNumber" onfocusout="containerValidNum(this,this.value)">
-                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
                                             id="container2nd">THE CONTAINER NO. FORMAT SHOULD BE 4 ALPHABETS <br>AND
-                                            FOLLOWED BY 7 DIGIT, FOR EX.: ABCD1234567</span>
+                                            FOLLOWED BY 7 DIGIT, FOR EX.: ABCD1234567</span1>
                                     </td>
                                     <td>
                                         <select class="Dropdown" name="ContainerSize"
@@ -1107,20 +1202,20 @@
                                             <option value="{{i.Name}}">{{i.Name}}</option>
                                             {% endfor %}
                                         </select>
-                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
-                                            id="containerSelect">SIZE / TYPE IS REQUIRED</span>
+                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="containerSelect">SIZE / TYPE IS REQUIRED</span1>
                                     </td>
                                     <td>
                                         <input type='text' class="inputStyle" name="ContainerWeight"
                                             onfocusout="ContainerValidSize(this,this.value)" maxlength="3">
-                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
-                                            id="containerWeight">WEIGHT IS REQUIRED</span>
+                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="containerWeight">WEIGHT IS REQUIRED</span1>
                                     </td>
                                     <td>
                                         <input type='text' class="inputStyle" name="ContainerSeal"
                                             onfocusout="ContainerValidSize(this,this.value)">
-                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
-                                            id="containerSeal">SEAL NO IS REQUIRED</span>
+                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="containerSeal">SEAL NO IS REQUIRED</span1>
                                     </td>
                                     <td><i class="material-icons" style="color:red">delete</i></td>
                                 </tr>
@@ -1170,7 +1265,7 @@
                 <div class="col-3">
                     <input type="text" id="InviceExporterName" class="inputStyle HighLight" placeholder="NAME"
                         style="width : 80%" tabindex="3"><br>
-                    <span id="InviceExporterNameSpan" class="ErrorColor">Please Fill The Name</span>
+                    <span1 id="InviceExporterNameSpan" class="ErrorColor">Please Fill The Name</span1>
                 </div>
                 <div class="col-3" style="display: flex;align-items: center;">
                     <input type="text" id="InviceExporterName1" class="inputStyle" placeholder="NAME1"
@@ -1196,7 +1291,7 @@
                         <div class="col-1"></div>
                         <div class="col-7"><input type="text" class="inputStyle HighLight" style="width: 80%;"
                                 tabindex="8" id="InvoiceNumber">
-                            <br><span id="InvoiceNumberSpan" class="ErrorColor ">FILL NUMBER</span>
+                            <br><span1 id="InvoiceNumberSpan" class="ErrorColor ">FILL NUMBER</span1>
                         </div>
                     </div>
                 </div>
@@ -1206,7 +1301,7 @@
                         <div class="col-8">
                             <input type="text" class="inputStyle HighLight" style="width: 80%;" id="InvoiceDate"
                                 tabindex="5" onfocusout="InvoiceDateFunction('InvoiceDate')"><br>
-                            <span id="InvoiceDateSpan" class="ErrorColor">FILL DATE</span>
+                            <span1 id="InvoiceDateSpan" class="ErrorColor">FILL DATE</span1>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -1268,7 +1363,7 @@
                                     <option>{{i.Currency}}</option>
                                     {% endfor %}
                                 </select>
-                                <span id="InvoiceCurrencySpan" class="ErrorColor">SELECT CURRENCY</span>
+                                <span1 id="InvoiceCurrencySpan" class="ErrorColor">SELECT CURRENCY</span1>
                             </td>
                             <td><input type="text" class="inputStyle" style="width: 80%;" id="InvoiceExRate" disabled
                                     value="0.00"></td>
@@ -1333,8 +1428,7 @@
             <div class="row">
                 <div class="col-7"></div>
                 <div class="col-5">
-                    <button type="button" style="width:24%;" class="ButtonClick" onclick="OutItemSave()">ADD
-                        ITEM</button>
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="OutItemSave()">ADD ITEM</button>
                     <button type="button" style="width:24%;" class="ButtonClick">PREVIOUS</button>
                     <input type="text" style="display: inline;width:24%;" class="inputStyle">
                     <button type="button" style="width:24%;" class="ButtonClick">NEXT</button>
@@ -1351,7 +1445,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mt-3">
                             <div class="col-4 " id="OutHAWBOBLlbl">OUT HAWB/HBL</div>
                             <div class="col-8">
                                 <select id="OutHAWBOBL" class="Dropdown">
@@ -1380,8 +1474,8 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"></div>
-                        <div class="col-8"><span style="background-color: brown;color: aliceblue;width: 100px;"
-                                id="HscodeControl"></span></div>
+                        <div class="col-8"><span1 style="background-color: brown;color: aliceblue;width: 100px;"
+                                id="HscodeControl"></span1></div>
                     </div>
                     <div class="row">
                         <div class="row">
@@ -1389,7 +1483,7 @@
                             <div class="col-8">
                                 <input type="text" class="inputStyle HighLight" id="ItemHsCode"
                                     onfocus="HsCodeFocusIn()" onfocusout="HsCodeFocusOut()">
-                                <span class="ErrColor" id="ItemHsCodeSpan">FILL HS CODE</span>
+                                <span1 class="ErrColor" id="ItemHsCodeSpan">FILL HS CODE</span1>
                             </div>
                         </div>
                     </div>
@@ -1399,7 +1493,7 @@
                             <div class="col-8">
                                 <textarea class="inputStyle HighLight" id="ItmeDescription"
                                     style="height: 70px;"></textarea>
-                                <span class="ErrColor" id="ItmeDescriptionSpan">FILL DESCRIPTION</span>
+                                <span1 class="ErrColor" id="ItmeDescriptionSpan">FILL DESCRIPTION</span1>
                             </div>
                         </div>
                     </div>
@@ -1411,7 +1505,7 @@
                             <div class="col-3">
                                 <input type="text" class="inputStyle HighLight" id="ItemCooInput" onfocus="ItemCooIn()"
                                     onfocusout="ItemCooOut()">
-                                <span class="ErrColor" id="ItemCooInputSpan">FILL COO</span>
+                                <span1 class="ErrColor" id="ItemCooInputSpan">FILL COO</span1>
                             </div>
                             <div class="col-5"><input type="text" class="inputStyle" id="ItemCooInputText" disabled>
                             </div>
@@ -1435,7 +1529,7 @@
                             <div class="col-4 ">BRAND </div>
                             <div class="col-8">
                                 <input type="text" class="inputStyle HighLight" id="Brand">
-                                <span class="ErrColor" id="BrandSpan">FILL COO</span>
+                                <span1 class="ErrColor" id="BrandSpan">FILL COO</span1>
                             </div>
                         </div>
                     </div>
@@ -1532,7 +1626,7 @@
                             <div class="col-4">
                                 <input type="number" class="inputStyle inputNumber HighLight" id="TxtHSQuantity"
                                     value="0.00" onfocusout="TxtHSQuantityOut()">
-                                <span class="ErrColor" id="TxtHSQuantitySpan">FILL HS QUANTITY</span>
+                                <span1 class="ErrColor" id="TxtHSQuantitySpan">FILL HS QUANTITY</span1>
                             </div>
                             <div class="col-3">
                                 <select class="Dropdown" id="HSQTYUOM">
@@ -1657,7 +1751,7 @@
                             <div class="col-7">
                                 <input type="number" class="inputStyle inputNumber HighLight" id="TxtTotalLineAmount"
                                     value="0.00" onfocusout="TxtTotalLineAmountOut()">
-                                <span class="ErrColor" id="TxtTotalLineAmountSpan">FILL TOTAL LINE AMOUNT</span>
+                                <span1 class="ErrColor" id="TxtTotalLineAmountSpan">FILL TOTAL LINE AMOUNT</span1>
                             </div>
                         </div>
                     </div>

@@ -1073,7 +1073,7 @@ def CpcDeleteInNon(request,ID):
     s.cursor.execute(f"DELETE FROM InNonCPCDtl WHERE Id = '{ID}' ")
     s.conn.commit()
     return JsonResponse({"DELETE" : "DELETED"})
-
+ 
 class InNonTransmitData(View,SqlDb):
     def __init__(self):
         SqlDb.__init__(self)

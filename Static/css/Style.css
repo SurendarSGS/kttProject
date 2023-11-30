@@ -640,3 +640,9 @@ input::-webkit-inner-spin-button {
     border-radius: 4px;
     padding: 4px 10px;
 }
+
+span1{
+    color: red;
+    display: none;
+    font-size: 8px;
+}
