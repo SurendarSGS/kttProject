@@ -35,7 +35,7 @@
                         <center>
                             <div class="login100-pic js-tilt"
                                 style="will-change: transform;transform: perspective(300px) rotateX(0deg) rotateY(0deg); ">
-                                <img src='{% static "IMG/KttLogo.png" %}' alt="IMG" />
+                                <img src='{% static "IMG/kttLogo_1.png" %}' alt="IMG"/>
                             </div>
                         </center>
                         <br />
@@ -52,7 +52,7 @@
                         </div>
                         <div class="wrap-input100 validate-input">
                             <input name="Password" type="password" id="Password" class="input100"
-                                placeholder="Password" />
+                                placeholder="Password" onkeydown="handleKeyPress(event)"/>
                             <span id="RequiredFieldValidator2" class="indexvalidation"
                                 style="color: Red; display: none">Please Enter PassWord</span>
                             <span class="symbol-input100">
@@ -84,7 +84,13 @@
     </form>
     {% if Success %}
     <script>
-        window.open("/KttHome/", "KTTAPP", "width = 1900,height=700")
+        let newWindow = window.open("/InpaymentList/", "KTTAPP", "width=1900,height=700");
+
+        if (newWindow) {
+            newWindow.moveTo(0, 0);
+            newWindow.resizeTo(screen.width, screen.height);
+        }
+        //window.open("/InpaymentList/", "KTTAPP", "width = 1900,height=700", "fullscreen=yes")
     </script>
     {% else %}
 
@@ -110,6 +116,11 @@
             }
             if (check == true) {
                 form.submit();
+            }
+        }
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                submitForm();
             }
         }
     </script>

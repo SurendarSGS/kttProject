@@ -1102,7 +1102,8 @@
             <div class="row">
                 <div class="col-7"></div>
                 <div class="col-5">
-                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSave('NewItem')" tabindex="27">ADD ITEM</button>
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSave('NewItem')"
+                        tabindex="27">ADD ITEM</button>
                     <button type="button" style="width:24%;" class="ButtonClick"
                         onclick="PreviousItem()">PREVIOUS</button>
                     <input type="text" style="display: inline;width:24%;" class="inputStyle" id="ItemNextItemID">
@@ -1150,7 +1151,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="row mt-1"> 
+                        <div class="row mt-1">
                             <div class="col-4">HS CODE</div>
                             <div class="col-8">
                                 <input type="text" class="inputStyle HighLight" id="ItemHsCode" onfocus="HsOnFocus()"
@@ -1193,7 +1194,8 @@
                                 <label for="itemDgIndicator">DG INDICATOR</label>
                             </div>
                             <div class="col-4">
-                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')" tabindex="4">
+                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')"
+                                    tabindex="4">
                                 <label for="itemUnBrand">UNBRANDED</label>
                             </div>
                         </div>
@@ -1233,7 +1235,8 @@
                     <div class="row mt-3" id="EngineCapacityShow" style="display: none;">
                         <div class="row">
                             <div class="col-5 ">ENGINE CAPACITY</div>
-                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00" tabindex="8">
+                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00"
+                                    tabindex="8">
                             </div>
                             <div class="col-3">
                                 <select class="Dropdown" id="EngineCapacityUom" tabindex="9">
@@ -1342,7 +1345,8 @@
                             </div>
                             <div class="col-3">
                                 <input type="checkbox" id="itemCascID" value="False"
-                                    onclick="ItemCascShowAll('#itemCascID','.OutItemCascHide')" onblur="ItemCascOut()" tabindex="17">
+                                    onclick="ItemCascShowAll('#itemCascID','.OutItemCascHide')" onblur="ItemCascOut()"
+                                    tabindex="17">
                                 <label class="" for="itemCascID">ITEM CASC</label>
                             </div>
                             <div class="col-4">
@@ -1645,14 +1649,21 @@
                                     <img src="{% static 'IMG/search.png' %}" width="24px"
                                         onclick="ItemCascSearch('itemProductCode1','product1CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode1"
-                                        onfocus="ProductFocusIn1('#itemProductCode1','#ProductDesc1','#product1CodeCopyUom')" tabindex="18">
+                                        onfocus="ProductFocusIn1('#itemProductCode1','#ProductDesc1','#product1CodeCopyUom')"
+                                        tabindex="18">
                                 </div>
-                                <div class="col-2"><button class="btn1" type="button"  tabindex="19"
-                                        onclick="CopyHsQuantity('product1CodeCopyInput','product1CodeCopyUom')">COPY OF HS-QUANTITY</button></div>
-                                <div class="col-1"><input type="number" class="inputStyle" value="0.00"
-                                        id="product1CodeCopyInput" tabindex="20"></div>
                                 <div class="col-2">
-                                    <select class="Dropdown" id="product1CodeCopyUom" onblur="product1CodeCopyUomOnblur()" tabindex="21">
+                                    <button class="btn1" type="button" tabindex="19"
+                                        onclick="CopyHsQuantity('product1CodeCopyInput','product1CodeCopyUom')">COPY OF
+                                        HS-QUANTITY</button>
+                                </div>
+                                <div class="col-1">
+                                    <input type="number" class="inputStyle" value="0.00" id="product1CodeCopyInput"
+                                        tabindex="20">
+                                </div>
+                                <div class="col-2">
+                                    <select class="Dropdown" id="product1CodeCopyUom"
+                                        onblur="product1CodeCopyUomOnblur()" tabindex="21">
                                         <option selected>--Select--</option>
                                         {% for i in totalOuterPack %}
                                         <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1677,9 +1688,12 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="22"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="23"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="24"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1"
+                                                        tabindex="22"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1"
+                                                        tabindex="23"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1"
+                                                        tabindex="24"></td>
                                                 <td><i class="material-icons" style="color:red">delete</i></td>
                                             </tr>
                                         </tbody>
@@ -2143,8 +2157,8 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('ItemTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button"
-                        onclick="TabHead('SummaryTab')" id="cpcNextBtn">NEXT</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('SummaryTab')"
+                        id="cpcNextBtn">NEXT</button></div>
                 <div class="col-3"></div>
             </div>
         </div>
@@ -2228,8 +2242,8 @@
             <div class="container-fluid mt-5">
                 <div class="row">
                     <div class="col-1">TRADER REMARKS</div>
-                    <div class="col-2"><button class="ButtonClick" style="width: 100%;" type="button" id="summarypreviousbtn"
-                            onclick="summaryPreviousFunction()">PREVIOUS PERMITNO</button></div>
+                    <div class="col-2"><button class="ButtonClick" style="width: 100%;" type="button"
+                            id="summarypreviousbtn" onclick="summaryPreviousFunction()">PREVIOUS PERMITNO</button></div>
                     <div class="col-1"><button class="ButtonClick" style="width: 100%;" type="button"
                             onclick="summaryEXRateFunction()">EX.RATE</button></div>
                     <div class="col-1">FORMAT REMARKS</div>
@@ -4015,4 +4029,3 @@
     });
 </script>
 {% endblock%}
-
