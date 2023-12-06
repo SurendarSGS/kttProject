@@ -1,5 +1,5 @@
 {% extends 'Inpayment/InpaymentList.html' %}
-{% load static %} 
+{% load static %}
 {% block content %}
 <!-- <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
@@ -7,11 +7,11 @@
 <div class="FinalClassPopup" id="Loading">
     <div class="LoadImg"></div>
 </div>
-<section class="InnonPayemnt-list-Buttons"> 
+<!-- <section class="InnonPayemnt-list-Buttons"> 
     {% csrf_token %}
     <div class="First-row">
         <Button type="button" id="NewBtn" onclick="NewButton()">NEW</Button>&nbsp;&nbsp;
-        <Button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="InNonSubmit()">TRANSMIT</Button>&nbsp;&nbsp; <!--XmlInNon()-->
+        <Button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="InNonSubmit()">TRANSMIT</Button>&nbsp;&nbsp; 
         <Button type="button" id="PrintGstBtn" onclick = "PrintGstInNon()">PRINT GST</Button>&nbsp;&nbsp;
         <Button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</Button>&nbsp;&nbsp;
         <Button type="button" id="AmendBtn" onclick = "InNonAmend()">AMEND</Button>&nbsp;&nbsp;
@@ -27,7 +27,15 @@
         <Button type="button" id="UnMergeBtn">UN MERGE</Button>&nbsp;&nbsp;
         <Button type="button" id="PrintCcpBtn" onclick="PrintCcpInNon()">PRINT CCP</Button>&nbsp;&nbsp;
     </div>
-</section>
+</section> -->
+<div class="InpaymentBtns">
+    <Button type="button" id="NewBtn" onclick="NewButton()">NEW</Button>
+    <Button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="InNonSubmit()">TRANSMIT</Button>
+    <Button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</Button>
+    <Button type="button" id="DownloadDataBtn" onclick="DownloadDataInNon()">DOWNLOAD DATA</Button>
+    <Button type="button" id="MergeBtn">MERGE</Button>
+    <Button type="button" id="UnMergeBtn">UN MERGE</Button>
+</div>
 
 <section class="InonPayment-list-ShowColumns">
     <div class="row mt-3">
@@ -54,7 +62,7 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
 
 <section class="InonPayment-list-ScndButton">
     <label for="InnonPaymentNoofRows">NO OF ROWS</label>
@@ -69,7 +77,8 @@
         <option value="{{i}}">{{i}}</option>
         {% endfor %}
     </select>
-    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="TransmitDataClick()">TRANSMIT DATA</button>
+    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="TransmitDataClick()">TRANSMIT
+        DATA</button>
     <label style="margin-left: 20px;">SEARCH</label>
     <input type="text" class="inputStyle" style="width: 180px;margin-left: 20px;" id="InonPaymentTableSearch">
     <input type="checkbox" style="margin-left: 20px;" id="InonInpayCheckBox">
@@ -77,7 +86,8 @@
     <button type="button" class="ButtonClick" style="margin-left: 20px;">TRANSMIT OUTWARD</button>
     <div>
         <label for="InonPaymentFilter">FILTER PERMITS</label>
-        <select id="InonPaymentFilter" class="Dropdown" style="width: 150px;margin-left: 20px;" onchange="FilterPermits()">
+        <select id="InonPaymentFilter" class="Dropdown" style="width: 150px;margin-left: 20px;"
+            onchange="FilterPermits()">
             <option value="">all</option>
             <option value="NEW">new</option>
             <option value="DRF">draft</option>
@@ -97,19 +107,20 @@
     <table id="InonPaymentTable">
         <thead>
             <tr>
-                <th><input type="checkbox" onclick="ListAllCheckSubmit()" id="ListAllCheckSubmitId"></th>
-                <th>DELETE</th>
-                <th>EDIT</th>
-                <th>VIEW</th>
+                <th style="padding: 10px;"><input type="checkbox" onclick="ListAllCheckSubmit()"
+                        id="ListAllCheckSubmitId"></th>
+                <th style="padding: 2px;">DELETE</th>
+                <th style="padding: 2px;">EDIT</th>
+                <th style="padding: 2px;">VIEW</th>
                 <th>JOB ID</th>
                 <th>MSG ID</th>
-                <th>DEC DATE</th>
-                <th>DEC TYPE</th>
+                <th style="padding: 0px 16px;">DECDATE</th>
+                <th style="padding: 0px;">DECTYPE</th>
                 <th>CREATE</th>
                 <th>DEC ID</th>
-                <th>ETA</th>
+                <th style="padding: 0px 34px !important;">ETA</th>
                 <th>PERMIT NO</th>
-                <th>IMPORTER</th>
+                <th style="padding:0px 70px;">IMPORTER</th>
                 <th>HAWB</th>
                 <th>MAWB/OBL</th>
                 <th>POL</th>
@@ -124,10 +135,10 @@
         </thead>
         <tfoot>
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
+                <th style="padding: 2px;"></th>
+                <th style="padding: 2px;"></th>
+                <th style="padding: 2px;"></th>
+                <th style="padding: 2px;"></th>
                 <th><input type="text" class="inputStyle"></th>
                 <th><input type="text" class="inputStyle"></th>
                 <th><input type="text" class="inputStyle"></th>

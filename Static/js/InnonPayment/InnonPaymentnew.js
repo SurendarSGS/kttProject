@@ -1,6 +1,6 @@
 const NowDate = new Date();
 const TOUCHTIME = NowDate.toISOString().slice(0, 19).replace("T", " ");
-window.onload = function() {
+window.onload = function () {
   document.getElementById('declarationType').focus();
 };
 
@@ -2350,7 +2350,7 @@ function InvoiceLoadInNon() {
   }
 }
 
-function CopyImporterInvoice(){
+function CopyImporterInvoice() {
   $('#InvoiceImporterCodeInNon').val($('#InNonImporterCode').val())
   InNonInvoiceImporterOut($('#InNonImporterCode').val())
 }
@@ -2507,7 +2507,8 @@ function ItemInNonDelHblHawb() {
     }
   })
 }
-function ItemHscodeFocusOut(HsVal) {
+function ItemHscodeFocusOut() {
+  let HsVal = $('#ItemHsCodeInNon').val().trim()
   $("#ControlledItemInNon").hide();
   if (HsVal != "") {
     if (HsVal.startsWith("87")) {
@@ -2546,6 +2547,10 @@ function ItemHscodeFocusOut(HsVal) {
         let crate = Hs.Customsdutyrate;
         let cuom = Hs.Customsdutyuom;
         if (Hs.InnonPayment == "1") {
+          $('#packing_details').prop('checked', true)
+          $('#itemCascID').prop('checked', true)
+          ItemCascShowAll('#packing_details', '.PackingDetails')
+          ItemCascShowAll('#itemCascID', '.OutItemCascHide')
           if (Hs.HSCode == "85165000") {
             $("#ControlledItemInNon").hide();
           } else {
@@ -2558,6 +2563,12 @@ function ItemHscodeFocusOut(HsVal) {
               $("#ControlledItemInNon").html("CONTROLLED ITEM");
             }
           }
+        }
+        else {
+          $('#packing_details').prop('checked', false)
+          $('#itemCascID').prop('checked', false)
+          ItemCascShowAll('#packing_details', '.PackingDetails')
+          ItemCascShowAll('#itemCascID', '.OutItemCascHide')
         }
         if (exuom == "0") {
           exuom = "--Select--";
@@ -3429,7 +3440,6 @@ function ItemEditInNon(ItemNumber) {
       $("#PermitIDInNon").val(Itm.PermitId);
       $("#MsgType").val(Itm.MessageType);
       $("#ItemHsCodeInNon").val(Itm.HSCode);
-      $("#ItemDescriptionInNon").val(Itm.Description);
       $("#itemDgIndicator").val(Itm.DGIndicator);
       if (Itm.Brand == "true" || Itm.Brand == "True") {
         $("#itemDgIndicator").prop("checked", true);
@@ -3526,8 +3536,8 @@ function ItemEditInNon(ItemNumber) {
         $("#lotIdCheck").prop("checked", true);
         ItemCascShowAll("#lotIdCheck", ".OutLotId");
       }
-
-      ItemHscodeFocusOut(Itm.HSCode);
+      ItemCascEdit(Itm.ItemNo);
+      ItemHscodeFocusOut();
       ItemCooOut(Itm.Contry);
       itemDuitableQtyOnChange();
       ItemTotalDutiableOnchange();
@@ -3536,7 +3546,7 @@ function ItemEditInNon(ItemNumber) {
       OptionalChrgeUOMOut(Itm.OptionalChrgeUOM);
       ItemInvoiceNumberChange(Itm.InvoiceNo);
       TotalLineAmountCalculation();
-      ItemCascEdit(Itm.ItemNo);
+      $("#ItemDescriptionInNon").val(Itm.Description);
     }
   }
 }
@@ -3835,75 +3845,85 @@ function ItemEditAllInNon() {
   var ItemAllDataInNon = [];
   for (var item of ItemData) {
     ItemEditInNon(item.ItemNo);
-    ItemAllDataInNon.push({
-      ItemNo: $("#ITEMNUMBER").val().trim(),
-      PermitId: $("#PermitIDInNon").val().trim(),
-      MessageType: $("#MsgType").val().trim(),
-      HSCode: $("#ItemHsCodeInNon").val().trim(),
-      Description: $("#ItemDescriptionInNon").val().trim(),
-      DGIndicator: $("#itemDgIndicator").val().trim(),
-      Contry: $("#ItemCooInput").val().trim(),
-      Brand: $("#itemBrandInput").val().trim(),
-      Model: $("#itemModel").val().trim(),
-      Vehicletype: $("#VehicalTypeUom").val(),
-      Enginecapacity: $("#EngineCapacity").val().trim(),
-      Engineuom: $("#EngineCapacityUom").val(),
-      Orginregdate: $("#OriginalRegistrationDate").val(),
-      InHAWBOBL: $("#itemHawb").val(),
-      OutHAWBOBL: $("#ItemOutHawbDrop").val(),
-      DutiableQty: $("#itemDuitableQty").val(),
-      DutiableUOM: $("#ItemDutiableUom").val(),
-      TotalDutiableQty: $("#ItemTotalDutiableQtyInput").val().trim(),
-      TotalDutiableUOM: $("#ItemTotalDutiableQtyUom").val(),
-      InvoiceQuantity: $("#itemInvoiceQuantity").val().trim(),
-      HSQty: $("#ItemHsQtyInput").val().trim(),
-      HSUOM: $("#ItemHsQtyUom").val(),
-      AlcoholPer: $("#itemAlchoholPer").val(),
-      InvoiceNo: $("#ItemInvoiceNumberInNon").val(),
-      ChkUnitPrice: $("#itemCheckUnitPrice").val().trim(),
-      UnitPrice: $("#UnitPrice").val().trim(),
-      UnitPriceCurrency: $("#ItemInvoiceCurrencyDrop").val().trim(),
-      ExchangeRate: $("#ItemInvoiceCurrencyInput").val().trim(),
-      SumExchangeRate: $("#SumExchangeRate").val().trim(),
-      TotalLineAmount: $("#iteminvoiceTotalLineAmount").val().trim(),
-      InvoiceCharges: $("#iteminvoiceTotalInvoiceCharge").val().trim(),
-      CIFFOB: $("#iteminvoiceCIFFOB").val().trim(),
-      OPQty: $("#itemOuterPackQtyInput").val().trim(),
-      OPUOM: $("#itemOuterPackQtySelect").val().trim(),
-      IPQty: $("#itemInPackQuantityInput").val().trim(),
-      IPUOM: $("#itemInPackQuantitySelect").val().trim(),
-      InPqty: $("#itemInnerPackQtyInput").val().trim(),
-      InPUOM: $("#itemInnerPackQtySelect").val().trim(),
-      ImPQty: $("#itemInmostPackQtyInput").val().trim(),
-      ImPUOM: $("#itemInmostPackQtySelect").val().trim(),
-      PreferentialCode: $("#itemPreferntialCode").val().trim(),
-      GSTRate: $("#ItemGSTRate").val().trim(),
-      GSTUOM: $("#ItemGSTUOM").val().trim(),
-      GSTAmount: $("#TxtItemSumGST").val().trim(),
-      ExciseDutyRate: $("#TxtExciseDutyRate").val().trim(),
-      ExciseDutyUOM: $("#TxtExciseDutyUOM").val().trim(),
-      ExciseDutyAmount: $("#TxtSumExciseDuty").val().trim(),
-      CustomsDutyRate: $("#TxtCustomsDutyRate").val().trim(),
-      CustomsDutyUOM: $("#TxtCustomsDutyUOM").val().trim(),
-      CustomsDutyAmount: $("#TxtSumCustomsDuty").val().trim(),
-      OtherTaxRate: $("#itemOtherTaxRate").val().trim(),
-      OtherTaxUOM: $("#itemOtherTaxUom").val().trim(),
-      OtherTaxAmount: $("#itemOtherTaxAmount").val().trim(),
-      CurrentLot: $("#CurrentLot").val().trim(),
-      PreviousLot: $("#PreviousLot").val().trim(),
-      LSPValue: $("#itemLastSellingPrice").val().trim(),
-      Making: $("#Making").val(),
-      ShippingMarks1: $("#ShippingMarks1").val().trim(),
-      ShippingMarks2: $("#ShippingMarks2").val().trim(),
-      ShippingMarks3: $("#ShippingMarks3").val().trim(),
-      ShippingMarks4: $("#ShippingMarks4").val().trim(),
-      TouchUser: $("#INONUSERNAME").val().trim(),
-      TouchTime: TOUCHTIME,
-      OptionalChrgeUOM: $("#OptionalChrgeUOM").val().trim(),
-      Optioncahrge: $("#Optioncahrge").val().trim(),
-      OptionalSumtotal: $("#OptionalSumtotal").val().trim(),
-      OptionalSumExchage: $("#OptionalSumExchage").val().trim(),
-    });
+    var Echeck = true;
+    if ($('#itemCascID').prop('checked')) {
+      alert("Its Checking")
+      if ($('#itemProductCode1').val() == "") {
+        Echeck = false;
+        alert("Its Checking")
+      }
+    }
+    if (Echeck) {
+      ItemAllDataInNon.push({
+        ItemNo: $("#ITEMNUMBER").val().trim(),
+        PermitId: $("#PermitIDInNon").val().trim(),
+        MessageType: $("#MsgType").val().trim(),
+        HSCode: $("#ItemHsCodeInNon").val().trim(),
+        Description: $("#ItemDescriptionInNon").val().trim(),
+        DGIndicator: $("#itemDgIndicator").val().trim(),
+        Contry: $("#ItemCooInput").val().trim(),
+        Brand: $("#itemBrandInput").val().trim(),
+        Model: $("#itemModel").val().trim(),
+        Vehicletype: $("#VehicalTypeUom").val(),
+        Enginecapacity: $("#EngineCapacity").val().trim(),
+        Engineuom: $("#EngineCapacityUom").val(),
+        Orginregdate: $("#OriginalRegistrationDate").val(),
+        InHAWBOBL: $("#itemHawb").val(),
+        OutHAWBOBL: $("#ItemOutHawbDrop").val(),
+        DutiableQty: $("#itemDuitableQty").val(),
+        DutiableUOM: $("#ItemDutiableUom").val(),
+        TotalDutiableQty: $("#ItemTotalDutiableQtyInput").val().trim(),
+        TotalDutiableUOM: $("#ItemTotalDutiableQtyUom").val(),
+        InvoiceQuantity: $("#itemInvoiceQuantity").val().trim(),
+        HSQty: $("#ItemHsQtyInput").val().trim(),
+        HSUOM: $("#ItemHsQtyUom").val(),
+        AlcoholPer: $("#itemAlchoholPer").val(),
+        InvoiceNo: $("#ItemInvoiceNumberInNon").val(),
+        ChkUnitPrice: $("#itemCheckUnitPrice").val().trim(),
+        UnitPrice: $("#UnitPrice").val().trim(),
+        UnitPriceCurrency: $("#ItemInvoiceCurrencyDrop").val().trim(),
+        ExchangeRate: $("#ItemInvoiceCurrencyInput").val().trim(),
+        SumExchangeRate: $("#SumExchangeRate").val().trim(),
+        TotalLineAmount: $("#iteminvoiceTotalLineAmount").val().trim(),
+        InvoiceCharges: $("#iteminvoiceTotalInvoiceCharge").val().trim(),
+        CIFFOB: $("#iteminvoiceCIFFOB").val().trim(),
+        OPQty: $("#itemOuterPackQtyInput").val().trim(),
+        OPUOM: $("#itemOuterPackQtySelect").val().trim(),
+        IPQty: $("#itemInPackQuantityInput").val().trim(),
+        IPUOM: $("#itemInPackQuantitySelect").val().trim(),
+        InPqty: $("#itemInnerPackQtyInput").val().trim(),
+        InPUOM: $("#itemInnerPackQtySelect").val().trim(),
+        ImPQty: $("#itemInmostPackQtyInput").val().trim(),
+        ImPUOM: $("#itemInmostPackQtySelect").val().trim(),
+        PreferentialCode: $("#itemPreferntialCode").val().trim(),
+        GSTRate: $("#ItemGSTRate").val().trim(),
+        GSTUOM: $("#ItemGSTUOM").val().trim(),
+        GSTAmount: $("#TxtItemSumGST").val().trim(),
+        ExciseDutyRate: $("#TxtExciseDutyRate").val().trim(),
+        ExciseDutyUOM: $("#TxtExciseDutyUOM").val().trim(),
+        ExciseDutyAmount: $("#TxtSumExciseDuty").val().trim(),
+        CustomsDutyRate: $("#TxtCustomsDutyRate").val().trim(),
+        CustomsDutyUOM: $("#TxtCustomsDutyUOM").val().trim(),
+        CustomsDutyAmount: $("#TxtSumCustomsDuty").val().trim(),
+        OtherTaxRate: $("#itemOtherTaxRate").val().trim(),
+        OtherTaxUOM: $("#itemOtherTaxUom").val().trim(),
+        OtherTaxAmount: $("#itemOtherTaxAmount").val().trim(),
+        CurrentLot: $("#CurrentLot").val().trim(),
+        PreviousLot: $("#PreviousLot").val().trim(),
+        LSPValue: $("#itemLastSellingPrice").val().trim(),
+        Making: $("#Making").val(),
+        ShippingMarks1: $("#ShippingMarks1").val().trim(),
+        ShippingMarks2: $("#ShippingMarks2").val().trim(),
+        ShippingMarks3: $("#ShippingMarks3").val().trim(),
+        ShippingMarks4: $("#ShippingMarks4").val().trim(),
+        TouchUser: $("#INONUSERNAME").val().trim(),
+        TouchTime: TOUCHTIME,
+        OptionalChrgeUOM: $("#OptionalChrgeUOM").val().trim(),
+        Optioncahrge: $("#Optioncahrge").val().trim(),
+        OptionalSumtotal: $("#OptionalSumtotal").val().trim(),
+        OptionalSumExchage: $("#OptionalSumExchage").val().trim(),
+      });
+    }
     ItemResetInNon();
   }
   $("#Loading").show();
@@ -4815,7 +4835,7 @@ function SavePermit() {
     SavePermitData();
   }
   else {
-    ValidationPopUp(Tag) 
+    ValidationPopUp(Tag)
   }
 }
 

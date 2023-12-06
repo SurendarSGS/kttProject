@@ -23,7 +23,10 @@ class SqlDb:
     def __init__(self, database_name='default'):
         self.conn = connections[database_name]
         self.cursor = self.conn.cursor() 
-       
+
+class LoginMain(View):
+    def get(self,request):
+        return render(request , 'Login.html')   
 def Login(request):
     context = {}
     Username = request.POST.get('Username')

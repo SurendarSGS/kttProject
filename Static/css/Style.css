@@ -304,7 +304,12 @@ i {
 #inpaymentTable {
     font-size: 10px;
 }
-
+#InonPaymentTable{
+    font-size: 10px;
+}
+#InonPaymentTable tbody tr:hover{
+    background-color: rgb(197, 246, 223);
+}
 #ShowColumns {
     background-color: rgb(25, 135, 84);
     color: white;

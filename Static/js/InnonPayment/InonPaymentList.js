@@ -105,7 +105,6 @@ $(document).ready(function () {
         },
         {
             'targets': 1,
-            "width": "10px",
             "className": "text-center",
             'render': function (data, type, full, meta) {
                 return `<i class="fa-solid fa-trash-can" style="color: #ff0000;" onclick = "InpaymentDelete('${data}')"></i>`
@@ -113,7 +112,6 @@ $(document).ready(function () {
         },
         {
             'targets': 2,
-            "width": "10px",
             "className": "text-center",
             'render': function (data, type, full, meta) {
                 if (full.STATUS == "NEW" || full.STATUS == "DRF") {
@@ -125,7 +123,6 @@ $(document).ready(function () {
         },
         {
             'targets': 3,
-            "width": "10px",
             "className": "text-center",
             'render': function (data, type, full, meta) {
 
@@ -133,34 +130,11 @@ $(document).ready(function () {
             }
         },
         {
-            "width": "50px",
             "targets": [4, 9, 16, 17, 18, 19],
             "className": "text-center",
             "visible": false,
         },
-        {
-            "width": "50px",
-            "targets": 5,
-            "className": "text-center"
-        },
-        {
-            "width": "100px",
-            "targets": 6,
-            "className": "text-center"
-        },
-        {
-            "width": "50px",
-            "targets": 10,
-            "className": "text-center"
-        },
-        {
-            "width": "300px",
-            "targets": 12,
-        },
-        {
-            "width": "100px",
-            "targets": 16,
-        },
+
         ],
     });
     $('#InnonPaymentNoofRows').on('change', function () {
