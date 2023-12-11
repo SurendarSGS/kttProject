@@ -3846,7 +3846,7 @@ function ItemEditAllInNon() {
   for (var item of ItemData) {
     ItemEditInNon(item.ItemNo);
     var Echeck = true;
-    if ($('#itemCascID').prop('checked')) {
+    if ($('#itemCascID').prop('checked')) { 
       alert("Its Checking")
       if ($('#itemProductCode1').val() == "") {
         Echeck = false;
@@ -5325,7 +5325,7 @@ function CancelAttachLoad(Val) {
     $("#CancelAttachTable tbody").html(Ans);
   } else {
     $("#CancelDocumentTableshow").hide();
-  }
+  }  
 }
 
 function CancelDeleteAttach(Arg) {

@@ -6,60 +6,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KTT LOGIN</title>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&family=Poppins&display=swap" rel="stylesheet">
     <style>
         * {
-            margin: 0px;
+            margin: 0;
             box-sizing: border-box;
-            padding: 0px;
+            padding: 0;
         }
 
         body {
-            background-image: linear-gradient(to right, #c38404, #CED7CC);
-            width: 100vw;
-            height: 150vw;
-            overflow: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            /* background-image: linear-gradient(to right, #c38404, #CED7CC); */
+            background-image: url('{% static "IMG/bg.jpg" %}');
+            background-position: center;
+            background-size: cover;
             font-family: 'Poppins', sans-serif;
+            margin: 0;
         }
 
         .container {
-            background-color: #fff;
-            width: 80vw;
-            height: 130vw;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 1);
+            width: 90%;
+            max-width: 1200px;
+            /* Adjust max-width as needed */
             border-radius: 10px;
             box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+            margin: auto;
+            margin-top: 5vh;
+            height: 130vh;
+        }
+
+        .container__h1 {
+            text-align: center;
+            margin: 20px 0;
+            font-family: 'Oswald', sans-serif;
+            letter-spacing: 10px;
         }
 
         .container__h1 h1 {
-            /* font-size: 120px; */
-            font-size: 4.5rem;
+            font-size: 3.5rem;
+            /* Adjust font size as needed */
             color: #c38404;
-            /* text-align: center; */
         }
 
         .container__h1 h1 span {
-            font-size: 50px;
+            font-size: 1rem;
+            /* Adjust font size as needed */
             color: #01445e;
         }
 
+        .container__content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 20px;
+        }
+
+        .container__img {
+            margin-bottom: 20px;
+        }
+
+        .container__img img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
         .container__form {
-            /* border: 2px solid green; */
-            padding: 60px;
-            /* box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; */
+            width: 100%;
             box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
-            border-radius: 20px;
-            margin-top: -50px;
+            border-radius: 10px;
         }
 
         .container__form_form {
             display: flex;
             flex-direction: column;
             gap: 20px;
+            padding: 20px;
         }
 
         .container__form_form button:hover {
@@ -71,6 +101,8 @@
 
         .container__form_form h1 {
             color: #01445e;
+            font-size: 1.5rem;
+            /* Adjust font size as needed */
         }
 
         .container__form_form input[type="text"],
@@ -78,72 +110,57 @@
             border: none;
             outline: none;
             padding: 10px;
-            width: 80%;
-            border-radius: 20px;
+            width: 100%;
+            border-radius: 10px;
             border: 1px solid #123;
         }
 
         .container__form_form button {
-            width: 84%;
             background-color: #01445e;
             color: #fff;
-            transition: 1s;
+            transition: 0.5s;
+            cursor: pointer;
+        }
+        p{
+            color: red;
+            display: none;
+        }
+        label{
+            cursor: pointer;
         }
 
-        @media screen and (min-width : 768px) {
-            body {
-                height: 80vw;
-            }
-
+        @media screen and (min-width: 768px) {
             .container {
-                height: 70vw;
-                width: 80vw;
+                width: 80%;
+                height: 90vh;
             }
 
-            .container__img img {
-                width: 60%;
-            }
-
-            .container__form_form input[type="text"] {
-                width: 90%;
-            }
-
-            .container__form_form button {
-                width: 94%;
-            }
-        }
-
-        @media screen and (min-width : 1024px) {
-            body {
-                height: 50vw;
-            }
-
-            .container {
-                height: 40vw;
-                width: 80vw;
+            .container__content {
+                flex-direction: row;
+                justify-content: space-between;
             }
 
             .container__img {
-                padding: 0px;
-                width: 400px;
-                /* margin-top: -250px; */
+                margin-bottom: 0;
+                margin-right: 20px;
+                flex: 1;
             }
 
-            .container__img img {
-                width: 400px;
+            .container__form {
+                width: 50%;
             }
 
             .container__h1 h1 {
-                font-size: 120px;
+                font-size: 6.5rem;
+                /* Adjust font size as needed */
                 color: #c38404;
-                /* text-align: center; */
             }
 
             .container__h1 h1 span {
-                font-size: 50px;
+                font-size: 3rem;
+                /* Adjust font size as needed */
                 color: #01445e;
             }
-
         }
     </style>
 </head>
@@ -153,35 +170,47 @@
         <div class="container__h1">
             <h1>DIGITAL DATA <span>INTERCHANGE</span></h1>
         </div>
-        <div style="display: flex;justify-content: space-around;margin-top: 50px;align-items: start;">
+        <div class="container__content">
             <div class="container__img">
-                <!-- <h1>DIGITAL DATA INTERCHANGE</h1> -->
                 <img src="{% static 'IMG/kttLogo_1.png' %}" alt="">
             </div>
             <div class="container__form">
-                <form action="" class="container__form_form">
+                <form class="container__form_form">
                     <div>
-                        <h1>
-                            LOGIN PAGE
-                        </h1>
+                        <h1>LOGIN PAGE</h1>
                     </div>
                     <div>
-                        <input type="text" placeholder="UserName">
+                        <input type="text" placeholder="UserName" id="userName">
+                        <p>Please Enter UserName</p>
                     </div>
                     <div>
-                        <input type="text" placeholder="Password">
+                        <input type="text" placeholder="Password" id="passWord">
+                        <p>Please Enter Password</p>
                     </div>
                     <div>
-                        <input type="checkbox">
-                        <label for="">Click here to Logout from another session with same ID</label>
+                        <input type="checkbox" id="logoutCheckbox">
+                        <label for="logoutCheckbox">Click here to Logout from another session with the same ID</label>
                     </div>
                     <div>
-                        <button type="button">LOGIN</button>
+                        <button type="button" onclick="Login()">LOGIN</button>
                     </div>
                 </form>
             </div>
         </div>
+        <br>
+        <br>
     </div>
+
+    <script>
+        function Login() {
+            const userName = document.getElementById('userName').value;
+            const passWord = document.getElementById('passWord').value;
+
+            
+
+
+        }
+    </script>
 </body>
 
 </html>

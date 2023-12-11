@@ -487,7 +487,7 @@ $(function () {
       event.preventDefault();
       var currentDate = $.datepicker.formatDate("dd/mm/yy", new Date());
       $("#SummaryMRD").val(currentDate);
-    }
+    } 
   });
 });
 
@@ -3278,11 +3278,6 @@ function AmendPermitExtension() {
   }
 }
 
-function DeleteContainer(arg) {
-  $.ajax({
-    url: '/ContainerDel/' + arg + '/'
-  })
-}
 
 function Recalculate() {
   if ($('#GstAutoCompute').prop('checked')) {

@@ -22,7 +22,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',views.Login),
+    path('',views.Login), 
     path('login/',views.LoginMain.as_view()),
     path('KttHome/',views.Home),
     path('',include('KttApp.urls')),

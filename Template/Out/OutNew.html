@@ -15,8 +15,8 @@
     </div>
 </div>
 
-<div class="container-fluid InpaymentNewStyles mt-4 " style="width: 90%;">
-    <section>
+<div class="Container InpaymentNewStyles mt-4 " style="width: 90%;">
+    <section style="background-color: #fff;">
         <button class="NewBtns" id="HeaderTab" onclick="TabHead(this.id)">HEADER</button>
         <button class="NewBtns" id="PartyTab" onclick="TabHead(this.id)">PARTY</button>
         <button class="NewBtns" id="CargoTab" onclick="TabHead(this.id)">CARGO</button>
@@ -27,7 +27,7 @@
         <button class="NewBtns d-none" id="AmendTab" onclick="TabHead(this.id)">AMEND</button>
         <button class="NewBtns d-none" id="CancelTab" onclick="TabHead(this.id)">CANCEL</button>
     </section>
-    <form method="POST">
+    <form method="POST" style="padding: 10px;">
         {% csrf_token %}
         <!---------------------------------------------------Header--------------------------------------------------->
         <div id="Header" style="display:none">
@@ -108,7 +108,8 @@
                     <div class="row mt-3">
                         <div class="col-4">DECLARING FOR</div>
                         <div class="col-8">
-                            <select class="Dropdown HighLight" id="DeclaringFor">
+                            <select class="Dropdown HighLight" id="DeclaringFor"
+                                onchangete="$('#DeclaringForSpan').hide()">
                                 <option selected>--Select--</option>
                                 {% for i in DeclaringFor %}
                                 <option>{{i.Name}}</option>
@@ -172,7 +173,7 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-4"><label for="prmtStatus">PERMIT Status</label></div>
+                        <div class="col-4"><label for="prmtStatus">PERMIT STATUS</label></div>
                         <div class="col-8">
                             <input type="text" id="prmtStatus" class="inputStyle" value="{{prmtStatus}}" disabled>
                         </div>
@@ -183,31 +184,31 @@
                     <div class="row mt-4">
                         <div class="col-4">MAILBOX ID</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" disabled id="MailBoxId">
+                            <input type="text" class="inputStyle HighLight" disabled id="MailBoxId" value="{{MailBoxId}}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">DECLARANT NAME</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" disabled id="DeclarantName">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantName" value="{{DeclarantName}}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">DECLARANT CODE</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" disabled id="DeclarantCode">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantCode" value="{{DeclarantCode}}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">DECLARANT TELEPHONE</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" disabled id="DeclarantTelePhone">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantTelePhone" value="{{DeclarantTel}}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">CR UEI NO</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" disabled id="CrueiNo">
+                            <input type="text" class="inputStyle HighLight" disabled id="CrueiNo" value="{{CRUEI}}">
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -427,11 +428,12 @@
             <div class="row mt-3">
                 <div class="col-2">DECLARANT COMPANY</div>
                 <div class="col-1"></div>
-                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" id="DeclarantCompanyCode">
+                <div class="col-1">
+                    <input type="text" class="inputStyle" style="width: 80%;" id="DeclarantCompanyCode" value="{{Code}}" disabled>
                 </div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;"></div>
+                <div class="col-2"><input type="text" class="inputStyle HighLight" style="width: 80%;" value="{{CRUEI}}"  disabled></div>
+                <div class="col-3"><input type="text" class="inputStyle HighLight" style="width: 80%;" value="{{name}}"  disabled></div>
+                <div class="col-3"><input type="text" class="inputStyle " style="width: 80%;" value="{{name1}}"  disabled></div>
             </div>
             <div class="row mt-3">
                 <div class="col-2">EXPORTER</div>
@@ -529,12 +531,14 @@
                 <div class="col-2">
                     <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
                         id="InwardCruei">
-                    <br><span1 id="InwardCrueiSpan">FILL THE CRUEI</span1>
+                    <br>
+                    <span1 id="InwardCrueiSpan">FILL THE CRUEI</span1>
                 </div>
                 <div class="col-3">
                     <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME"
                         id="InwardName">
-                    <br><span1 id="InwardNameSpan">FILL THE NAME</span1>
+                    <br>
+                    <span1 id="InwardNameSpan">FILL THE NAME</span1>
                 </div>
                 <div class="col-3">
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="InwardName1">
@@ -546,14 +550,25 @@
                     <img src="{% static 'IMG/search.png' %}" width="24px">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
-                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
-                        id="OutwardCode" onfocus="OutwardFocusIn()" onfocusout="OutwardFocusOut()"></div>
-                <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
-                        id="OutwardCruei"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
-                        id="OutwardName"></div>
-                <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1"
-                        id="OutwardName1"></div>
+                <div class="col-1">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE" id="OutwardCode"
+                        onfocus="OutwardFocusIn()" onfocusout="OutwardFocusOut()">
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
+                        id="OutwardCruei">
+                    <br>
+                    <span1 id="OutwardCrueiSpan">FILL CRUEI</span1>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME"
+                        id="OutwardName">
+                    <br>
+                    <span1 id="OutwardNameSpan">FILL NAME</span1>
+                </div>
+                <div class="col-3">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="OutwardName1">
+                </div>
             </div>
             <div class="row mt-3">
                 <div class="col-2 mt-2">FREIGHT FORWARDER</div>
@@ -879,7 +894,9 @@
                     <div class="container-fluid">
                         <div class="row mt-3">
                             <div class="col-4">MODE</div>
-                            <div class="col-6"><input type="text" class="inputStyle" id="InwardMode"></div>
+                            <div class="col-6">
+                                <input type="text" class="inputStyle" id="InwardMode" disabled>
+                            </div>
                         </div>
                     </div>
                     <div class="container-fluid">
@@ -906,8 +923,8 @@
                             <div class="col-2">
                                 <input type="text" class="inputStyle HighLight" id="LoadingPortCode"
                                     onfocus="LoadingPortFocusIn()" onfocusout="LoadingPortFocusOut()">
-                                    <br>
-                                    <span1 id="LoadingPortCodeSpan">FILL LOADING PORT</span1>
+                                <br>
+                                <span1 id="LoadingPortCodeSpan">FILL LOADING PORT</span1>
                             </div>
                             <div class="col-4">
                                 <input type="text" class="inputStyle" id="LoadingPortCodeText">
@@ -947,7 +964,9 @@
                     <div class="container-fluid CargoAirShow">
                         <div class="row mt-3">
                             <div class="col-4">FLIGHT NUMBER</div>
-                            <div class="col-6"><input type="text" class="inputStyle" id="FlightNO"></div>
+                            <div class="col-6">
+                                <input type="text" class="inputStyle HighLight" id="FlightNO">
+                            </div>
                         </div>
                     </div>
                     <div class="container-fluid CargoAirShow">
@@ -968,7 +987,9 @@
                     <div class="container-fluid" id="OutCargoHblShow">
                         <div class="row mt-3">
                             <div class="col-4" id="OutCargoHbl">HBL</div>
-                            <div class="col-6"><input type="text" class="inputStyle"></div>
+                            <div class="col-6">
+                                <input type="text" class="inputStyle">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -983,37 +1004,53 @@
                             <div class="row mt-3">
                                 <div class="col-3">MODE</div>
                                 <div class="col-1"></div>
-                                <div class="col-7"><input type="text" class="inputStyle" id="OutwardMode"></div>
+                                <div class="col-7">
+                                    <input type="text" class="inputStyle HighLight" id="OutwardMode" disabled>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-3">DEPARTURE DATE & TIME</div>
                                 <div class="col-1"></div>
-                                <div class="col-4"><input type="text" class="inputStyle" placeholder="DATE"
-                                        id="DepartureDate" onfocusout="InvoiceDateFunction('DepartureDate')"></div>
-                                <div class="col-3"><input type="text" class="inputStyle" placeholder="TIME"
-                                        id="DepartureTime"></div>
+                                <div class="col-4">
+                                    <input type="text" class="inputStyle HighLight" placeholder="DATE"
+                                        id="DepartureDate" onfocusout="InvoiceDateFunction('DepartureDate')">
+                                    <br>
+                                    <span1 id="DepartureDateSpan">FILL DATE</span1>
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="inputStyle" placeholder="TIME" id="DepartureTime">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-3">DISCHARGE PORT</div>
-                                <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
-                                <div class="col-2"><input type="text" class="inputStyle" id="DischargePort"
-                                        onfocus="DischargePortFocusIn()" onfocusout="DischargePortFocusOut()"></div>
-                                <div class="col-5"><input type="text" class="inputStyle" id="DischargePortText"></div>
+                                <div class="col-1">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                </div>
+                                <div class="col-2">
+                                    <input type="text" class="inputStyle HighLight" id="DischargePort"
+                                        onfocus="DischargePortFocusIn()" onfocusout="DischargePortFocusOut()">
+                                    <br>
+                                    <span1 id="DischargePortSpan">FILL DISCHARGE PORT</span1>
+                                </div>
+                                <div class="col-5">
+                                    <input type="text" class="inputStyle" id="DischargePortText" disabled>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4">FINAL DESTINATION COUNTRY</div>
                                 <div class="col-7">
-                                    <select class="Dropdown" id="FinalDestinationCountry"
+                                    <select class="Dropdown HighLight" id="FinalDestinationCountry"
                                         onfocus="FinalDestinationfocusin()" onfocusout="FinalDestinationfocusout()">
                                         <option selected>--Select--</option>
                                     </select><br>
-                                    <span1 id="FinalDestinationCountrySpan" style="color: #ff0000;"></span1>
+                                    <span1 id="FinalDestinationCountrySpan"></span1>
+                                    <span1 id="FinalDestinationCountrySpan1">FILL FINAL DESTINATION</span1>
                                 </div>
                             </div>
                         </div>
@@ -1027,48 +1064,69 @@
                         </div>
                         <div class="row">
                             <div class="row mt-3">
-                                <div class="col-4"><label for="OutVoyageNumber">VOYAGE NUMBER</label></div>
-                                <div class="col-7"><input type="text" id="OutVoyageNumber" class="inputStyle"></div>
+                                <div class="col-4">
+                                    <label for="OutVoyageNumber">VOYAGE NUMBER</label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="text" id="OutVoyageNumber" class="inputStyle HighLight">
+                                    <br>
+                                    <span1 id="OutVoyageNumberSpan">FILL VOYAGE NUMBER</span1>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
-                                <div class="col-4"><label for="OutVesselName">VESSEL NAME</label></div>
-                                <div class="col-7"><input type="text" id="OutVesselName" class="inputStyle"></div>
+                                <div class="col-4">
+                                    <label for="OutVesselName">VESSEL NAME</label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="text" id="OutVesselName" class="inputStyle HighLight">
+                                    <br>
+                                    <span1 id="OutVesselNameSpan">FILL VESSEL NAME</span1>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
-                                <div class="col-4"><label for="OutOceanBillofLadingNo">OBL</label></div>
-                                <div class="col-7"><input type="text" id="OutOceanBillofLadingNo" class="inputStyle">
+                                <div class="col-4">
+                                    <label for="OutOceanBillofLadingNo">OBL</label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="text" id="OutOceanBillofLadingNo" class="inputStyle HighLight">
+                                    <br>
+                                    <span1 id="OutOceanBillofLadingNoSpan">FILL OBL</span1>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="Hbl">HBL</label></div>
-                                <div class="col-7"><input type="text" id="Hbl" class="inputStyle"></div>
+                                <div class="col-7"><input type="text" id="Hbl" class="inputStyle">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="VesselType">VESSEL TYPE</label></div>
                                 <div class="col-7">
-                                    <select class="Dropdown" id="VesselType">
+                                    <select class="Dropdown HighLight" id="VesselType">
                                         <option selected>--Select--</option>
                                         {% for i in VesselType%}
                                         <option>{{i.Name}}</option>
                                         {% endfor %}
                                     </select>
+                                    <br>
+                                    <span1 id="VesselTypeSpan">FILL VESSEL TYPE</span1>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
-                                <div class="col-4"><label for="VesselNetRegTon">VESSEL NET REGISTER
-                                        TONNAGE</label>
+                                <div class="col-4">
+                                    <label for="VesselNetRegTon">VESSEL NET REGISTER TONNAGE</label>
                                 </div>
-                                <div class="col-7"><input type="text" id="VesselNetRegTon" class="inputStyle">
+                                <div class="col-7">
+                                    <input type="text" id="VesselNetRegTon" class="inputStyle">
                                 </div>
                             </div>
                         </div>
@@ -1092,7 +1150,8 @@
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="TowingVesselName">TOWING VESSEL NAME</label></div>
-                                <div class="col-7"><input type="text" id="TowingVesselName" class="inputStyle"></div>
+                                <div class="col-7"><input type="text" id="TowingVesselName" class="inputStyle">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -1118,7 +1177,8 @@
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="OutConveyanceRefNo">CONVEYANCE NO</label></div>
-                                <div class="col-7"><input type="text" id="OutConveyanceRefNo" class="inputStyle"></div>
+                                <div class="col-7"><input type="text" id="OutConveyanceRefNo" class="inputStyle">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -1137,20 +1197,29 @@
                     <div class="row" id="OutOutAirShow">
                         <div class="row">
                             <div class="row mt-3">
-                                <div class="col-4"><label for="OutFlightNO">FLIGHT NUMBER</label></div>
-                                <div class="col-7"><input type="text" id="OutFlightNO" class="inputStyle"></div>
+                                <div class="col-4">
+                                    <label for="OutFlightNO">FLIGHT NUMBER</label>
+                                </div>
+                                <div class="col-7">
+                                    <input type="text" id="OutFlightNO" class="inputStyle HighLight">
+                                    <span1 id="OutFlightNOSpan">FILL FLIGHT NUMBER</span1>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="OutAircraftRegNo">AIRCRAFT REG NO</label></div>
-                                <div class="col-7"><input type="text" id="OutAircraftRegNo" class="inputStyle"></div>
+                                <div class="col-7"><input type="text" id="OutAircraftRegNo" class="inputStyle">
+                                </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="OutMasterAirwayBill">MAWB</label></div>
-                                <div class="col-7"><input type="text" id="OutMasterAirwayBill" class="inputStyle"></div>
+                                <div class="col-7">
+                                    <input type="text" id="OutMasterAirwayBill" class="inputStyle HighLight">
+                                    <span1 id="OutMasterAirwayBillSpan">FILL MAWB</span1>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -1162,75 +1231,83 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="OutContainerShow" style="display: none;">
+            <div class="row" id="InpaymentContainerShow" style="display:none">
                 <div class="row mt-3">
                     <div class="col-12">
                         <h1 class="Borderdiv">CONTAINER INFO</h1>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-5">
                     <div class="col-1"></div>
+                    <div class="col-2">
+                        <button type="button" class="MoveOnButtons" style="font-size: 12px;"
+                            onclick="DeleteContainerBtn()">DELETE CONTAINER</button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-1"><input type="text" id="ContainerLength" class="inputStyle"
+                            style="display: none;"></div>
                     <div class="col-10">
-                        <table id="cargoContainerTable" style="width: 100%;">
+                        <table id="ConatinerTable" style="width: 100%;">
                             <thead>
                                 <tr class="fontTable">
+                                    <th><input type="checkbox" onclick="ContainerAllCheckBox(this)"
+                                            id="ContainercheckBoxThead"></th>
+                                    <th>EDIT</th>
+                                    <th>DELETE</th>
                                     <th>S.NO</th>
                                     <th>CONTAINER NO</th>
                                     <th>SIZE / TYPE</th>
                                     <th>WEIGHT ( TNE )</th>
                                     <th>SEAL NO</th>
-                                    <th>Delete</th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>
-                                        <p>1</p>
+                                    <td><input type="checkbox" name="" id=""></td>
+                                    <td><img src="{% static 'IMG/EDIT1.png' %}" alt="" style="width: 20px;"
+                                            class="ContainerEdit"></td>
+                                    <td><img src="{% static 'IMG/Delete.png' %}" style="width: 15px;"
+                                            class="containerDeleteBtn"> </td>
+                                    <td><input type="text" value="1" disabled class="inputStyle" style="width: 50px;">
                                     </td>
                                     <td>
-                                        <input type='text' class="inputStyle FinDc" name="ContainerNumber"
-                                            id="ContainerNumber" onfocusout="containerValidNum(this,this.value)">
-                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
-                                            id="container2nd">THE CONTAINER NO. FORMAT SHOULD BE 4 ALPHABETS <br>AND
-                                            FOLLOWED BY 7 DIGIT, FOR EX.: ABCD1234567</span1>
+                                        <input type='text' class="inputStyle">
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;">THE
+                                            CONTAINER NO. FORMAT SHOULD BE 4 ALPHABETS <br>AND
+                                            FOLLOWED BY 7 DIGIT, FOR EX.: ABCD1234567</span>
                                     </td>
                                     <td>
-                                        <select class="Dropdown" name="ContainerSize"
-                                            onfocusout="ContainerValidSize(this,this.value)">
+                                        <select class="Dropdown">
                                             <option selected>--Select--</option>
                                             {% for i in Container %}
                                             <option value="{{i.Name}}">{{i.Name}}</option>
                                             {% endfor %}
                                         </select>
-                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
-                                            id="containerSelect">SIZE / TYPE IS REQUIRED</span1>
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                            id="containerSelect">SIZE / TYPE IS REQUIRED</span>
                                     </td>
                                     <td>
-                                        <input type='text' class="inputStyle" name="ContainerWeight"
-                                            onfocusout="ContainerValidSize(this,this.value)" maxlength="3">
-                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
-                                            id="containerWeight">WEIGHT IS REQUIRED</span1>
+                                        <input type="number" class="inputStyle" maxlength="3"
+                                            oninput="InputLenth(this)">
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;">WEIGHT IS
+                                            REQUIRED</span>
                                     </td>
                                     <td>
-                                        <input type='text' class="inputStyle" name="ContainerSeal"
-                                            onfocusout="ContainerValidSize(this,this.value)">
-                                        <span1 class="ErrorColor" style="font-size: 9px;display: none;"
-                                            id="containerSeal">SEAL NO IS REQUIRED</span1>
+                                        <input type="text" class="inputStyle">
+                                        <span class="ErrorColor" style="font-size: 9px;display: none;">SEAL NO IS
+                                            REQUIRED</span>
                                     </td>
-                                    <td><i class="material-icons" style="color:red">delete</i></td>
+                                    <td><button type="button" class="ButtonClick SaveContainer">SaveContainer</button>
+                                    </td>
+                                    <td>
+                                        <img src="{% static 'IMG/Plus.png' %}" style="width: 30px;pointer-events: none;"
+                                            class="AddContainerBtn" onclick="PlusContainer()">
+                                    </td>
                                 </tr>
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td><button class="ButtonClick" type="button" id="AddContainerBtn">ADD
-                                            CONTAINER</button></td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -1291,7 +1368,8 @@
                         <div class="col-1"></div>
                         <div class="col-7"><input type="text" class="inputStyle HighLight" style="width: 80%;"
                                 tabindex="8" id="InvoiceNumber">
-                            <br><span1 id="InvoiceNumberSpan" class="ErrorColor ">FILL NUMBER</span1>
+                            <br>
+                            <span1 id="InvoiceNumberSpan" class="ErrorColor ">FILL NUMBER</span1>
                         </div>
                     </div>
                 </div>
@@ -1428,7 +1506,8 @@
             <div class="row">
                 <div class="col-7"></div>
                 <div class="col-5">
-                    <button type="button" style="width:24%;" class="ButtonClick" onclick="OutItemSave()">ADD ITEM</button>
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="OutItemSave()">ADD
+                        ITEM</button>
                     <button type="button" style="width:24%;" class="ButtonClick">PREVIOUS</button>
                     <input type="text" style="display: inline;width:24%;" class="inputStyle">
                     <button type="button" style="width:24%;" class="ButtonClick">NEXT</button>
@@ -1474,8 +1553,10 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-4"></div>
-                        <div class="col-8"><span1 style="background-color: brown;color: aliceblue;width: 100px;"
-                                id="HscodeControl"></span1></div>
+                        <div class="col-8">
+                            <span1 style="background-color: brown;color: aliceblue;width: 100px;" id="HscodeControl">
+                            </span1>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="row">
@@ -1901,7 +1982,8 @@
                                 </div>
                                 <div class="col-2">
                                     <button class="btn1" type="button"
-                                        onclick="CopyOfHsQty('#product1CodeCopyInput','#product1CodeCopyUom')">COPY OF
+                                        onclick="CopyOfHsQty('#product1CodeCopyInput','#product1CodeCopyUom')">COPY
+                                        OF
                                         HS-QUANTITY</button>
                                 </div>
                                 <div class="col-1">
@@ -1959,7 +2041,8 @@
                                 </div>
                                 <div class="col-2">
                                     <button class="btn1" type="button"
-                                        onclick="CopyOfHsQty('#product2CodeCopyInput','#product2CodeCopyUom')">COPY OF
+                                        onclick="CopyOfHsQty('#product2CodeCopyInput','#product2CodeCopyUom')">COPY
+                                        OF
                                         HS-QUANTITY</button>
                                 </div>
                                 <div class="col-1">
@@ -2022,7 +2105,8 @@
                                 </div>
                                 <div class="col-2 OutCasc3">
                                     <button class="btn1" type="button"
-                                        onclick="CopyOfHsQty('#product3CodeCopyInput','#product3CodeCopyUom')">COPY OF
+                                        onclick="CopyOfHsQty('#product3CodeCopyInput','#product3CodeCopyUom')">COPY
+                                        OF
                                         HS-QUANTITY</button>
                                 </div>
                                 <div class="col-1 OutCasc3">
@@ -2085,7 +2169,8 @@
                                 </div>
                                 <div class="col-2 OutCasc4">
                                     <button class="btn1" type="button"
-                                        onclick="CopyOfHsQty('#product4CodeCopyInput','#product4CodeCopyUom')">COPY OF
+                                        onclick="CopyOfHsQty('#product4CodeCopyInput','#product4CodeCopyUom')">COPY
+                                        OF
                                         HS-QUANTITY</button>
                                 </div>
                                 <div class="col-1 OutCasc4">
@@ -2148,7 +2233,8 @@
                                 </div>
                                 <div class="col-2 OutCasc5">
                                     <button class="btn1" type="button"
-                                        onclick="CopyOfHsQty('#product5CodeCopyInput','#product5CodeCopyUom')">COPY OF
+                                        onclick="CopyOfHsQty('#product5CodeCopyInput','#product5CodeCopyUom')">COPY
+                                        OF
                                         HS-QUANTITY</button>
                                 </div>
                                 <div class="col-1 OutCasc5">
@@ -2344,13 +2430,16 @@
                             <div class="col-12">ORIGIN CRITERION CODE</div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes1"></div>
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes1">
+                            </div>
                         </div>
                         <div class="row mt-4">
-                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes2"></div>
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes2">
+                            </div>
                         </div>
                         <div class="row mt-4">
-                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes3"></div>
+                            <div class="col-9"><input type="text" class="inputStyle CoTypeEmpty" id="OriginDes3">
+                            </div>
                         </div>
                         <div class="row mt-5">
                             <div class="col-12">HS CODE ON CERTIFICATE</div>
@@ -2563,7 +2652,8 @@
                 <div class="col-8 OutStsCwcClass">
                     <div class="row">
                         <button class="ButtonClick" type="button" style="width: 14%;"
-                            onclick="OutCpcADD('#OutStsCwcTable','OutStsCwcName','.OutStsCwcMaximum')">ADD ROW</button>
+                            onclick="OutCpcADD('#OutStsCwcTable','OutStsCwcName','.OutStsCwcMaximum')">ADD
+                            ROW</button>
                         <p class="ErrorColor OutStsCwcMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR STS & CWC.</p>
                     </div>
                     <div class="row mt-3">
@@ -2659,7 +2749,7 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" class="inputStyle" value="0.00"></div>
+                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="summaryInvoiceTotal"></div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00">
@@ -2676,7 +2766,8 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00"></div>
+                        <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00">
+                        </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-8"> </div>
@@ -2692,14 +2783,14 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" class="inputStyle" value="0.00"></div>
+                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="SummarytotalInvoiceCif"></div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-8"> </div>
                     </div>
                 </div>
             </div>
-            <div class="row mt-5">
+            <!-- <div class="row mt-5">
                 <div class="col-1 mt-2">TRADER REMARKS</div>
                 <div class="col-2">
                     <button class="ButtonClick" type="button" style="width:100%">PREVIOUS PERMIT NO</button>
@@ -2718,10 +2809,35 @@
                 <div class="col-3">
                     <input type="text" class="inputStyle" id="GrossReference">
                 </div>
-            </div>
+            </div> -->
+            <ul class="d-flex gap-5 align-items-center mt-5 flex-wrap" style="margin-left: -20px;">
+                <li>
+                    TRADER REMARKS
+                </li>
+                <li>
+                    <button class="ButtonClick w-100" type="button" onclick="summaryPreviousFunction()">PREVIOUS PERMIT
+                        NO</button>
+                </li>
+                <li>
+                    <button class="ButtonClick" type="button" onclick="summaryEXRateFunction()">EX RATE</button>
+                </li>
+                <li>
+                    FORMAT REMARKS
+                </li>
+                <li>
+                    <input type="text" class="inputStyle" style="width: 120%;" id="summaryFormatRemark">
+                </li>
+                <li>
+                    <button class="ButtonClick" type="button" onclick="summaryConfigBtnFunction()">CONFIG</button>
+                </li>
+                <li> CROSS REFERENCE</li>
+                <li>
+                    <input type="text" class="inputStyle" id="GrossReference" style="width: 110%;">
+                </li>
+            </ul>
             <div class="row mt-5">
                 <div class="col-12">
-                    <textarea class="inputStyle" style="height: 80px;" id="TradeRemarks"></textarea>
+                    <textarea class="inputStyle" style="height: 80px;" id="summaryTradeRemarks"></textarea>
                 </div>
             </div>
             <div class="row mt-5">
@@ -2731,8 +2847,16 @@
             </div>
             <div class="row">
                 <div class="col-6"><input type="text" class="inputStyle" id="InternalRemarks"></div>
-                <div class="col-4"><input type="text" class="inputStyle" id="MRDate" placeholder="DATE"></div>
-                <div class="col-2"><input type="text" class="inputStyle" id="MRTime" placeholder="TIME"></div>
+                <div class="col-4">
+                    <input type="text" class="inputStyle HighLight" id="MRDate" placeholder="DATE"
+                        onfocusout="InvoiceDateFunction('MRDate')">
+                    <span1 id="MRDateSpan">FILL MRD</span1>
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle HighLight" id="MRTime" placeholder="TIME"
+                        onfocusout="MrtTimeOut()">
+                    <span1 id="MRTimeSpan">FILL TIME</span1>
+                </div>
             </div>
             <div class="row mt-3">
                 <h1 class="Borderdiv">DECLARATION SUMMARY</h1>
@@ -2779,7 +2903,8 @@
             </div>
             <div class="row mt-5">
                 <div class="col-12 SummaryCheckBoxClass">
-                    <input type="checkbox" id="DeclareIndicator"><label for="DeclareIndicator"> I/WE DECLARE THAT ALL
+                    <input type="checkbox" id="DeclareIndicator" value="False"><label for="DeclareIndicator"> I/WE DECLARE THAT
+                        ALL
                         PARTICULARS IN THIS APPLICATION ARE TRUE AND CORRECT</label>
                 </div>
             </div>
@@ -2829,6 +2954,291 @@
         }
         "{% endfor %}"
     }
+</script>
+
+<script>
+    var ConatinerData = []
+    function ContainerRefresh() {
+        $.ajax({
+            url: '/OutContainer/',
+            type: 'POST',
+            data: {
+                'Method': "LOAD",
+                'PermitId': $('#PermitId').val().toUpperCase(),
+                'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+            },
+            success: function (response) {
+                ConatinerData = response.ContainerValue
+                ContainerLoad(response.ContainerValue)
+            }
+        })
+    }
+
+    function ContainerLoad(Data) {
+        var cont = ""
+        for (var i of Data) {
+            cont += `<tr>
+                        <td><input type="checkbox" value="${i[0]}" class = "ContainerCheckBox" onclick = "AllCheckContainerTable(this)"></td>
+                        <td><img src="{% static 'IMG/EDIT1.png' %}" alt="" style="width: 20px;" value="${i[0]}" class="ContainerEdit"></td>
+                        <td><img src="{% static 'IMG/Delete.png' %}" style="width: 15px;" class="containerDeleteBtn" value="${i[0]}"> </td>
+                        <td><input type="text" value="${i[2]}" disabled class="inputStyle" style="width: 50px;">
+                        </td>
+                        <td>
+                            <input type='text' class="inputStyle" value="${i[3]}" disabled>
+                            <span class="ErrorColor" style="font-size: 9px;display: none;">THE
+                                CONTAINER NO. FORMAT SHOULD BE 4 ALPHABETS <br>AND
+                                FOLLOWED BY 7 DIGIT, FOR EX.: ABCD1234567</span>
+                        </td>
+                        <td>
+                            <select class="Dropdown" value="${i[4]}" disabled>
+                                <option selected>--Select--</option>
+                                <option selected>${i[4]}</option>
+                                {% for i in Container %}
+                                <option value="{{i.Name}}">{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                id="containerSelect">SIZE / TYPE IS REQUIRED</span>
+                        </td>
+                        <td>
+                            <input type="number" class="inputStyle" value="${i[5]}" maxlength="3" oninput="InputLenth(this)" disabled>
+                            <span class="ErrorColor" style="font-size: 9px;display: none;">WEIGHT IS REQUIRED</span>
+                        </td>
+                        <td>
+                            <input type="text" class="inputStyle" value="${i[6]}" disabled>
+                            <span class="ErrorColor" style="font-size: 9px;display: none;">SEAL IS REQUIRED</span>
+                        </td>
+                        <td><button type="button" class="ButtonClick SaveContainer" disabled>SaveContainer</button></td>
+                        <td>
+                            <img src="{% static 'IMG/Plus.png' %}" style="width: 30px;"  class="AddContainerBtn" onclick = "PlusContainer()">
+                        </td>
+                    </tr>
+                `
+        }
+        $("#ContainerLength").val(Data.length)
+        if (Data.length > 0) {
+            $('.AddContainerBtn').css("pointer-events", 'pointer')
+            $("#ConatinerTable tbody").html(cont)
+        }
+    }
+    $(document).on('click', '.SaveContainer', function () {
+        var row = $(this).closest('tr');
+        var Sno = row.find('input:eq(1)').val();
+        var ContainerNumber = row.find('input:eq(2)').val();
+        var Weight = row.find('input:eq(3)').val();
+        var Seal = row.find('input:eq(4)').val();
+        var Size = row.find('select:eq(0)').val();
+        var check = true;
+
+        row.find('input:eq(2)').next("span").hide();
+        row.find('input:eq(3)').next("span").hide();
+        row.find('input:eq(4)').next("span").hide();
+        row.find('select:eq(0)').next("span").hide();
+
+        var regex = /^[A-Za-z]{4}\d{7}$/;
+        if (!regex.test(ContainerNumber)) {
+            check = false;
+            row.find('input:eq(2)').next("span").show();
+        }
+        if (Size == "--Select--") {
+            check = false;
+            row.find('select:eq(0)').next("span").show();
+        }
+        if (Weight == "") {
+            check = false;
+            row.find('input:eq(3)').next("span").show();
+        }
+        if (Seal == "") {
+            check = false;
+            row.find('input:eq(4)').next("span").show();
+        }
+        if (check) {
+            $('#Loading').show();
+            $.ajax({
+                url: '/OutContainer/',
+                type: 'POST',
+                data: {
+                    'Method': "SAVE",
+                    'PermitId': $('#PermitId').val().toUpperCase(),
+                    'RowNo': Sno,
+                    'ContainerNo': ContainerNumber,
+                    'size': Size,
+                    'weight': Weight,
+                    'SealNo': Seal,
+                    'MessageType': $('#MessageType').val(),
+                    // 'TouchUser': $('#USERNAME').val().toUpperCase(),
+                    // 'TouchTime': TOUCHTIME,
+                    csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+                },
+                success: function (response) {
+                    $('#Loading').hide();
+                    alert(response.Result)
+                    ConatinerData = response.ContainerValue
+                    ContainerLoad(response.ContainerValue)
+                }
+            })
+        }
+    });
+    $(document).on('click', '.containerDeleteBtn', function () {
+        var deletedIndex = $(this).closest('tr').index();
+
+        var row = $(this).closest('tr');
+        var Sno = row.find('input:eq(1)').val();
+
+        var ContainerNumber = row.find('input:eq(2)').val();
+        var Weight = row.find('input:eq(3)').val();
+        var Seal = row.find('input:eq(4)').val();
+        var Size = row.find('select:eq(0)').val();
+
+        var check = true;
+
+        var regex = /^[A-Za-z]{4}\d{7}$/;
+        if (!regex.test(ContainerNumber)) {
+            check = false;
+            row.find('input:eq(2)').next("span").show();
+        }
+        if (Size == "--Select--") {
+            check = false;
+            row.find('select:eq(0)').next("span").show();
+        }
+        if (Weight == "") {
+            check = false;
+            row.find('input:eq(3)').next("span").show();
+        }
+        if (Seal == "") {
+            check = false;
+            row.find('input:eq(4)').next("span").show();
+        }
+        if (check) {
+            $('#Loading').show();
+            $.ajax({
+                url: '/OutContainer/',
+                type: 'POST',
+                data: {
+                    'Method': "DELETE",
+                    'PermitId': $('#PermitId').val().toUpperCase(),
+                    'SNo': Sno,
+                    'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                },
+                success: function (response) {
+                    $('#Loading').hide();
+                    alert(response.Result);
+                    if (deletedIndex === 0) {
+                        row.find('input:eq(1)').val('1');
+                        row.find('input:eq(2)').val('');
+                        row.find('input:eq(3)').val('');
+                        row.find('input:eq(4)').val('');
+                        row.find('select:eq(0)').val('--Select--');
+                    }
+                    ConatinerData = response.ContainerValue
+                    ContainerLoad(response.ContainerValue)
+                }
+            })
+        } else {
+            if (deletedIndex !== 0) {
+                $(this).closest('tr').remove();
+            } else if (deletedIndex === 0) { }
+        }
+    });
+
+    function PlusContainer() {
+        var tableLength = $('#ConatinerTable tr').length;
+        cont = `<tr>
+                        <td><input type="checkbox" ></td>
+                        <td><img src="{% static 'IMG/EDIT1.png' %}" alt="" style="width: 20px;" class="ContainerEdit"></td>
+                        <td><img src="{% static 'IMG/Delete.png' %}" style="width: 15px;" class="containerDeleteBtn"> </td>
+                        <td><input type="text" value="${tableLength}" disabled class="inputStyle" style="width: 50px;">
+                        </td>
+                        <td>
+                            <input type='text' class="inputStyle">
+                            <span class="ErrorColor" style="font-size: 9px;display: none;">THE
+                                CONTAINER NO. FORMAT SHOULD BE 4 ALPHABETS <br>AND
+                                FOLLOWED BY 7 DIGIT, FOR EX.: ABCD1234567</span>
+                        </td>
+                        <td>
+                            <select class="Dropdown">
+                                <option selected>--Select--</option>
+                                {% for i in Container %}
+                                <option value="{{i.Name}}">{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="ErrorColor" style="font-size: 9px;display: none;"
+                                id="containerSelect">SIZE / TYPE IS REQUIRED</span>
+                        </td>
+                        <td>
+                            <input type="number" class="inputStyle" maxlength="3" oninput="InputLenth(this)">
+                            <span class="ErrorColor" style="font-size: 9px;display: none;">WEIGHT IS REQUIRED</span>
+                        </td>
+                        <td>
+                            <input type="text" class="inputStyle">
+                            <span class="ErrorColor" style="font-size: 9px;display: none;">SEAL IS REQUIRED</span>
+                        </td>
+                        <td><button type="button" class="ButtonClick SaveContainer">SaveContainer</button></td>
+                        <td>
+                            <img src="{% static 'IMG/Plus.png' %}" style="width: 30px;pointer-events: none;"  class="AddContainerBtn" disabled onclick = "PlusContainer()">
+                        </td>
+                    </tr>
+                `
+        $("#ConatinerTable tbody").append(cont)
+    }
+
+    function InputLenth(input1) {
+        var value = input1.value;
+        if (value.length > 3) {
+            input1.value = value.slice(0, 3);
+        }
+    }
+
+    function DeleteContainerBtn() {
+        var checkedValues = [];
+        $('.ContainerCheckBox:checked').each(function () {
+            checkedValues.push($(this).val());
+        });
+        if (checkedValues.length > 0) {
+            $('#Loading').show();
+            $.ajax({
+                url: '/OutContainer/',
+                type: 'POST',
+                data: {
+                    'Method': "CHECKDELETE",
+                    'IDS': JSON.stringify(checkedValues),
+                    'PermitId': $('#PermitId').val().toUpperCase(),
+                    'csrfmiddlewaretoken': $("input[name=csrfmiddlewaretoken]").val(),
+                },
+                success: function (response) {
+                    $('#Loading').hide();
+                    alert(response.Result);
+                    ConatinerData = response.ContainerValue
+                    ContainerLoad(response.ContainerValue)
+                }
+            })
+        }
+    }
+    $(document).on('click', '.ContainerEdit', function () {
+        var row = $(this).closest('tr');
+
+        row.find('input:eq(2)').prop('disabled', false);
+        row.find('input:eq(3)').prop('disabled', false);
+        row.find('input:eq(4)').prop('disabled', false);
+        row.find('select:eq(0)').prop('disabled', false);
+        row.find('button:eq(0)').prop('disabled', false);
+
+    })
+
+    function ContainerAllCheckBox(input) {
+        if ($(input).prop("checked")) {
+            $('.ContainerCheckBox').prop("checked", true)
+        } else {
+            $('.ContainerCheckBox').prop("checked", false)
+        }
+    }
+
+    function AllCheckContainerTable(check) {
+        if (!($(check).prop('checked'))) {
+            $('#ContainercheckBoxThead').prop('checked', false)
+        }
+    }
+
 </script>
 
 {% endblock %}

@@ -214,7 +214,7 @@ def ImporterInon(request):
 
     return JsonResponse({"status":200,"data":data_list})
 
-class PartyLoad(View,SqlDb):
+class PartyLoad(View,SqlDb): 
     def __init__(self):
         SqlDb.__init__(self)
 

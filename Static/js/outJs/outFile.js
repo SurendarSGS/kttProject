@@ -9,6 +9,7 @@ $(document).ready(function () {
   $("#INPAYMENT").css("background-color", "rgb(25, 135, 84)");
   $("#INPAYMENT a").css("color", "white");
   $('.EndUserHide').hide()
+  ContainerRefresh();
 });
 const a = fetch('/OutInvoice/' + $('#PermitId').val() + "/")
 //promise objects return two things one on successfull one on error 
@@ -217,7 +218,7 @@ function OutInwardTrasnPortModeChange() {
     $("#OutCargoImporterShow").show();
   }
   if (OutTransPort == "1 : Sea") {
-    $('#OutCargoObl').html('OBL');
+    $('#OceanBillofLadingNo').html('OBL');
     $('#OutCargoHbl').html('HBL');
     $('#OutCargoOblShow').show();
     $('#OutCargoHblShow').show();
@@ -225,7 +226,7 @@ function OutInwardTrasnPortModeChange() {
   }
   else if (OutTransPort == "4 : Air") {
     $(".CargoAirShow").show();
-    $('#OutCargoObl').html('MAWB');
+    $('#OceanBillofLadingNo').html('MAWB');
     $('#OutCargoHbl').html('HAWB');
     $('#OutCargoOblShow').show();
     $('#OutCargoHblShow').show();
@@ -236,7 +237,7 @@ function OutInwardTrasnPortModeChange() {
   }
   else {
     $(".CargoRailShow").show();
-    $('#OutCargoObl').html('HBL');
+    $('#OceanBillofLadingNo').html('HBL');
     $('#OutCargoHblShow').show();
   }
 }
@@ -253,6 +254,7 @@ function OutOutwardTrasnPortModeChange() {
   $('#OutOutRailShow input').val('');
   $('#OutOutAirShow').hide();
   $('#OutOutAirShow input').val('');
+
   if (OutTransPort == "1 : Sea" || OutTransPort == "4 : Air" || OutTransPort == "7 : Pipeline") {
     $("#OutWardCarrierAgentShow").show();
   }
@@ -268,6 +270,9 @@ function OutOutwardTrasnPortModeChange() {
   }
   else {
     $('#OutOutRailShow').show();
+  }
+  if (OutTransPort != "--Select--") {
+    $('#OutOutwardTransportModeSpan').hide()
   }
 }
 
@@ -304,17 +309,18 @@ function OutReferenceDocument() {
 function OutCargoPackTypeChange() {
   var PackVal = $('#CargoPackType').val();
   if (PackVal == '9: Containerized') {
-    $('#OutContainerShow').show()
+    $('#InpaymentContainerShow').show()
     $('#TotalOuterPackUOM').val("UNT")
     $('#TotalGrossWeightUOM').val('TNE')
   }
   else {
     $('#TotalOuterPackUOM').val("PKG")
     $('#TotalGrossWeightUOM').val('KGM')
-    $('#OutContainerShow').hide()
-    $('#OutContainerShow span').hide()
-    $('#OutContainerShow input').val("")
-    $('#OutContainerShow Select').val("--Select--");
+    $('#InpaymentContainerShow').hide()
+    $('#InpaymentContainerShow span').hide()
+    $('#InpaymentContainerShow input').val("")
+    $('#InpaymentContainerShow Select').val("--Select--");
+    $('#CargoPackTypeSpan').hide()
   }
 }
 
@@ -930,6 +936,42 @@ $(function () {
   });
 });
 
+$(function () {
+  $("#MRDate").datepicker({ dateFormat: "dd/mm/yy" });
+  $("#MRDate").keydown(function (event) {
+    if (event.keyCode == 32) {
+      // spacebar keycode
+      event.preventDefault();
+      var currentDate = $.datepicker.formatDate("dd/mm/yy", new Date());
+      $("#MRDate").val(currentDate);
+    }
+  });
+});
+
+function MrtTimeOut() {
+  const Val = $('#MRTime').val()
+  console.log(Val)
+
+  if (Val.length == 6 || Val.length == 8) {
+
+    const regex = /^\d{4}(AM|PM)$/i;
+
+    const regex2 = /^\d{2}:\d{2} (AM|PM)$/i;
+
+    if (regex.test(Val)) {
+      $("#MRTime").val(`${Val[0]}${Val[1]}:${Val[2]}${Val[3]} ${Val[4]}${Val[5]}`)
+    }
+    else if (regex2.test(Val)) {
+      $("#MRTime").val(Val)
+    }
+    else {
+      $("#MRTime").val("")
+    }
+  }
+  else {
+    $("#MRTime").val("")
+  }
+}
 
 function InvoiceDateFunction(Arg) {
   if (Arg == "InvoiceDateInNon") {
@@ -1034,8 +1076,10 @@ function InvoiceSave() {
 }
 
 function InvoiceLoadData() {
+  var CifSum = 0
 
   $("#InvoiceSerialNumber").val(Number(InvoiceData.length) + 1).toString().padStart(3, "0")
+  $('#summaryInvoiceTotal').val(InvoiceData.length)
   var InvData = ''
   var DrpInvoice = '<option>--Select--</option>'
   InvoiceData.forEach((data) => {
@@ -1050,7 +1094,9 @@ function InvoiceLoadData() {
       <td>${data.CIFSUMAmount}</td>
     </tr>`
     DrpInvoice += `<option>${data.InvoiceNo}</option>`
+    CifSum += Number(data.CIFSUMAmount);
   })
+  $('#SummarytotalInvoiceCif').val(CifSum)
 
   if (InvoiceData.length == 0) {
     InvData = `<tr>
@@ -1746,6 +1792,7 @@ itemfetch.then(function (itemfetch) {
 
 function ItemLoad() {
   $("#ItemNo").val(ItemData.length + 1)
+  var Cifob = 0
   var td = ""
   ItemData.forEach((item) => {
     td += `<tr>
@@ -1764,12 +1811,15 @@ function ItemLoad() {
     <td>${item.TotalLineAmount}</td>
     </tr>
     `
+    Cifob += Number(item.CIFFOB);
   })
   if (ItemData.length == 0) {
     td = `<tr>
             <td colspan=14 style='text-align:center'>No Record</td>
           </tr>`
   }
+  $('#TotalCIFFOBValue').val(Cifob)
+  $('#NumberOfItems').val(ItemData.length)
   $("#ItemTable tbody").html(td)
 }
 
@@ -2282,12 +2332,13 @@ function CnbClick() {
 }
 
 function AllDataSave() {
-  $('#Header span').hide()
-  $('#Cargo span').hide()
-  $('#Party span').hide()
+  $('#Header span1').hide()
+  $('#Cargo span1').hide()
+  $('#Party span1').hide()
   let HeaderCheck = true;
   let PartyCheck = true;
   let CargoCheck = true;
+  let SummaryCheck = true;
   let FinalCheck = true;
 
 
@@ -2365,9 +2416,118 @@ function AllDataSave() {
       $('#OceanBillofLadingNoSpan').show()
       CargoCheck = false
     }
+  }
+  else if ($('#OutInwardTransportMode').val() == "4 : Air") {
+    if ($('#ArrivalDate').val().trim() == "") {
+      console.log(("ITS FIND"));
+      $('#ArrivalDateSpan').show()
+      CargoCheck = false
+    }
+    if ($('#LoadingPortCode').val().trim() == "") {
+      $('#LoadingPortCodeSpan').show()
+      CargoCheck = false
+    }
+    if ($('#OceanBillofLadingNo').val().trim() == "") {
+      $('#OceanBillofLadingNoSpan').show()
+      CargoCheck = false
+    }
+  }
+  else if ($('#OutInwardTransportMode').val() == "N : Not Required" || $('#OutInwardTransportMode').val() == '--Select--') {
 
   }
+  else {
+    if ($('#ArrivalDate').val().trim() == "") {
+      console.log(("ITS FIND"));
+      $('#ArrivalDateSpan').show()
+      CargoCheck = false
+    }
+    if ($('#LoadingPortCode').val().trim() == "") {
+      $('#LoadingPortCodeSpan').show()
+      CargoCheck = false
+    }
+  }
 
+  const OutTransPort = $('#OutOutwardTransportMode').val()
+  if ((OutTransPort == "1 : Sea" || OutTransPort == "4 : Air" || OutTransPort == "7 : Pipeline")) {
+    if ($('#OutwardCruei').val().trim() == "") {
+      $('#OutwardCrueiSpan').show()
+      PartyCheck = false
+    }
+    if ($('#OutwardCruei').val().trim() == "") {
+      $('#OutwardNameSpan').show()
+      PartyCheck = false
+    }
+  }
+
+  if (OutTransPort == "1 : Sea") {
+    if ($('#DepartureDate').val().trim() == "") {
+      $('#DepartureDateSpan').show()
+      CargoCheck = false
+    }
+    if ($('#DischargePort').val().trim() == "") {
+      $('#DischargePortSpan').show()
+      CargoCheck = false
+    }
+    if ($('#FinalDestinationCountry').val().trim() == "") {
+      $('#FinalDestinationCountrySpan1').show()
+      CargoCheck = false
+    }
+    if ($('#OutVoyageNumber').val().trim() == "") {
+      $('#OutVoyageNumberSpan').show()
+      CargoCheck = false
+    }
+    if ($('#OutVesselName').val().trim() == "") {
+      $('#OutVesselNameSpan').show()
+      CargoCheck = false
+    }
+    if ($('#OutOceanBillofLadingNo').val().trim() == "") {
+      $('#OutOceanBillofLadingNoSpan').show()
+      CargoCheck = false
+    }
+    if ($('#VesselType').val().trim() == "--Select--") {
+      $('#VesselTypeSpan').show()
+      CargoCheck = false
+    }
+  }
+  else if (OutTransPort == "4 : Air") {
+    if ($('#DepartureDate').val().trim() == "") {
+      $('#DepartureDateSpan').show()
+      CargoCheck = false
+    }
+    if ($('#DischargePort').val().trim() == "") {
+      $('#DischargePortSpan').show()
+      CargoCheck = false
+    }
+    if ($('#FinalDestinationCountry').val().trim() == "") {
+      $('#FinalDestinationCountrySpan1').show()
+      CargoCheck = false
+    }
+    if ($('#OutFlightNO').val().trim() == "") {
+      $('#OutFlightNOSpan').show()
+      CargoCheck = false
+    }
+    if ($('#OutMasterAirwayBill').val().trim() == "") {
+      $('#OutMasterAirwayBillSpan').show()
+      CargoCheck = false
+    }
+  }
+  else if (OutTransPort == "N : Not Required" || OutTransPort == '--Select--') {
+
+  }
+  else {
+    if ($('#DepartureDate').val().trim() == "") {
+      $('#DepartureDateSpan').show()
+      CargoCheck = false
+    }
+    if ($('#DischargePort').val().trim() == "") {
+      $('#DischargePortSpan').show()
+      CargoCheck = false
+    }
+    if ($('#FinalDestinationCountry').val().trim() == "") {
+      $('#FinalDestinationCountrySpan1').show()
+      CargoCheck = false
+    }
+  }
 
   for (let i of CargoID) {
     if ($(`#${i[0]}`).val().trim() == "" || $(`#${i[0]}`).val().trim() == "--Select--") {
@@ -2381,18 +2541,57 @@ function AllDataSave() {
     FinalCheck = false
     Tag += "<h1 class='FinalH1'>PLEASE CHECK THE HEADER PAGE</h1><hr>"
   }
+
   if (!PartyCheck) {
     FinalCheck = false
     Tag += "<h1 class='FinalH1'>PLEASE CHECK THE PARTY PAGE</h1><hr>"
   }
+  $('#MRTimeSpan').hide()
+  $('#MRDateSpan').hide()
+  if ($('#MRDate').val().trim() == "") {
+    $('#MRDateSpan').show()
+    SummaryCheck = false
+  }
+  if ($('#MRTime').val().trim() == "") {
+    $('#MRTimeSpan').show()
+    SummaryCheck = false
+  }
+
+
 
   if (!CargoCheck) {
     FinalCheck = false
     Tag += "<h1 class='FinalH1'>PLEASE CHECK THE CARGO PAGE</h1><hr>"
   }
 
+  if (InvoiceData.length == 0) {
+    FinalCheck = false
+    Tag += "<h1 class='FinalH1'>PLEASE CHECK THE INVOICE PAGE</h1><hr>"
+  }
+
+  if (ItemData.length == 0) {
+    FinalCheck = false
+    Tag += "<h1 class='FinalH1'>PLEASE CHECK THE ITEM PAGE</h1><hr>"
+  }
+  if (!SummaryCheck) {
+    FinalCheck = false
+    Tag += "<h1 class='FinalH1'>PLEASE CHECK THE SUMMARY PAGE</h1><hr>"
+  }
+  if (!$('#DeclareIndicator').prop("checked")) {
+    FinalCheck = false
+    Tag += "<h1 class='FinalH1'>PLEASE CHECK THE DECLARATION INDICATOR</h1><hr>"
+  }
+
+  var PackVal = $('#CargoPackType').val();
+  if (PackVal == '9: Containerized') {
+    if (ConatinerData.length == 0) {
+      FinalCheck = false
+      Tag += "<h1 class='FinalH1'>PLEASE CHECK THE CONTAINER</h1><hr>"
+    }
+  }
+
   if (FinalCheck) {
-    alert("ALL DATA IS CORRECT")
+    OutfinalSave()
   }
   else {
     // alert("PLEASE FILL THE ALL DATA")
@@ -2434,10 +2633,10 @@ function OutfinalSave() {
         BGIndicator: $('#BgIndicator').val(),
         SupplyIndicator: $('#SupplyIndicator').val(),
         ReferenceDocuments: $('#ReferenceDocuments').val(),
-        License: $('#licence1').val() + "," + $('#licence2').val() + "," + $('#licence3').val() + "," + $('#licence4').val() + "," + $('#licence5').val(),
+        License: $('#licence1').val() + "-" + $('#licence2').val() + "-" + $('#licence3').val() + "-" + $('#licence4').val() + "-" + $('#licence5').val(),
         COType: $('#CoType').val(),
         Entryyear: "",//$('#Entryyear').val(),//dont save
-        GSPDonorCountry: "",//$('#GSPDonorCountry').val(),//dont save
+        GSPDonorCountry: "--Select--",//$('#GSPDonorCountry').val(),//dont save
         CerDetailtype1: $('#CertificateType1').val(),
         CerDetailCopies1: $('#CerDetailCopies1').val(),
         CerDetailtype2: $('#CertificateType2').val(),
@@ -2467,7 +2666,7 @@ function OutfinalSave() {
         TransportId: $('#TransportId').val().trim().toUpperCase(),
         FlightNO: $('#FlightNO').val().trim().toUpperCase(),
         AircraftRegNo: $('#AircraftRegNo').val().trim().toUpperCase(),
-        MasterAirwayBill: $('#MasterAirwayBill').val(),//
+        MasterAirwayBill: $('#OutMasterAirwayBill').val(),//
         ReleaseLocation: $('#ReleaseLocaName').val(),
         RecepitLocation: $('#ReciptLocationCode').val(),
         StorageLocation: $('#StorageCode').val(),
@@ -2496,10 +2695,10 @@ function OutfinalSave() {
         TotalGrossWeight: $('#TotalGrossWeight').val(),
         TotalGrossWeightUOM: $('#TotalGrossWeightUOM').val(),
         GrossReference: $('#GrossReference').val(),
-        TradeRemarks: $('#TradeRemarks').val(),
+        TradeRemarks: $('#summaryTradeRemarks').val(),
         InternalRemarks: $('#InternalRemarks').val(),
         DeclareIndicator: $('#DeclareIndicator').val(),
-        NumberOfItems: $('#NumberOfItems').val(),
+        NumberOfItems: ItemData.length,
         TotalCIFFOBValue: $('#TotalCIFFOBValue').val(),
         TotalGSTTaxAmt: "0.00",
         TotalExDutyAmt: "0.00",
@@ -2531,3 +2730,35 @@ function OutfinalSave() {
     console.log("The Error is : ", err)
   }
 }
+function summaryPreviousFunction() {
+  var Val = $("#PreviousPermitNo").val();
+  $("#summaryTradeRemarks").val("PREVIOUS PERMIT NO : " + Val);
+}
+function summaryEXRateFunction() {
+  let trade = document.getElementById("summaryTradeRemarks");
+  let arr1 = [];
+  let arr2 = [];
+  for (let i = 0; i < InvoiceData.length; i++) {
+    if (0 == i) {
+      arr1.push(InvoiceData[i].TICurrency);
+      arr2.push([InvoiceData[i].TICurrency, InvoiceData[i].TIExRate]);
+    } else {
+      if (arr1.includes(InvoiceData[i].TICurrency)) {
+        var sase = 0;
+      } else {
+        arr1.push(InvoiceData[i].TICurrency);
+        arr2.push([InvoiceData[i].TICurrency, InvoiceData[i].TIExRate]);
+      }
+    }
+  }
+  for (let j = 0; j < arr2.length; j++) {
+    trade.value = trade.value + " CURRENCY : " + arr2[j][0] + " , EXCHANGE RATE : " + arr2[j][1] + "\n";
+  }
+}
+function summaryConfigBtnFunction() {
+  let trade = document.getElementById("summaryTradeRemarks");
+  let remark = document.getElementById("summaryFormatRemark").value;
+  let sp = trade.value.replaceAll("\n", remark);
+  document.getElementById("summaryTradeRemarks").value = sp;
+}
+
