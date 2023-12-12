@@ -113,10 +113,10 @@ DATABASES = {
     # }, 
     "default": {
         "ENGINE": "mssql",
-        "NAME": "TestPortal",#TestPortal#KaizenPortal
-        "USER": "KTTUSER", 
-        "PASSWORD": "Ktt@2021",
-        "HOST": "ec2-54-179-0-97.ap-southeast-1.compute.amazonaws.com",
+        "NAME": "KaizenPortal",#TestPortal#KaizenPortal
+        "USER": "", 
+        "PASSWORD": "",
+        "HOST" : "YOSUVA-AROCKIAS",
         'PORT': '',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',

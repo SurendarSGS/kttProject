@@ -148,6 +148,11 @@
                             <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}" disabled>
                         </div>
                     </div>
+                    <div class="row mt-3" >
+                        <div class="col-4">USER NAME</div>
+                        <div class="col-8"><input type="text" id="INONUSERNAME" value="{{UserName}}" class="inputStyle"
+                                disabled></div>
+                    </div>
                     <div class="row mt-3">
                         <div class="col-4"><label for="Refid">REF ID</label></div>
                         <div class="col-8">
@@ -184,25 +189,29 @@
                     <div class="row mt-4">
                         <div class="col-4">MAILBOX ID</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle HighLight" disabled id="MailBoxId" value="{{MailBoxId}}">
+                            <input type="text" class="inputStyle HighLight" disabled id="MailBoxId"
+                                value="{{MailBoxId}}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">DECLARANT NAME</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantName" value="{{DeclarantName}}">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantName"
+                                value="{{DeclarantName}}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">DECLARANT CODE</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantCode" value="{{DeclarantCode}}">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantCode"
+                                value="{{DeclarantCode}}">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">DECLARANT TELEPHONE</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantTelePhone" value="{{DeclarantTel}}">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantTelePhone"
+                                value="{{DeclarantTel}}">
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -271,20 +280,40 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-5">
-                            <select class="Dropdown" id="DeclarationType">
+                            <select class="Dropdown" id="HeaddocumentType" tabindex="16">
                                 <option selected>--Select--</option>
-                                {% for i in declarationTypeValue%}
+                                {% for i in DocumentAttachmentType %}
                                 <option>{{i.Name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
-                        <div class="col-4"><input type="file" class="inputChooseFile"></div>
-                        <div class="col-2"><button type="button" class="ButtonClick">ATTACH</button></div>
+                        <div class="col-4">
+                            <input type="file" class="inputChooseFile" id="HeadAttach" tabindex="17"
+                                accept=".pdf,.xlsx,.DOC,.DOCX,.XLS,.XLSX,.PDF,.JPG,.JPEG,.PNG,.BMP,.GIF,.TIF,.TIFF">
+                        </div>
+                        <div class="col-2"><button type="button" class="ButtonClick" tabindex="18"
+                                onclick="HeaderDocumentAttch()">ATTACH</button></div>
                     </div>
-                    <div class="row mt-3" style="font-size: 9px;color: red;">TOTAL SIZE SHOULD NOT EXCEED 20000 (KB)
+                    <div class="row mt-3" style="font-size: 9px;color: red;">
+                        TOTAL SIZE SHOULD NOT EXCEED 20000 (KB)
                     </div>
-                    <div class="row" style="font-size: 9px;color: red;">FILE FORMAT :
-                        DOC,DOCX,XLS,XLSX,PDF,JPG,JPEG,PNG,BMP,GIF,TIF,TIFF</div>
+                    <div class="row" style="font-size: 9px;color: red;">
+                        FILE FORMAT : DOC,DOCX,XLS,XLSX,PDF,JPG,JPEG,PNG,BMP,GIF,TIF,TIFF
+                    </div>
+                    <div class="row mt-3" style="display: none;" id="HeaderDocumentTableshow">
+                        <div class="col-12">
+                            <table style="width: 100%;font-size: 10px;" id="HeaderAttachTable">
+                                <thead>
+                                    <td>Delete</td>
+                                    <td>Document Type</td>
+                                    <td>NAME</td>
+                                    <td>SIZE</td>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row PartyManufacturer" style="display: none;">
@@ -429,11 +458,15 @@
                 <div class="col-2">DECLARANT COMPANY</div>
                 <div class="col-1"></div>
                 <div class="col-1">
-                    <input type="text" class="inputStyle" style="width: 80%;" id="DeclarantCompanyCode" value="{{Code}}" disabled>
+                    <input type="text" class="inputStyle" style="width: 80%;" id="DeclarantCompanyCode" value="{{Code}}"
+                        disabled>
                 </div>
-                <div class="col-2"><input type="text" class="inputStyle HighLight" style="width: 80%;" value="{{CRUEI}}"  disabled></div>
-                <div class="col-3"><input type="text" class="inputStyle HighLight" style="width: 80%;" value="{{name}}"  disabled></div>
-                <div class="col-3"><input type="text" class="inputStyle " style="width: 80%;" value="{{name1}}"  disabled></div>
+                <div class="col-2"><input type="text" class="inputStyle HighLight" style="width: 80%;" value="{{CRUEI}}"
+                        disabled></div>
+                <div class="col-3"><input type="text" class="inputStyle HighLight" style="width: 80%;" value="{{name}}"
+                        disabled></div>
+                <div class="col-3"><input type="text" class="inputStyle " style="width: 80%;" value="{{name1}}"
+                        disabled></div>
             </div>
             <div class="row mt-3">
                 <div class="col-2">EXPORTER</div>
@@ -812,11 +845,12 @@
                         <div class="row mt-3">
                             <div class="col-4">TOTAL GROSS WEIGHT</div>
                             <div class="col-3">
-                                <input type="text" class="inputStyle HighLight" id="TotalGrossWeight"><br>
+                                <input type="text" class="inputStyle HighLight" id="TotalGrossWeight"
+                                    onfocusout="CargoGross()"><br>
                                 <span1 id="TotalGrossWeightSpan">FILL THE TOTAL GROSS WEIGHT</span1>
                             </div>
                             <div class="col-3">
-                                <select class="Dropdown HighLight" id="TotalGrossWeightUOM">
+                                <select class="Dropdown HighLight" id="TotalGrossWeightUOM" onchange="CargoGross()">
                                     <option selected>--Select--</option>
                                     <option>KGM</option>
                                     <option>TNE</option>
@@ -2749,10 +2783,11 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="summaryInvoiceTotal"></div>
+                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="summaryInvoiceTotal" disabled>
+                        </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00">
+                        <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00" disabled>
                         </div>
                     </div>
                 </div>
@@ -2766,7 +2801,7 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00">
+                        <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00" disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -2783,7 +2818,8 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="SummarytotalInvoiceCif"></div>
+                        <div class="col-8"><input type="text" class="inputStyle" value="0.00"
+                                id="SummarytotalInvoiceCif" disabled></div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-8"> </div>
@@ -2903,7 +2939,8 @@
             </div>
             <div class="row mt-5">
                 <div class="col-12 SummaryCheckBoxClass">
-                    <input type="checkbox" id="DeclareIndicator" value="False"><label for="DeclareIndicator"> I/WE DECLARE THAT
+                    <input type="checkbox" id="DeclareIndicator" value="False"><label for="DeclareIndicator"> I/WE
+                        DECLARE THAT
                         ALL
                         PARTICULARS IN THIS APPLICATION ARE TRUE AND CORRECT</label>
                 </div>

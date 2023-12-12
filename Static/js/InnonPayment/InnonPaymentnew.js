@@ -5,7 +5,7 @@ window.onload = function () {
 };
 
 $(document).ready(function () {
-  $("#INNONPAYMENT").css("background-color", "white");
+  $("#INNONPAYMENT").css("background-color", "white"); 
   $("#INNONPAYMENT a").css("color", "green");
   $("#INPAYMENT").css("background-color", "rgb(25, 135, 84)");
   $("#INPAYMENT a").css("color", "white");

@@ -925,6 +925,117 @@ def outItemDelete(request):
     return JsonResponse(context)
 
 
+class AttachDocument(View, SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+        print("Hello Welcome")
+
+    def get(self, request):
+        if request.GET.get("Method") == "DELETE":
+            self.cursor.execute(
+                "DELETE FROM OutFile WHERE Id = '{}' ".format(request.GET.get("Data"))
+            )
+        elif request.GET.get("Method") == "ALLDELETE":
+            self.cursor.execute(
+                "DELETE FROM OutFile WHERE PermitId = '{}' AND Type = 'NEW' ".format(
+                    request.GET.get("PermitId")
+                )
+            )
+
+        self.conn.commit()
+
+        self.cursor.execute(
+            f"SELECT Id,Sno,Name,ContentType,DocumentType,Size,PermitId,Type FROM OutFile where PermitId = '{request.GET.get('PermitId')}' AND Type = '{request.GET.get('Type')}' Order By Sno "
+        )
+        return JsonResponse(
+            {
+                "attachFile": (
+                    pd.DataFrame(
+                        list(self.cursor.fetchall()),
+                        columns=[
+                            "Id",
+                            "Sno",
+                            "Name",
+                            "ContentType",
+                            "DocumentType",
+                            "Size",
+                            "PermitId",
+                            "Type",
+                        ],
+                    )
+                ).to_dict("records"),
+            }
+        )
+
+    def post(self, request):
+        Result = ""
+        try:
+            self.cursor.execute(
+                "SELECT COUNT(PermitId) AS MaxItem FROM OutFile  where PermitId='"
+                + request.POST.get("PermitId")
+                + "' AND Type = '"
+                + request.POST.get("Type")
+                + "'"
+            )
+
+            myfile = request.FILES.get("file")
+            path1 = request.POST.get("FilePath")
+            fileFormat = request.POST.get("ContentType").split("/")
+
+            with open(
+                path1 + request.POST.get("Name") + "." + fileFormat[1], "wb+"
+            ) as destination:
+                for chunk in myfile.chunks():
+                    destination.write(chunk)
+
+            lenFile = int((self.cursor.fetchone())[0]) + 1
+            Qry = "INSERT INTO OutFile (Sno,Name,ContentType,Data,DocumentType,InPaymentId,TouchUser,TouchTime,Size,PermitId,Type) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+            Val = (
+                lenFile,
+                request.POST.get("Name") + "." + fileFormat[1],
+                request.POST.get("ContentType"),
+                None,
+                request.POST.get("DocumentType"),
+                request.POST.get("InPaymentId"),
+                request.POST.get("UserName"),
+                request.POST.get("TouchTime"),
+                request.POST.get("Size"),
+                request.POST.get("PermitId"),
+                request.POST.get("Type"),
+            )
+            self.cursor.execute(Qry, Val)
+            self.conn.commit()
+            Result = "SAVED SUCCESSFULLY...!"
+
+        except Exception as E:
+            print(E)
+            Result = "DID NOT SAVED...!"
+
+        self.cursor.execute(
+            f"SELECT Id,Sno,Name,ContentType,DocumentType,Size,PermitId,Type FROM OutFile where PermitId = '{request.POST.get('PermitId')}' AND Type = '{request.POST.get('Type')}'  Order By Sno "
+        )
+        return JsonResponse(
+            {
+                "attachFile": (
+                    pd.DataFrame(
+                        list(self.cursor.fetchall()),
+                        columns=[
+                            "Id",
+                            "Sno",
+                            "Name",
+                            "ContentType",
+                            "DocumentType",
+                            "Size",
+                            "PermitId",
+                            "Type",
+                        ],
+                    )
+                ).to_dict("records"),
+                "Result": Result,
+            }
+        )
+
+
 class ContainerSave(View, SqlDb):
     def post(self, request):
         SqlDb.__init__(self)
@@ -1089,7 +1200,7 @@ class outSaveSubmit(View, SqlDb):
             "GrossReference": request.POST.get("GrossReference"),
             "TradeRemarks": request.POST.get("TradeRemarks"),
             "InternalRemarks": request.POST.get("InternalRemarks"),
-            "DeclareIndicator": 'True',
+            "DeclareIndicator": "True",
             "NumberOfItems": request.POST.get("NumberOfItems"),
             "TotalCIFFOBValue": request.POST.get("TotalCIFFOBValue"),
             "TotalGSTTaxAmt": request.POST.get("TotalGSTTaxAmt"),
@@ -1098,8 +1209,8 @@ class outSaveSubmit(View, SqlDb):
             "TotalODutyAmt": request.POST.get("TotalODutyAmt"),
             "TotalAmtPay": request.POST.get("TotalAmtPay"),
             "Status": request.POST.get("Status"),
-            "TouchUser": request.POST.get("TouchUser"),
-            "TouchTime": request.POST.get("TouchTime"),
+            "TouchUser": str(request.session['Username']).upper(),
+            "TouchTime": datetime.now(),
             "PermitNumber": request.POST.get("PermitNumber"),
             "prmtStatus": request.POST.get("prmtStatus"),
             "ResLoaName": request.POST.get("ResLoaName"),
@@ -1116,4 +1227,11 @@ class outSaveSubmit(View, SqlDb):
         }
         for key, value in data.items():
             print(f"{key} : =>  {value}")
-        return JsonResponse({"message": "Saved..."})
+
+        columns = ', '.join([f'[{key}]' for key in data.keys()])
+        values = ', '.join(['%s' for _ in range(len(data))])
+        insert_statement = f'INSERT INTO OutHeaderTbl ({columns}) VALUES ({values})'
+
+        # Execute the INSERT statement
+        self.cursor.execute(insert_statement, tuple(data.values()))
+        self.conn.commit() 

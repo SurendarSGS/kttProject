@@ -2,6 +2,7 @@ const NowDate = new Date();
 const TOUCHTIME = NowDate.toISOString().slice(0, 19).replace("T", " ");
 
 var InvoiceData = [];
+var AttachData = [];
 
 $(document).ready(function () {
   $("#OUT").css("background-color", "white");
@@ -303,6 +304,17 @@ function OutReferenceDocument() {
   } else {
     $("#OutReferenceShow").hide();
     $(".LicenceHide").val("");
+    $.ajax({
+      url: "/AttachOut/",
+      data: {
+        Method: "ALLDELETE",
+        PermitId: $("#PermitId").val(),
+      },
+      success: function (response) {
+        AttachData = response.attachFile;
+        AttachLoad(AttachData);
+      },
+    });
   }
 }
 
@@ -1365,7 +1377,7 @@ function HsCodeFocusOut() {
     typeid = HsCodeF.DUTYTYPID
     $("#HSQTYUOM").val(HsCodeF.UOM)
     var uom = HsCodeF.DuitableUom
-    if (HsCodeF.Out == 1) {
+    if (HsCodeF.Out == '1') {
       $("#HscodeControl").text("CONTROLLED ITEM")
     }
     var HSQTYUOM = $("#HSQTYUOM").val()
@@ -2667,9 +2679,9 @@ function OutfinalSave() {
         FlightNO: $('#FlightNO').val().trim().toUpperCase(),
         AircraftRegNo: $('#AircraftRegNo').val().trim().toUpperCase(),
         MasterAirwayBill: $('#OutMasterAirwayBill').val(),//
-        ReleaseLocation: $('#ReleaseLocaName').val(),
-        RecepitLocation: $('#ReciptLocationCode').val(),
-        StorageLocation: $('#StorageCode').val(),
+        ReleaseLocation: $('#ReleaseLocaName').val().toUpperCase(),
+        RecepitLocation: $('#ReciptLocationCode').val().toUpperCase(),
+        StorageLocation: $('#StorageCode').val().toUpperCase(),
         BlanketStartDate: $('#BlanketStartDate').val(),
         DepartureDate: $('#DepartureDate').val(),
         DepartureTime: $('#DepartureTime').val(),
@@ -2694,7 +2706,7 @@ function OutfinalSave() {
         TotalOuterPackUOM: $('#TotalOuterPackUOM').val(),
         TotalGrossWeight: $('#TotalGrossWeight').val(),
         TotalGrossWeightUOM: $('#TotalGrossWeightUOM').val(),
-        GrossReference: $('#GrossReference').val(),
+        GrossReference: $('#GrossReference').val().trim().toUpperCase(),
         TradeRemarks: $('#summaryTradeRemarks').val(),
         InternalRemarks: $('#InternalRemarks').val(),
         DeclareIndicator: $('#DeclareIndicator').val(),
@@ -2762,3 +2774,122 @@ function summaryConfigBtnFunction() {
   document.getElementById("summaryTradeRemarks").value = sp;
 }
 
+function CargoGross() {
+  $("#TotalGrossWeightSpan").hide();
+  var totalWeight = Number($('#TotalGrossWeight').val());
+  var selectedWeight = $('#TotalGrossWeightUOM').val();
+  // if ($("#inwardTranseportMode").val() == '1 : Sea') {
+  //   if ($("#TotalGrossWeightUOM").val() != "TNE") {
+  //     $("#TotalGrossWeightSpan").show();
+  //   }
+  // }
+  if ('TNE' == selectedWeight && totalWeight != null) {
+    var total = totalWeight / 1000
+    $('#PermitGrossWeight').val(total);
+  } else {
+    $('#PermitGrossWeight').val(totalWeight);
+  }
+}
+
+function HeaderDocumentAttch() {
+  let check = true;
+  if ($("#HeaddocumentType").val() == "--Select--") {
+    check = false;
+  }
+  if ($("#HeadAttach").val() == "") {
+    check = false;
+  }
+  if (check) {
+    var FileName = "HeadAttach";
+    var MeesageID = $("#MSGId").val();
+    var PermitId = $("#PermitId").val();
+    var UserName = $("#INONUSERNAME").val();
+    var name = document.getElementById(FileName);
+    var type1 = name.files.item(0).type;
+    var size = name.files.item(0).size / 1024;
+    size = Math.round(size * 100) / 100;
+    name = name.files.item(0).name.split(".");
+    name = name[0].replaceAll(" ", "_");
+    name = name.replaceAll("-", "_");
+    name = name + MeesageID + UserName;
+    var fileInput = document.getElementById(FileName);
+    var file = fileInput.files[0];
+    var formData = new FormData();
+    formData.append("file", file);
+    formData.append("Sno", 1);
+    formData.append("Name", name);
+    formData.append("ContentType", type1);
+    formData.append("DocumentType", $("#HeaddocumentType").val());
+    formData.append("InPaymentId", MeesageID);
+    formData.append("FilePath", "D:/Users/Public/IMG/");
+    formData.append("Size", size + " KB");
+    formData.append("PermitId", PermitId);
+    formData.append("UserName", UserName);
+    formData.append("TouchTime", TOUCHTIME);
+    formData.append("Type", "NEW");
+    formData.append(
+      "csrfmiddlewaretoken",
+      $("[name=csrfmiddlewaretoken]").val()
+    );
+    var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+    $.ajaxSetup({
+      beforeSend: function (xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+      },
+    });
+    $("#Loading").show();
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: "/AttachOut/",
+      processData: false,
+      contentType: false,
+      mimeType: "multipart/form-data",
+      data: formData,
+      success: function (response) {
+        $("#Loading").hide();
+        AttachData = response.attachFile;
+        AttachLoad(AttachData);
+      },
+    });
+  } else {
+    alert("PLEASE SELECT THE DOCUMENT TYPE OR INSERT THE FILE ");
+  }
+}
+
+function AttachLoad(Val) {
+  let Ans = "";
+  for (let At of Val) {
+    Ans += `
+    <tr>
+      <td><i class="fa-solid fa-trash-can" style="color: #ff0000;" onclick = "DeleteAttach('${At.Id}')"></i></td>
+      <td>${At.DocumentType}</td>
+      <td><a href = '/AttachDownloadInNon/${At.Id}/' style="text-decoration:none">${At.Name}</a></td>
+      <td>${At.Size}</td>
+    </tr>`;
+  }
+  if (Val.length > 0) {
+    $("#ReferenceDocuments").prop("checked", true);
+    $("#ReferenceShow").show();
+    $("#HeaderDocumentTableshow").show();
+    $("#HeaderAttachTable tbody").html(Ans);
+  } else {
+    $("#HeaderDocumentTableshow").hide();
+  }
+}
+
+function DeleteAttach(Arg) {
+  $.ajax({
+    url: "/AttachOut/",
+    data: {
+      Method: "DELETE",
+      Data: Arg,
+      PermitId: $("#PermitId").val(),
+      Type: "NEW"
+    },
+    success: function (response) {
+      AttachData = response.attachFile;
+      AttachLoad(AttachData);
+    },
+  });
+}
