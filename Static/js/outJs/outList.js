@@ -125,7 +125,7 @@ $(document).ready(function () {
             "className": "text-center",
             'render': function (data, type, full, meta) {
                 if (full.STATUS == "NEW" || full.STATUS == "DRF") {
-                    return `<i class="fa-regular fa-pen-to-square" style="color: #ff0000;" onclick = "InNonPaymentEdit('${data}')"></i>`
+                    return `<a href="/outEdit/${data}/"><i class="fa-regular fa-pen-to-square" style="color: #ff0000;"></i></a>`
                 } else {
                     return `<i class="fa-regular fa-pen-to-square disable" style="color: #ff0000;" ></i>`
                 }
@@ -141,7 +141,7 @@ $(document).ready(function () {
         },
         {
             "width": "50px",
-            "targets": [4, 9, 16, 17, 18, 19,20,21,22],
+            "targets": [4, 9, 16, 17, 18, 19, 20, 21, 22],
             "className": "text-center",
             "visible": false,
         },
@@ -241,16 +241,18 @@ function InNonCopy() {
     ChechValue.forEach(
         function (v) {
             if (v.checked) {
-                $.ajax({
-                    url: "/CopyInNonPayment/",
-                    data: {
-                        "Id": v.value
-                    },
-                    success: function (response) {
-                        console.log(response)
-                        window.location.href = "/InonPayementEdit/"
-                    }
-                })
+                console.log(v.value);
+                window.location.href  = '/OutPaymentCopy/'+v.value+'/'
+                // $.ajax({
+                //     url: "/CopyInNonPayment/",
+                //     data: {
+                //         "Id": v.value
+                //     },
+                //     success: function (response) {
+                //         console.log(response)
+                //         window.location.href = "/InonPayementEdit/"
+                //     }
+                // })
             }
         }
     )

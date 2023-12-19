@@ -126,7 +126,6 @@ function DeleteCasc(event) {
   }
 }
 
-
 function ItemCascShow(ID, CLASS) {
   if ($(ID).prop("checked")) {
     $(CLASS).show();
@@ -134,6 +133,7 @@ function ItemCascShow(ID, CLASS) {
     $(CLASS).hide();
   }
 }
+
 function ItemCascShowAll(ID, CLASS) {
   if ($(ID).prop("checked")) {
     $(CLASS).show();
@@ -220,6 +220,7 @@ function OutInwardTrasnPortModeChange() {
   }
   if (OutTransPort == "1 : Sea") {
     $('#OceanBillofLadingNo').html('OBL');
+    $('#InHAWBOBLlbl').html('IN HBL');
     $('#OutCargoHbl').html('HBL');
     $('#OutCargoOblShow').show();
     $('#OutCargoHblShow').show();
@@ -229,6 +230,7 @@ function OutInwardTrasnPortModeChange() {
     $(".CargoAirShow").show();
     $('#OceanBillofLadingNo').html('MAWB');
     $('#OutCargoHbl').html('HAWB');
+    $('#InHAWBOBLlbl').html('IN HAWB');
     $('#OutCargoOblShow').show();
     $('#OutCargoHblShow').show();
   }
@@ -239,9 +241,11 @@ function OutInwardTrasnPortModeChange() {
   else {
     $(".CargoRailShow").show();
     $('#OceanBillofLadingNo').html('HBL');
+    $('#InHAWBOBLlbl').html('IN HBL');
     $('#OutCargoHblShow').show();
   }
 }
+
 
 function OutOutwardTrasnPortModeChange() {
   var OutTransPort = $("#OutOutwardTransportMode").val();
@@ -301,7 +305,10 @@ function OutCoTypeChange() {
 function OutReferenceDocument() {
   if ($("#ReferenceDocuments").prop("checked")) {
     $("#OutReferenceShow").show();
-  } else {
+    $("#ReferenceDocuments").val("True")
+  }
+  else {
+    $("#ReferenceDocuments").val("False")
     $("#OutReferenceShow").hide();
     $(".LicenceHide").val("");
     $.ajax({
@@ -384,6 +391,7 @@ $(document).ready(() => {
     url: "/OutParty/",
     success: (response) => {
       Exporter = response.exporter;
+      ExportFocusOut()
     }
   })
 })
@@ -397,6 +405,12 @@ $(document).ready(() => {
       OutWard = response.outward;
       Frieght = response.fright;
       Consign = response.consign;
+      InwardFocusOut()
+      OutwardFocusOut()
+      FrieghtFocusOut()
+      ImportFocusOut()
+      ConsigneFocusOut()
+      EndConsigneFocusIn()
     }
   })
 })
@@ -406,6 +420,7 @@ $(document).ready(() => {
     url: "/ParytManFacture/",
     success: (response) => {
       ManFacture = response.manfacture;
+      ManFactureFocusOut()
     }
   })
 })
@@ -420,6 +435,10 @@ $(document).ready(() => {
       ReleaseLocation = response.releaseLocation;
       ReciptLocation = response.reciptLocation;
       LoadingPort = response.loadingPort;
+      StorageFocusOut()
+      DischargePortFocusOut()
+      NextPortFocusOut()
+      LastPortFocusOut()
     }
   })
 })
@@ -433,11 +452,11 @@ function ExportFocusIn() {
 }
 
 function ExportFocusOut() {
-  let Code = $("#ExporterCode").val().trim()
+  let Code = $("#ExporterCode").val().trim().toUpperCase()
 
   if (Code != "") {
     var data = Exporter.filter((obj) => {
-      return obj.OutUserCode == Code
+      return (obj.OutUserCode).trim().toUpperCase() == Code
     })
     $("#ExporterCruei").val(data[0].OutUserCRUEI)
     $("#ExporterName").val(data[0].OutUserName)
@@ -577,11 +596,12 @@ function ConsigneFocusIn() {
 }
 
 function ConsigneFocusOut() {
-  let Code = $("#ConsigneCode").val().trim()
+  let Code = $("#ConsigneCode").val().trim().toUpperCase()
+
 
   if (Code != "") {
-    var data = Consign.filter((obj) => {
-      if (obj.ConsigneeCode == Code) {
+    Consign.filter((obj) => {
+      if (obj.ConsigneeCode.trim().toUpperCase() == Code) {
         $("#ConsigneCruei").val(obj.ConsigneeCRUEI)
         $("#ConsigneConName").val(obj.ConsigneeName)
         $("#ConsigneName1").val(obj.ConsigneeName1)
@@ -1274,6 +1294,9 @@ inhouseData.then(function (response) {
   InhouseData = response.inhouse
   ChkHsCode = response.ChkHsCode
   Country = response.country
+  FinalDestinationfocusin()
+  VesselNationalityFocusIn()
+  EditAnotherValues()
 })
 
 function FinalDestinationfocusin() {
@@ -2625,6 +2648,31 @@ function ValidationPopUp(Tag) {
   );
 }
 function OutfinalSave() {
+
+  let BlanketStartDate = ""
+  if ($('#BlanketStartDate').val() != "") {
+    BlanketStartDate = $("#BlanketStartDate").val().split("/");
+    BlanketStartDate = `${BlanketStartDate[2]}/${BlanketStartDate[1]}/${BlanketStartDate[0]}`;
+  }
+
+  let DepartureDate = ""
+  if ($('#DepartureDate').val() != "") {
+    DepartureDate = $("#DepartureDate").val().split("/");
+    DepartureDate = `${DepartureDate[2]}/${DepartureDate[1]}/${DepartureDate[0]}`;
+  }
+
+  let ArrivalDate = ""
+  if ($('#ArrivalDate').val() != "") {
+    ArrivalDate = $("#ArrivalDate").val().split("/");
+    ArrivalDate = `${ArrivalDate[2]}/${ArrivalDate[1]}/${ArrivalDate[0]}`;
+  }
+
+  let MRDate = ""
+  if ($('#MRDate').val() != "") {
+    MRDate = $("#MRDate").val().split("/");
+    MRDate = `${MRDate[2]}/${MRDate[1]}/${MRDate[0]}`;
+  }
+
   const url = "/outSaveSubmit/"
   try {
     $.ajax({
@@ -2668,7 +2716,7 @@ function OutfinalSave() {
         CONSIGNEECode: $('#ConsigneCode').val().trim().toUpperCase(),
         EndUserCode: $('#EndConsigneCode').val().trim().toUpperCase(),
         Manufacturer: $('#ManuFactureCode').val().trim().toUpperCase(),
-        ArrivalDate: $('#ArrivalDate').val(),
+        ArrivalDate: ArrivalDate,
         ArrivalTime: $('#ArrivalTime').val(),
         LoadingPortCode: $('#LoadingPortCode').val().trim().toUpperCase(),
         VoyageNumber: $('#VoyageNumber').val().trim().toUpperCase(),
@@ -2682,8 +2730,8 @@ function OutfinalSave() {
         ReleaseLocation: $('#ReleaseLocaName').val().toUpperCase(),
         RecepitLocation: $('#ReciptLocationCode').val().toUpperCase(),
         StorageLocation: $('#StorageCode').val().toUpperCase(),
-        BlanketStartDate: $('#BlanketStartDate').val(),
-        DepartureDate: $('#DepartureDate').val(),
+        BlanketStartDate: BlanketStartDate,
+        DepartureDate: DepartureDate,
         DepartureTime: $('#DepartureTime').val(),
         DischargePort: $('#DischargePort').val().trim().toUpperCase(),
         FinalDestinationCountry: $('#FinalDestinationCountry').val().trim().toUpperCase(),
@@ -2729,7 +2777,7 @@ function OutfinalSave() {
         Defrentprinting: $('#Defrentprinting').val(),
         Cnb: $('#OutCnb').val(),
         DeclarningFor: $('#DeclaringFor').val(),
-        MRDate: $('#MRDate').val(),
+        MRDate: MRDate,
         MRTime: $('#MRTime').val(),
         csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
       },
@@ -2746,6 +2794,7 @@ function summaryPreviousFunction() {
   var Val = $("#PreviousPermitNo").val();
   $("#summaryTradeRemarks").val("PREVIOUS PERMIT NO : " + Val);
 }
+
 function summaryEXRateFunction() {
   let trade = document.getElementById("summaryTradeRemarks");
   let arr1 = [];
@@ -2767,6 +2816,7 @@ function summaryEXRateFunction() {
     trade.value = trade.value + " CURRENCY : " + arr2[j][0] + " , EXCHANGE RATE : " + arr2[j][1] + "\n";
   }
 }
+
 function summaryConfigBtnFunction() {
   let trade = document.getElementById("summaryTradeRemarks");
   let remark = document.getElementById("summaryFormatRemark").value;
@@ -2892,4 +2942,32 @@ function DeleteAttach(Arg) {
       AttachLoad(AttachData);
     },
   });
+}
+
+
+function hawbOutFunction() {
+  var Hawb = $('#Hawb').val().trim().toUpperCase().split(',')
+  let ht = "";
+  for (var i of Hawb) {
+    ht += `<option>${i}</option>`;
+  }
+  $("#OutHAWBOBL").html(ht);
+}
+
+function hawbInFunction() {
+  var Hawb = $('#Hawb').val().trim().toUpperCase().split(',')
+  let ht = "";
+  for (var i of Hawb) {
+    ht += `<option>${i}</option>`;
+  }
+  $("#OutHAWBOBL").html(ht);
+}
+
+function OutCargoHblValueOut() {
+  var Hawb = $('#OutCargoHblValue').val().trim().toUpperCase().split(',')
+  let ht = "";
+  for (var i of Hawb) {
+    ht += `<option>${i}</option>`;
+  }
+  $("#InHAWBOBL").html(ht);
 }

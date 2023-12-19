@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from typing import Any
+from django.shortcuts import render,redirect
 from KttApp.views import SqlDb
 from django.views import View
 from datetime import *
 import pandas as pd
 from KttApp.models import *
-from django.http import JsonResponse
+from django.http import JsonResponse 
 import json
 
 
@@ -81,24 +82,14 @@ class OutNew(View, SqlDb):
         refDate = datetime.now().strftime("%Y%m%d")
         jobDate = datetime.now().strftime("%Y-%m-%d")
 
-        self.cursor.execute(
-            "SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username)
-        )
+        self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username))
 
         AccountId = self.cursor.fetchone()[0]
 
-        self.cursor.execute(
-            "SELECT COUNT(*) + 1  FROM OutHeaderTbl WHERE MSGId LIKE '%{}%' AND MessageType = 'OUTDEC' ".format(
-                refDate
-            )
-        )
+        self.cursor.execute("SELECT COUNT(*) + 1  FROM OutHeaderTbl WHERE MSGId LIKE '%{}%' AND MessageType = 'OUTDEC' ".format(refDate))
         self.RefId = "%03d" % self.cursor.fetchone()[0]
 
-        self.cursor.execute(
-            "SELECT COUNT(*) + 1  FROM PermitCount WHERE TouchTime LIKE '%{}%' AND AccountId = '{}' ".format(
-                jobDate, AccountId
-            )
-        )
+        self.cursor.execute("SELECT COUNT(*) + 1  FROM PermitCount WHERE TouchTime LIKE '%{}%' AND AccountId = '{}' ".format(jobDate, AccountId))
         self.JobIdCount = self.cursor.fetchone()[0]
 
         self.JobId = f"K{datetime.now().strftime('%y%m%d')}{'%05d' % self.JobIdCount}"
@@ -107,13 +98,8 @@ class OutNew(View, SqlDb):
 
         self.PermitIdInNon = f"{Username}{refDate}{self.RefId}"
 
-        self.cursor.execute(
-            "select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='"
-            + Username
-            + "'"
-        )
+        self.cursor.execute("select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='"+ Username+ "'")
         InNonHeadData = self.cursor.fetchone()
-        print("The Last Updated Is : ", InNonHeadData[1])
         context = {
             "UserName": Username,
             "PermitId": self.PermitIdInNon,
@@ -136,44 +122,20 @@ class OutNew(View, SqlDb):
             "Code": InNonHeadData[10],
             "name": InNonHeadData[11],
             "name1": InNonHeadData[12],
-            "DeclarationType": CommonMaster.objects.filter(
-                TypeId=15, StatusId=1
-            ).order_by("Name"),
+            "DeclarationType": CommonMaster.objects.filter(TypeId=15, StatusId=1).order_by("Name"),
             "CargoType": CommonMaster.objects.filter(TypeId=2, StatusId=1),
-            "OutWardTransportMode": CommonMaster.objects.filter(
-                TypeId=3, StatusId=1
-            ).order_by("Name"),
-            "DeclaringFor": CommonMaster.objects.filter(TypeId=81, StatusId=1).order_by(
-                "Name"
-            ),
-            "BgIndicator": CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by(
-                "Name"
-            ),
-            "DocumentAttachmentType": CommonMaster.objects.filter(
-                TypeId=5, StatusId=1
-            ).order_by("Name"),
-            "CoType": CommonMaster.objects.filter(TypeId=16, StatusId=1).order_by(
-                "Name"
-            ),
-            "CertificateType": CommonMaster.objects.filter(
-                TypeId=17, StatusId=1
-            ).order_by("Name"),
+            "OutWardTransportMode": CommonMaster.objects.filter(TypeId=3, StatusId=1).order_by("Name"),
+            "DeclaringFor": CommonMaster.objects.filter(TypeId=81, StatusId=1).order_by("Name"),
+            "BgIndicator": CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by("Name"),
+            "DocumentAttachmentType": CommonMaster.objects.filter(TypeId=5, StatusId=1).order_by("Name"),
+            "CoType": CommonMaster.objects.filter(TypeId=16, StatusId=1).order_by("Name"),
+            "CertificateType": CommonMaster.objects.filter(TypeId=17, StatusId=1).order_by("Name"),
             "Currency": Currency.objects.filter().order_by("Currency"),
-            "Container": CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by(
-                "Name"
-            ),
-            "TotalOuterPack": CommonMaster.objects.filter(
-                TypeId=10, StatusId=1
-            ).order_by("Name"),
-            "InvoiceTermType": CommonMaster.objects.filter(
-                TypeId=7, StatusId=1
-            ).order_by("Name"),
-            "Making": CommonMaster.objects.filter(TypeId=12, StatusId=1).order_by(
-                "Name"
-            ),
-            "VesselType": CommonMaster.objects.filter(TypeId=14, StatusId=1).order_by(
-                "Name"
-            ),
+            "Container": CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by("Name"),
+            "TotalOuterPack": CommonMaster.objects.filter(TypeId=10, StatusId=1).order_by("Name"),
+            "InvoiceTermType": CommonMaster.objects.filter(TypeId=7, StatusId=1).order_by("Name"),
+            "Making": CommonMaster.objects.filter(TypeId=12, StatusId=1).order_by("Name"),
+            "VesselType": CommonMaster.objects.filter(TypeId=14, StatusId=1).order_by("Name"),
         }
         return render(request, "Out/OutNew.html", context)
 
@@ -346,11 +308,7 @@ class CargoLocations(View, SqlDb):
         self.cursor.execute("SELECT Code,Description FROM ReleaseLocation order by Id")
         self.Partycontext.update(
             {
-                "releaseLocation": (
-                    pd.DataFrame(
-                        list(self.cursor.fetchall()), columns=["Code", "Description"]
-                    )
-                ).to_dict("records")
+                "releaseLocation": (pd.DataFrame(list (self.cursor.fetchall()), columns=["Code", "Description"])).to_dict("records")
             }
         )
 
@@ -369,9 +327,7 @@ class CargoLocations(View, SqlDb):
         headers = [i[0] for i in self.cursor.description]
         self.Partycontext.update(
             {
-                "loadingPort": (
-                    pd.DataFrame(list(self.cursor.fetchall()), columns=headers)
-                ).to_dict("records")
+                "loadingPort": (pd.DataFrame(list(self.cursor.fetchall()), columns=headers)).to_dict("records")
             }
         )
 
@@ -877,7 +833,7 @@ def outItemDelete(request):
     db.conn.commit()
 
     db.cursor.execute(
-        "SELECT ItemNo,PermitId FROM InNonItemDtl WHERE PermitId = '{}' ORDER BY ItemNo".format(
+        "SELECT ItemNo,PermitId FROM OutItemDtl WHERE PermitId = '{}' ORDER BY ItemNo".format(
             request.POST.get("PermitId")
         )
     )
@@ -885,12 +841,12 @@ def outItemDelete(request):
     Ic = 1
     for itm in db.cursor.fetchall():
         db.cursor.execute(
-            "UPDATE InNonItemDtl SET ItemNo = '{}' WHERE PermitId = '{}' AND  ItemNo = '{}' ".format(
+            "UPDATE OutItemDtl SET ItemNo = '{}' WHERE PermitId = '{}' AND  ItemNo = '{}' ".format(
                 Ic, request.POST.get("PermitId"), itm[0]
             )
         )
         db.cursor.execute(
-            "UPDATE INNONCASCDtl SET ItemNo = '{}' WHERE PermitId = '{}' AND  ItemNo = '{}' ".format(
+            "UPDATE OutCASCDtl SET ItemNo = '{}' WHERE PermitId = '{}' AND  ItemNo = '{}' ".format(
                 Ic, request.POST.get("PermitId"), itm[0]
             )
         )
@@ -1208,11 +1164,11 @@ class outSaveSubmit(View, SqlDb):
             "TotalCusDutyAmt": request.POST.get("TotalCusDutyAmt"),
             "TotalODutyAmt": request.POST.get("TotalODutyAmt"),
             "TotalAmtPay": request.POST.get("TotalAmtPay"),
-            "Status": request.POST.get("Status"),
+            "Status": "NEW",
             "TouchUser": str(request.session['Username']).upper(),
             "TouchTime": datetime.now(),
-            "PermitNumber": request.POST.get("PermitNumber"),
-            "prmtStatus": request.POST.get("prmtStatus"),
+            "PermitNumber": '',
+            "prmtStatus": 'NEW',
             "ResLoaName": request.POST.get("ResLoaName"),
             "RepLocName": request.POST.get("RepLocName"),
             "RecepitLocName": request.POST.get("RecepitLocName"),
@@ -1232,6 +1188,140 @@ class outSaveSubmit(View, SqlDb):
         values = ', '.join(['%s' for _ in range(len(data))])
         insert_statement = f'INSERT INTO OutHeaderTbl ({columns}) VALUES ({values})'
 
+        self.cursor.execute("SELECT AccountId,MailBoxId FROM ManageUser WHERE UserName = '{}' ".format(str(request.session['Username']).upper()))
+        ManageUserVal = self.cursor.fetchone()
+        AccountId = ManageUserVal[0]
+
         # Execute the INSERT statement
+        self.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{request.POST.get("PermitId")}','OUTDEC','{AccountId}','{request.POST.get("MSGId")}','{str(request.session['Username']).upper()}','{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')")
         self.cursor.execute(insert_statement, tuple(data.values()))
-        self.conn.commit() 
+        self.conn.commit()
+        return  JsonResponse({"message":"Success"}) 
+
+
+class CopyOutPayment(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+    def get(self,request,id):
+
+        print("The Id : ",id)
+
+        Username = request.session['Username'] 
+
+        refDate = datetime.now().strftime("%Y%m%d")
+        jobDate = datetime.now().strftime("%Y-%m-%d")
+
+        self.cursor.execute(f"SELECT PermitId FROM OutHeaderTbl WHERE Id = '{id}' ")
+
+        CopyPermitId = self.cursor.fetchone()[0]
+
+        self.cursor.execute("SELECT AccountId,MailBoxId FROM ManageUser WHERE UserName = '{}' ".format(Username))
+        ManageUserVal = self.cursor.fetchone()
+        AccountId = ManageUserVal[0]
+
+        self.cursor.execute("SELECT COUNT(*) + 1  FROM OutHeaderTbl WHERE MSGId LIKE '%{}%' AND MessageType = 'OUTDEC' ".format(refDate))
+        self.RefId = ("%03d" % self.cursor.fetchone()[0])
+
+        self.cursor.execute("SELECT COUNT(*) + 1  FROM PermitCount WHERE TouchTime LIKE '%{}%' AND AccountId = '{}' ".format(jobDate,AccountId))
+        self.JobIdCount = self.cursor.fetchone()[0]
+
+        self.JobId = f"K{datetime.now().strftime('%y%m%d')}{'%05d' % self.JobIdCount}" 
+        self.MsgId = f"{datetime.now().strftime('%Y%m%d')}{'%04d' % self.JobIdCount}"
+        self.PermitIdInNon = f"{Username}{refDate}{self.RefId}"
+
+        print("The Permit ID : ",self.PermitIdInNon)
+
+        NowDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        # query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutFile'"
+        # self.cursor.execute(query)
+        
+        # result = self.cursor.fetchall()
+        # data = [i[0] for i in result]
+        # data = ','.join(data)
+        # print(data)
+        
+        self.cursor.execute(f"INSERT INTO OutHeaderTbl (Refid,JobId,MSGId,PermitId,TradeNetMailboxID,MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,COType,Entryyear,GSPDonorCountry,CerDetailtype1,CerDetailCopies1,CerDetailtype2,CerDetailCopies2,PerCommon,CurrencyCode,AddCerDtl,TransDtl,Recipient,DeclarantCompanyCode,ExporterCompanyCode,Inwardcarriercode,OutwardCarrierAgentCode,FreightForwarderCode,ImporterCompanyCode,InwardCarrierAgentCode,CONSIGNEECode,EndUserCode,Manufacturer,ArrivalDate,ArrivalTime,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,StorageLocation,BlanketStartDate,DepartureDate,DepartureTime,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,TradeRemarks,InternalRemarks,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,Status,TouchUser,TouchTime,PermitNumber,prmtStatus,ResLoaName,RepLocName,RecepitLocName,outHAWB,INHAWB,CertificateNumber,Defrentprinting,Cnb,DeclarningFor,MRDate,MRTime,CondColor) SELECT '{self.RefId}','{self.JobId}','{self.MsgId}','{self.PermitIdInNon}','{ManageUserVal[1]}',MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,COType,Entryyear,GSPDonorCountry,CerDetailtype1,CerDetailCopies1,CerDetailtype2,CerDetailCopies2,PerCommon,CurrencyCode,AddCerDtl,TransDtl,Recipient,DeclarantCompanyCode,ExporterCompanyCode,Inwardcarriercode,OutwardCarrierAgentCode,FreightForwarderCode,ImporterCompanyCode,InwardCarrierAgentCode,CONSIGNEECode,EndUserCode,Manufacturer,ArrivalDate,ArrivalTime,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,StorageLocation,BlanketStartDate,DepartureDate,DepartureTime,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,TradeRemarks,InternalRemarks,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,'DRF','{Username}','{NowDate}','','COPY',ResLoaName,RepLocName,RecepitLocName,outHAWB,INHAWB,CertificateNumber,Defrentprinting,Cnb,'--Select--',MRDate,MRTime,CondColor FROM OutHeaderTbl WHERE Id = '{id}'")
+
+        self.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{self.PermitIdInNon}','OUTDEC','{AccountId}','{self.MsgId}','{Username}','{NowDate}')")
+
+        self.cursor.execute(f"INSERT INTO OutInvoiceDtl (SNo,InvoiceNo,InvoiceDate,TermType,AdValoremIndicator,PreDutyRateIndicator,SupplierImporterRelationship,SupplierCode,ExportPartyCode,TICurrency,TIExRate,TIAmount,TISAmount,OTCCharge,OTCCurrency,OTCExRate,OTCAmount,OTCSAmount,FCCharge,FCCurrency,FCExRate,FCAmount,FCSAmount,ICCharge,ICCurrency,ICExRate,ICAmount,ICSAmount,CIFSUMAmount,GSTPercentage,GSTSUMAmount,MessageType,PermitId,TouchUser,TouchTime) SELECT SNo,InvoiceNo,InvoiceDate,TermType,AdValoremIndicator,PreDutyRateIndicator,SupplierImporterRelationship,SupplierCode,ExportPartyCode,TICurrency,TIExRate,TIAmount,TISAmount,OTCCharge,OTCCurrency,OTCExRate,OTCAmount,OTCSAmount,FCCharge,FCCurrency,FCExRate,FCAmount,FCSAmount,ICCharge,ICCurrency,ICExRate,ICAmount,ICSAmount,CIFSUMAmount,GSTPercentage,GSTSUMAmount,MessageType,'{self.PermitIdInNon}','{Username}','{NowDate}' FROM OutInvoiceDtl WHERE PermitId = '{CopyPermitId}' ") 
+        
+        self.cursor.execute(f"INSERT INTO OutItemDtl (ItemNo,PermitId,MessageType,HSCode,Description,DGIndicator,Contry,EndUserDescription,Brand,Model,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,CerItemQty,CerItemUOM,CIFValOfCer,ManufactureCostDate,TexCat,TexQuotaQty,TexQuotaUOM,CerInvNo,CerInvDate,OriginOfCer,HSCodeCer,PerContent,CertificateDescription,TouchUser,TouchTime,VehicleType,OptionalChrgeUOM,EngineCapcity,Optioncahrge,OptionalSumtotal,OptionalSumExchage,EngineCapUOM,orignaldatereg) SELECT ItemNo,'{self.PermitIdInNon}',MessageType,HSCode,Description,DGIndicator,Contry,EndUserDescription,Brand,Model,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,CerItemQty,CerItemUOM,CIFValOfCer,ManufactureCostDate,TexCat,TexQuotaQty,TexQuotaUOM,CerInvNo,CerInvDate,OriginOfCer,HSCodeCer,PerContent,CertificateDescription,'{Username}','{NowDate}',VehicleType,OptionalChrgeUOM,EngineCapcity,Optioncahrge,OptionalSumtotal,OptionalSumExchage,EngineCapUOM,orignaldatereg FROM OutItemDtl WHERE PermitId = '{CopyPermitId}'")
+
+        self.cursor.execute(f"INSERT INTO OutCASCDtl (ItemNo,ProductCode,Quantity,ProductUOM,RowNo,CascCode1,CascCode2,CascCode3,PermitId,MessageType,TouchUser,TouchTime,CASCId,EndUserDes) SELECT ItemNo,ProductCode,Quantity,ProductUOM,RowNo,CascCode1,CascCode2,CascCode3,'{self.PermitIdInNon}',MessageType,'{Username}','{NowDate}',CASCId,EndUserDes FROM OutCASCDtl WHERE PermitId = '{CopyPermitId}'")
+        
+        self.cursor.execute(f"INSERT INTO OutContainerDtl (PermitId,RowNo,ContainerNo,Size,Weight,SealNo,MessageType,TouchUser,TouchTime) SELECT '{self.PermitIdInNon}',RowNo,ContainerNo,Size,Weight,SealNo,MessageType,'{Username}','{NowDate}' FROM OutContainerDtl WHERE PermitId = '{CopyPermitId}'")
+
+        self.cursor.execute(f"INSERT INTO OutFile (Sno,Name,ContentType,Data,DocumentType,InPaymentId,TouchUser,TouchTime,Size,PermitId,Type) SELECT Sno,Name,ContentType,Data,DocumentType,InPaymentId,'{Username}','{NowDate}',Size,'{self.PermitIdInNon}',Type FROM OutFile WHERE PermitId = '{CopyPermitId}' ")
+        
+        self.conn.commit()
+
+        self.cursor.execute(f"SELECT Id FROM OutHeaderTbl WHERE PermitId = '{self.PermitIdInNon}' ")
+        
+        return redirect('/outEdit/'+str(self.cursor.fetchone()[0])+'/')
+
+
+class OutEdit(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+
+    def get(self, request,id):
+        Username = request.session["Username"]
+
+        self.cursor.execute(f"SELECT * FROM OutHeaderTbl WHERE id = {id}")
+        headers = [i[0] for i in self.cursor.description]
+        outAll = list(self.cursor.fetchall())
+
+        self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username))
+
+        AccountId = self.cursor.fetchone()[0]
+
+        self.cursor.execute("select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='"+ Username+ "'")
+        InNonHeadData = self.cursor.fetchone()
+        context = {
+            "UserName": Username,
+            "PermitId": outAll[0][4],
+            "JobId": outAll[0][2],
+            "RefId": outAll[0][1],
+            "MsgId": outAll[0][3],
+            "AccountId": AccountId,
+            "LoginStatus": InNonHeadData[0],
+            "PermitNumber": "",
+            "prmtStatus": "",
+            "DateLastUpdated": InNonHeadData[1],
+            "MailBoxId": InNonHeadData[2],
+            "SeqPool": InNonHeadData[3],
+            "StartSequence": InNonHeadData[4],
+            "TradeNetMailboxID": InNonHeadData[5],
+            "DeclarantName": InNonHeadData[6],
+            "DeclarantCode": InNonHeadData[7],
+            "DeclarantTel": InNonHeadData[8],
+            "CRUEI": InNonHeadData[9],
+            "Code": InNonHeadData[10],
+            "name": InNonHeadData[11],
+            "name1": InNonHeadData[12],
+            "DeclarationType": CommonMaster.objects.filter(TypeId=15, StatusId=1).order_by("Name"),
+            "CargoType": CommonMaster.objects.filter(TypeId=2, StatusId=1),
+            "OutWardTransportMode": CommonMaster.objects.filter(TypeId=3, StatusId=1).order_by("Name"),
+            "DeclaringFor": CommonMaster.objects.filter(TypeId=81, StatusId=1).order_by("Name"),
+            "BgIndicator": CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by("Name"),
+            "DocumentAttachmentType": CommonMaster.objects.filter(TypeId=5, StatusId=1).order_by("Name"),
+            "CoType": CommonMaster.objects.filter(TypeId=16, StatusId=1).order_by("Name"),
+            "CertificateType": CommonMaster.objects.filter(TypeId=17, StatusId=1).order_by("Name"),
+            "Currency": Currency.objects.filter().order_by("Currency"),
+            "Container": CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by("Name"),
+            "TotalOuterPack": CommonMaster.objects.filter(TypeId=10, StatusId=1).order_by("Name"),
+            "InvoiceTermType": CommonMaster.objects.filter(TypeId=7, StatusId=1).order_by("Name"),
+            "Making": CommonMaster.objects.filter(TypeId=12, StatusId=1).order_by("Name"),
+            "VesselType": CommonMaster.objects.filter(TypeId=14, StatusId=1).order_by("Name"),
+        }
+
+        print(headers)
+
+        context.update({
+            "OutData" : (pd.DataFrame(outAll, columns=headers)).to_dict("records"),
+        })
+        return render(request, "Out/OutNew.html", context)

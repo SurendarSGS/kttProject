@@ -352,6 +352,7 @@ def ItemExcelUpload(request):
     ItemInfo = pd.read_excel(xlsx_file, sheet_name="ItemInfo")
     CascInfo = pd.read_excel(xlsx_file, sheet_name="Casccodes")
     ContainerInfo = pd.read_excel(xlsx_file, sheet_name="ContainerInfo")
+    print(CascInfo)
     ItemData = []
     CascData = []
     ContainerData = []
@@ -499,6 +500,7 @@ def ItemExcelUpload(request):
             pass
 
     for index, row in CascInfo.iterrows():
+        print(row,index)
         if row["ProductCode"] != "":
             CascData.append(
                 Cascdtl(
@@ -531,15 +533,16 @@ def ItemExcelUpload(request):
                 TouchUser=userName,
                 TouchTime=TouchTime,
             )
+    try:
+        ItemDtl.objects.bulk_create(ItemData)
+        Cascdtl.objects.bulk_create(CascData)
+        ContainerDtl.objects.bulk_create(ContainerData)
+        
+    except Exception as e:
+        print("did not saved" ,e)
 
-    ItemDtl.objects.bulk_create(ItemData)
-    Cascdtl.objects.bulk_create(CascData)
-    ContainerDtl.objects.bulk_create(ContainerData)
     Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
-    ItemCasc = list(
-        Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values()
-    )
-
+    ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values() )
     return JsonResponse({"Item": Item, "ItemCasc": ItemCasc, "Result": "Deleted"})
 
 

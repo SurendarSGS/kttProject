@@ -487,7 +487,7 @@ $(function () {
       event.preventDefault();
       var currentDate = $.datepicker.formatDate("dd/mm/yy", new Date());
       $("#SummaryMRD").val(currentDate);
-    } 
+    }
   });
 });
 
@@ -1873,13 +1873,27 @@ function ItemLoadData() {
     $("#ItemTable tbody").html("<tr><td colspan = 14 style = 'text-align:center'>No Record</td></tr>")
   }
   else {
+    
     for (var itemeData of ItemData) {
+
+      var Color = ItemHsCodeData.filter( (data) => {
+        if (data.HSCode == itemeData.HSCode && data.Inpayment == '1'){
+          return true
+        }
+      })
+      
+      if (Color.length != 0){
+        Color="red"
+      }
+      else{
+        Color = '#000'
+      }
       itemCurAmountARR.push([
         itemeData.UnitPriceCurrency,
         Number(itemeData.TotalLineAmount),
       ]);
       Table += `
-            <tr>
+            <tr style="color:${Color}">
                 <td><input type="checkbox" class="inputStyleCheckBox" value="${itemeData.ItemNo}" name="itemCheckDel"></td>
                 <td><i class="fa-regular fa-pen-to-square" style="color: #ff0000;" onclick="ItemEdit(${itemeData.ItemNo})"></i></td>
                 <td>${itemeData.ItemNo}</td>
@@ -1965,7 +1979,6 @@ function ItemEdit(Arg) {
       $('#iteminvoiceTotalInvoiceCharge').val(i.InvoiceCharges);
       $('#iteminvoiceCIFFOB').val(i.CIFFOB);
       $('#itemOuterPackQtyInput').val(i.OPQty);
-      console.log(i.OPQty, i.OPUOM);
       $('#itemOuterPackQtySelect').val(i.OPUOM);
       $('#itemInPackQuantityInput').val(i.IPQty);
       $('#itemInPackQuantitySelect').val(i.IPUOM);
@@ -2036,7 +2049,12 @@ function ItemEdit(Arg) {
       invoiceTotalLineAmountFunction();
       CountryFocusOut()
       dutiableQtyFunction();
-      $('#itmeDescription').val(i.Description);
+      if (i.Description == "") {
+        HsOnFocusOut()
+      }
+      else {
+        $('#itmeDescription').val(i.Description);
+      }
       break;
     }
   }
@@ -2103,6 +2121,7 @@ function ItemDelete() {
         ItemCascData = response.ItemCasc;
         ItemLoadData();
         $('#Loading').hide();
+        $('#ItemHeadCheck').prop("checked", false)
       }
     })
   }
@@ -2129,6 +2148,7 @@ function ItemDelete() {
           ItemLoadData();
           ItemReset();
           $('#Loading').hide();
+          $('#ItemHeadCheck').prop("checked", false)
         }
       })
     }
@@ -4167,6 +4187,8 @@ $(document).ready(function () {
       InhouseItemCode = response.inhouseItemCode;
       ItemHsCodeData = response.hsCode;
       ChkHsCode = response.chkHsCode;
+      console.log(ItemHsCodeData)
+      ItemLoadData()
     },
   });
 });

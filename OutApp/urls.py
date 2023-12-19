@@ -19,4 +19,6 @@ urlpatterns = [
     path("outSaveSubmit/",views.outSaveSubmit.as_view()),
     path("OutContainer/",views.ContainerSave.as_view()),
     path("AttachOut/", views.AttachDocument.as_view()),
+    path("outEdit/<id>/", views.OutEdit.as_view()),
+    path("OutPaymentCopy/<id>/", views.CopyOutPayment.as_view()),
 ]

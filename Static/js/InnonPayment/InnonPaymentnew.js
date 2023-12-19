@@ -5,7 +5,7 @@ window.onload = function () {
 };
 
 $(document).ready(function () {
-  $("#INNONPAYMENT").css("background-color", "white"); 
+  $("#INNONPAYMENT").css("background-color", "white");
   $("#INNONPAYMENT a").css("color", "green");
   $("#INPAYMENT").css("background-color", "rgb(25, 135, 84)");
   $("#INPAYMENT a").css("color", "white");
@@ -2444,6 +2444,8 @@ $(document).ready(function () {
       InhouseItemCode = response.inhouseItemCode;
       HsCode = response.hsCode;
       ChkHsCode = response.chkHsCode;
+      ItemLoad()
+      console.log(HsCode)
       for (var i of HsCode) {
         HsCodeLoading.push(i.HSCode + ":" + i.Description);
       }
@@ -3368,8 +3370,20 @@ function ItemLoad() {
   if (ItemData.length > 0) {
     var Tab = "";
     for (var Itm of ItemData) {
+      var Color = HsCode.filter((data) => {
+        if (data.HSCode == Itm.HSCode && data.InnonPayment == '1') {
+          return true
+        }
+      })
+
+      if (Color.length != 0) {
+        Color = "red"
+      }
+      else {
+        Color = '#000'
+      }
       Tab += `
-      <tr>
+      <tr style="color:${Color}">
         <td><input type="checkbox" name = "itemCheckDel" value = "${Itm.ItemNo}" ></td>
         <td><i class="fa-regular fa-pen-to-square" style="color: #ff0000;" onclick = "ItemEditInNon('${Itm.ItemNo}')" ></i></td>
         <td>${Itm.ItemNo}</td>
@@ -3546,7 +3560,13 @@ function ItemEditInNon(ItemNumber) {
       OptionalChrgeUOMOut(Itm.OptionalChrgeUOM);
       ItemInvoiceNumberChange(Itm.InvoiceNo);
       TotalLineAmountCalculation();
-      $("#ItemDescriptionInNon").val(Itm.Description);
+      if (Itm.Description == "") {
+        ItemHscodeFocusOut();
+      }
+      else {
+        $("#ItemDescriptionInNon").val(Itm.Description);
+      }
+
     }
   }
 }
@@ -3846,11 +3866,9 @@ function ItemEditAllInNon() {
   for (var item of ItemData) {
     ItemEditInNon(item.ItemNo);
     var Echeck = true;
-    if ($('#itemCascID').prop('checked')) { 
-      alert("Its Checking")
+    if ($('#itemCascID').prop('checked')) {
       if ($('#itemProductCode1').val() == "") {
         Echeck = false;
-        alert("Its Checking")
       }
     }
     if (Echeck) {
@@ -4000,6 +4018,7 @@ function ItemDeleteInNon() {
         CascData = response.casc;
         ItemLoad();
         $("#Loading").hide();
+        $('#ItemHeadCheck').prop('checked', false)
       },
     });
   }
@@ -5325,7 +5344,7 @@ function CancelAttachLoad(Val) {
     $("#CancelAttachTable tbody").html(Ans);
   } else {
     $("#CancelDocumentTableshow").hide();
-  }  
+  }
 }
 
 function CancelDeleteAttach(Arg) {

@@ -148,7 +148,7 @@
                             <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}" disabled>
                         </div>
                     </div>
-                    <div class="row mt-3" >
+                    <div class="row mt-3">
                         <div class="col-4">USER NAME</div>
                         <div class="col-8"><input type="text" id="INONUSERNAME" value="{{UserName}}" class="inputStyle"
                                 disabled></div>
@@ -1022,7 +1022,7 @@
                         <div class="row mt-3">
                             <div class="col-4" id="OutCargoHbl">HBL</div>
                             <div class="col-6">
-                                <input type="text" class="inputStyle">
+                                <input type="text" class="inputStyle" id="OutCargoHblValue" onfocusout="OutCargoHblValueOut()">
                             </div>
                         </div>
                     </div>
@@ -1080,7 +1080,7 @@
                                 <div class="col-4">FINAL DESTINATION COUNTRY</div>
                                 <div class="col-7">
                                     <select class="Dropdown HighLight" id="FinalDestinationCountry"
-                                        onfocus="FinalDestinationfocusin()" onfocusout="FinalDestinationfocusout()">
+                                        onfocusout="FinalDestinationfocusout()">
                                         <option selected>--Select--</option>
                                     </select><br>
                                     <span1 id="FinalDestinationCountrySpan"></span1>
@@ -1259,7 +1259,8 @@
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="Hawb">HAWB</label></div>
-                                <div class="col-7"><input type="text" id="Hawb" class="inputStyle"></div>
+                                <div class="col-7"><input type="text" id="Hawb" class="inputStyle"
+                                        onfocusout="hawbOutFunction()"></div>
                             </div>
                         </div>
                     </div>
@@ -1279,14 +1280,17 @@
                     </div>
                 </div>
                 <div class="row mt-3">
-                    <div class="col-1"><input type="text" id="ContainerLength" class="inputStyle"
-                            style="display: none;"></div>
+                    <div class="col-1">
+                        <input type="text" id="ContainerLength" class="inputStyle" style="display: none;">
+                    </div>
                     <div class="col-10">
                         <table id="ConatinerTable" style="width: 100%;">
                             <thead>
                                 <tr class="fontTable">
-                                    <th><input type="checkbox" onclick="ContainerAllCheckBox(this)"
-                                            id="ContainercheckBoxThead"></th>
+                                    <th>
+                                        <input type="checkbox" onclick="ContainerAllCheckBox(this)"
+                                            id="ContainercheckBoxThead">
+                                    </th>
                                     <th>EDIT</th>
                                     <th>DELETE</th>
                                     <th>S.NO</th>
@@ -1300,12 +1304,19 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="checkbox" name="" id=""></td>
-                                    <td><img src="{% static 'IMG/EDIT1.png' %}" alt="" style="width: 20px;"
-                                            class="ContainerEdit"></td>
-                                    <td><img src="{% static 'IMG/Delete.png' %}" style="width: 15px;"
-                                            class="containerDeleteBtn"> </td>
-                                    <td><input type="text" value="1" disabled class="inputStyle" style="width: 50px;">
+                                    <td>
+                                        <input type="checkbox" name="" id="">
+                                    </td>
+                                    <td>
+                                        <img src="{% static 'IMG/EDIT1.png' %}" alt="" style="width: 20px;"
+                                            class="ContainerEdit">
+                                    </td>
+                                    <td>
+                                        <img src="{% static 'IMG/Delete.png' %}" style="width: 15px;"
+                                            class="containerDeleteBtn">
+                                    </td>
+                                    <td>
+                                        <input type="text" value="1" disabled class="inputStyle" style="width: 50px;">
                                     </td>
                                     <td>
                                         <input type='text' class="inputStyle">
@@ -1562,7 +1573,7 @@
                             <div class="col-4 " id="OutHAWBOBLlbl">OUT HAWB/HBL</div>
                             <div class="col-8">
                                 <select id="OutHAWBOBL" class="Dropdown">
-                                    <option value=""></option>
+                                    
                                 </select>
                             </div>
                         </div>
@@ -2783,11 +2794,13 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="summaryInvoiceTotal" disabled>
+                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="summaryInvoiceTotal"
+                                disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00" disabled>
+                        <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00"
+                                disabled>
                         </div>
                     </div>
                 </div>
@@ -2801,7 +2814,8 @@
                 </div>
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00" disabled>
+                        <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00"
+                                disabled>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -2969,6 +2983,15 @@
         </div>
     </form>
 </div>
+<script>
+    function EditAnotherValues() {
+        "{% for out in OutData%}"
+        $('#FinalDestinationCountry').val("{{out.FinalDestinationCountry}}")
+        // console.log("{{out.FinalDestinationCountry}}");
+        $('#VesselNationality').val("{{out.VesselNationality}}")
+        "{% endfor %}"
+    }
+</script>
 <script src="{% static 'js/outJs/outFile.js'%}"></script>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
@@ -2976,7 +2999,9 @@
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 
 
+
 <script>
+
     function InvoiceCurencyChange() {
         "{% for cur in Currency %}"
         if ("{{cur.Currency}}" == $('#InvoiceCurrency').val()) {
@@ -3180,6 +3205,10 @@
 
     function PlusContainer() {
         var tableLength = $('#ConatinerTable tr').length;
+
+        if (tableLength == 0) {
+            tableLength += 1
+        }
         cont = `<tr>
                         <td><input type="checkbox" ></td>
                         <td><img src="{% static 'IMG/EDIT1.png' %}" alt="" style="width: 20px;" class="ContainerEdit"></td>
@@ -3277,5 +3306,182 @@
     }
 
 </script>
+
+
+{% if OutData %}
+
+{% for out in OutData%}
+
+<script>
+    console.log("{{out.DeclarationType}}")
+    $('#DeclarationType').val("{{out.DeclarationType}}")
+    OutDeclarationChange()
+
+    $('#PreviousPermitNo').val("{{out.PreviousPermit}}")
+
+    $('#CargoPackType').val("{{out.CargoPackType}}")
+    OutCargoPackTypeChange()
+
+    $('#OutInwardTransportMode').val("{{out.InwardTransportMode}}")
+    OutInwardTrasnPortModeChange()
+
+    $('#OutOutwardTransportMode').val("{{out.OutwardTransportMode}}")
+    OutOutwardTrasnPortModeChange()
+
+    $('#BgIndicator').val("{{out.BGIndicator}}")
+
+    if ("{{out.SupplyIndicator}}" == "True") {
+        $('#SupplyIndicator').prop('checked', true)
+    }
+
+    if ("{{out.ReferenceDocuments}}" == "True") {
+        $('#ReferenceDocuments').prop('checked', true)
+        OutReferenceDocument()
+    }
+
+    const LicenceData = "{{out.License}}".split('-')
+
+    $('#licence1').val(LicenceData[0])
+    $('#licence2').val(LicenceData[1])
+    $('#licence3').val(LicenceData[2])
+    $('#licence4').val(LicenceData[3])
+    $('#licence5').val(LicenceData[4])
+
+    $('#CoType').val("{{out.COType}}")
+    // Entryyear: "",//$('#Entryyear').val(),//dont save
+    // GSPDonorCountry: "--Select--",//$('#GSPDonorCountry').val(),//dont save
+
+    $('#CertificateType1').val("{{out.CerDetailtype1}}")
+    $('#CerDetailCopies1').val("{{out.CerDetailCopies1}}")
+    $('#CertificateType2').val("{{out.CerDetailtype2}}")
+    $('#CerDetailCopies2').val("{{out.CerDetailCopies2}}")
+
+    // PerCommon: "",//$('#PerCommon').val(),//dont save
+
+    $('#CurrencyCode').val("{{out.CurrencyCode}}")
+
+    const AddCerDtl = "{{out.AddCerDtl}}".split('-')
+    $('#AddCerDtl1').val(AddCerDtl[0])
+    $('#AddCerDtl2').val(AddCerDtl[1])
+    $('#AddCerDtl3').val(AddCerDtl[2])
+    $('#AddCerDtl4').val(AddCerDtl[3])
+    $('#AddCerDtl5').val(AddCerDtl[4])
+
+    const TransDtl = "{{out.TransDtl}}".split('-')
+    $('#TransDtl1').val(TransDtl[0])
+    $('#TransDtl2').val(TransDtl[1])
+    $('#TransDtl3').val(TransDtl[2])
+    $('#TransDtl4').val(TransDtl[3])
+    $('#TransDtl5').val(TransDtl[4])
+
+    const Recipient = "{{out.Recipient}}".split('-')
+    $('#Recipient1').val(Recipient[0])
+    $('#Recipient2').val(Recipient[1])
+    $('#Recipient3').val(Recipient[2])
+
+    $('#DeclarantCompanyCode').val("{{out.DeclarantCompanyCode}}")
+
+    $('#ExporterCode').val("{{out.ExporterCompanyCode}}")
+
+
+    $('#InwardCode').val("{{out.Inwardcarriercode}}")
+
+    $('#OutwardCode').val("{{out.OutwardCarrierAgentCode}}")
+
+    $('#FrieghtCode').val("{{out.FreightForwarderCode}}")
+
+
+    $('#ImporterCode').val("{{out.ImporterCompanyCode}}")
+    $('#InwardCode').val("{{out.InwardCarrierAgentCode}}")
+    $('#ConsigneCode').val("{{out.CONSIGNEECode}}")
+    $('#EndConsigneCode').val("{{out.EndUserCode}}")
+    $('#ManuFactureCode').val("{{out.Manufacturer}}")
+
+    if ('1900/01/01' != "{{out.ArrivalDate|date:'d/m/Y' }}") {
+        $('#ArrivalDate').val("{{out.ArrivalDate|date:'d/m/Y' }}")
+    }
+
+    // $('#ArrivalDate').val("{{out.ArrivalDate}}")
+    $('#ArrivalTime').val("{{out.ArrivalTime}}")
+
+    $('#LoadingPortCode').val("{{out.LoadingPortCode}}")
+    $('#VoyageNumber').val("{{out.VoyageNumber}}")
+    $('#VesselName').val("{{out.VesselName}}")
+    $('#OceanBillofLadingNo').val("{{out.OceanBillofLadingNo}}")
+    $('#ConveyanceRefNo').val("{{out.ConveyanceRefNo}}")
+    $('#TransportId').val("{{out.TransportId}}")
+    $('#FlightNO').val("{{out.FlightNO}}")
+    $('#AircraftRegNo').val("{{out.AircraftRegNo}}")
+    $('#OutMasterAirwayBill').val("{{out.MasterAirwayBill}}")
+    $('#ReleaseLocaName').val("{{out.ReleaseLocation}}")
+    $('#ReciptLocationCode').val("{{out.RecepitLocation}}")
+    $('#StorageCode').val("{{out.StorageLocation}}")
+
+    if ('01/01/1900' != "{{out.BlanketStartDate|date:'d/m/Y' }}") {
+        $('#BlanketStartDate').val("{{out.BlanketStartDate|date:'d/m/Y' }}")
+    }
+
+    if ('01/01/1900' != "{{out.DepartureDate|date:'d/m/Y' }}") {
+        $('#DepartureDate').val("{{out.DepartureDate|date:'d/m/Y' }}")
+    }
+
+    $('#DepartureTime').val("{{out.DepartureTime}}")
+
+    $('#DischargePort').val("{{out.DischargePort}}")
+
+    $('#OutVoyageNumber').val("{{out.OutVoyageNumber}}")
+    $('#OutVesselName').val("{{out.OutVesselName}}")
+    $('#OutOceanBillofLadingNo').val("{{out.OutOceanBillofLadingNo}}")
+    $('#VesselType').val("{{out.VesselType}}")
+    $('#VesselNetRegTon').val("{{out.VesselNetRegTon}}")
+
+    $('#TowingVesselID').val("{{out.TowingVesselID}}")
+    $('#TowingVesselName').val("{{out.TowingVesselName}}")
+    $('#NextPort').val("{{out.NextPort}}")
+    $('#LastPort').val("{{out.LastPort}}")
+    $('#OutConveyanceRefNo').val("{{out.OutConveyanceRefNo}}")
+    $('#OutTransportId').val("{{out.OutTransportId}}")
+    $('#OutFlightNO').val("{{out.OutFlightNO}}")
+    $('#OutAircraftRegNo').val("{{out.OutAircraftRegNo}}")
+    $('#OutMasterAirwayBill').val("{{out.OutMasterAirwayBill}}")
+    $('#TotalOuterPack').val("{{out.TotalOuterPack}}")
+    $('#TotalOuterPackUOM').val("{{out.TotalOuterPackUOM}}")
+    $('#TotalGrossWeight').val("{{out.TotalGrossWeight}}")
+    $('#TotalGrossWeightUOM').val("{{out.TotalGrossWeightUOM}}")
+    $('#GrossReference').val("{{out.GrossReference}}")
+    $('#summaryTradeRemarks').val(`{{out.TradeRemarks}}`)
+    $('#InternalRemarks').val("{{out.InternalRemarks}}")
+
+    if ("{{out.DeclareIndicator}}" == "true" || "{{out.DeclareIndicator}}" == 'True') {
+        $('#DeclareIndicator').prop('checked', true)
+        $('#DeclareIndicator').val("{{out.DeclareIndicator}}")
+    }
+
+    // NumberOfItems: ItemData.length,
+    $('#TotalCIFFOBValue').val("{{out.TotalCIFFOBValue}}")
+    // TotalGSTTaxAmt: "0.00",
+    // TotalExDutyAmt: "0.00",
+    // TotalCusDutyAmt: "0.00",
+    // TotalODutyAmt: "0.00",
+    // TotalAmtPay: "0.00",
+    // Status: "NEW",
+    // PermitNumber: "PermitNumber",
+    // prmtStatus: "prmtStatus",
+    $('#ReleaseLocText').val("{{out.ResLoaName}}")
+    $('#RecepitLocName').val("{{out.RepLocName}}")
+    $('#RecepitLocName').val("{{out.RecepitLocName}}")
+    $('#Hbl').val("{{out.outHAWB}}")
+    $('#Hawb').val("{{out.INHAWB}}")
+    hawbOutFunction()
+    // CertificateNumber: "",
+    $('#Defrentprinting').val("{{out.Defrentprinting}}")
+    // Cnb: $('#OutCnb').val(),
+    $('#DeclaringFor').val("{{out.DeclarningFor}}")
+    $('#MRDate').val("{{out.MRDate|date:'d/m/Y'}}")
+    $('#MRTime').val("{{out.MRTime|date:'h:i A' }}")
+</script>
+{% endfor %}
+
+{% endif %}
 
 {% endblock %}
