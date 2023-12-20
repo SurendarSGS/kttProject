@@ -6,6 +6,7 @@ from datetime import *
 import pandas as pd
 from KttApp.models import *
 from django.http import JsonResponse 
+from django.http import HttpResponse
 import json
 
 
@@ -359,7 +360,6 @@ class OutInvoice(View, SqlDb):
         PermitId = request.POST.get("PermitId")
         message = ""
         if request.POST.get("method") == "DELETE":
-            print("this is delete")
             self.cursor.execute(
                 "DELETE FROM OutInvoiceDtl WHERE PermitId = '{}' AND SNo = {}".format(
                     request.POST.get("PermitId"), request.POST.get("SNo")
@@ -700,7 +700,6 @@ class OutItem(View, SqlDb):
                 self.cursor.execute(Qry, val)
                 message = "Inserted Successfully...!"
             except Exception as e:
-                print(e)
                 message = "Did not saved...!"
         else:
             try:
@@ -792,7 +791,6 @@ class OutItem(View, SqlDb):
                 self.cursor.execute(Qry, Val)
                 message = "Updated Successfully...!"
             except Exception as e:
-                print("the Eror is : ", e)
                 message = "Did not Updated"
         self.conn.commit()
 
@@ -817,8 +815,7 @@ def outItemDelete(request):
     try:
         db = SqlDb()
         db.cursor.execute("DELETE FROM OutItemDtl WHERE Id ")
-    except:
-        print("errror")
+    except:pass
 
     ItemValue = json.loads(request.POST.get("Ids"))
 
@@ -884,7 +881,6 @@ def outItemDelete(request):
 class AttachDocument(View, SqlDb):
     def __init__(self):
         SqlDb.__init__(self)
-        print("Hello Welcome")
 
     def get(self, request):
         if request.GET.get("Method") == "DELETE":
@@ -964,7 +960,6 @@ class AttachDocument(View, SqlDb):
             Result = "SAVED SUCCESSFULLY...!"
 
         except Exception as E:
-            print(E)
             Result = "DID NOT SAVED...!"
 
         self.cursor.execute(
@@ -1002,7 +997,6 @@ class ContainerSave(View, SqlDb):
                     f"select RowNo , PermitId from OutContainerDtl where RowNo = '{request.POST.get('RowNo')}' AND PermitId = '{request.POST.get('PermitId')}'"
                 )
                 result = self.cursor.fetchall()
-                print(result)
                 if not (result):
                     self.cursor.execute(
                         f"INSERT INTO OutContainerDtl (PermitId, RowNo,ContainerNo, size, weight,SealNo, MessageType,TouchUser,TouchTime) VALUES ('{request.POST.get('PermitId')}','{request.POST.get('RowNo')}','{request.POST.get('ContainerNo')}','{request.POST.get('size')}','{request.POST.get('weight')}','{request.POST.get('SealNo')}','{request.POST.get('MessageType')}','{str(request.session['Username']).upper()}','{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}')"
@@ -1054,7 +1048,6 @@ class ContainerSave(View, SqlDb):
             elif request.POST.get("Method") == "LOAD":
                 pass
         except Exception as e:
-            print("The Error Is : ", e)
             Result = "Somthing Error"
 
         self.cursor.execute(
@@ -1181,8 +1174,6 @@ class outSaveSubmit(View, SqlDb):
             "MRDate": request.POST.get("MRDate"),
             "MRTime": request.POST.get("MRTime"),
         }
-        for key, value in data.items():
-            print(f"{key} : =>  {value}")
 
         columns = ', '.join([f'[{key}]' for key in data.keys()])
         values = ', '.join(['%s' for _ in range(len(data))])
@@ -1204,9 +1195,6 @@ class CopyOutPayment(View,SqlDb):
         SqlDb.__init__(self)
 
     def get(self,request,id):
-
-        print("The Id : ",id)
-
         Username = request.session['Username'] 
 
         refDate = datetime.now().strftime("%Y%m%d")
@@ -1230,17 +1218,8 @@ class CopyOutPayment(View,SqlDb):
         self.MsgId = f"{datetime.now().strftime('%Y%m%d')}{'%04d' % self.JobIdCount}"
         self.PermitIdInNon = f"{Username}{refDate}{self.RefId}"
 
-        print("The Permit ID : ",self.PermitIdInNon)
-
         NowDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-        # query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutFile'"
-        # self.cursor.execute(query)
-        
-        # result = self.cursor.fetchall()
-        # data = [i[0] for i in result]
-        # data = ','.join(data)
-        # print(data)
         
         self.cursor.execute(f"INSERT INTO OutHeaderTbl (Refid,JobId,MSGId,PermitId,TradeNetMailboxID,MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,COType,Entryyear,GSPDonorCountry,CerDetailtype1,CerDetailCopies1,CerDetailtype2,CerDetailCopies2,PerCommon,CurrencyCode,AddCerDtl,TransDtl,Recipient,DeclarantCompanyCode,ExporterCompanyCode,Inwardcarriercode,OutwardCarrierAgentCode,FreightForwarderCode,ImporterCompanyCode,InwardCarrierAgentCode,CONSIGNEECode,EndUserCode,Manufacturer,ArrivalDate,ArrivalTime,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,StorageLocation,BlanketStartDate,DepartureDate,DepartureTime,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,TradeRemarks,InternalRemarks,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,Status,TouchUser,TouchTime,PermitNumber,prmtStatus,ResLoaName,RepLocName,RecepitLocName,outHAWB,INHAWB,CertificateNumber,Defrentprinting,Cnb,DeclarningFor,MRDate,MRTime,CondColor) SELECT '{self.RefId}','{self.JobId}','{self.MsgId}','{self.PermitIdInNon}','{ManageUserVal[1]}',MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,COType,Entryyear,GSPDonorCountry,CerDetailtype1,CerDetailCopies1,CerDetailtype2,CerDetailCopies2,PerCommon,CurrencyCode,AddCerDtl,TransDtl,Recipient,DeclarantCompanyCode,ExporterCompanyCode,Inwardcarriercode,OutwardCarrierAgentCode,FreightForwarderCode,ImporterCompanyCode,InwardCarrierAgentCode,CONSIGNEECode,EndUserCode,Manufacturer,ArrivalDate,ArrivalTime,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,StorageLocation,BlanketStartDate,DepartureDate,DepartureTime,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,TradeRemarks,InternalRemarks,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,'DRF','{Username}','{NowDate}','','COPY',ResLoaName,RepLocName,RecepitLocName,outHAWB,INHAWB,CertificateNumber,Defrentprinting,Cnb,'--Select--',MRDate,MRTime,CondColor FROM OutHeaderTbl WHERE Id = '{id}'")
 
@@ -1319,9 +1298,183 @@ class OutEdit(View,SqlDb):
             "VesselType": CommonMaster.objects.filter(TypeId=14, StatusId=1).order_by("Name"),
         }
 
-        print(headers)
-
         context.update({
             "OutData" : (pd.DataFrame(outAll, columns=headers)).to_dict("records"),
         })
         return render(request, "Out/OutNew.html", context)
+
+def ItemExcelDownload(request):
+    response = HttpResponse(
+        open(
+            "D:\\New folder\\NNR REPORT FILE\\OUT & COO Type Changes\\RET\\RET\\ExcelTemplate\\OutExcelTemplate.xlsx",
+            "rb",
+        ).read()
+    )
+    response["Content-Type"] = "text/csv"
+    response["Content-Disposition"] = f"attachment; filename=OutExcelTemplate.xlsx"
+    return response  
+
+ 
+
+class ItemInNonExcelUpload(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+    def post(self,request):
+        
+        xlsx_file = request.FILES['file']
+        PermitId = request.POST.get('PermitId')
+        MsgType = request.POST.get('MsgType')
+        userName = request.POST.get('UserName')
+        TouchTime = request.POST.get('TouchTime')
+
+        ItemInfo = pd.read_excel(xlsx_file, sheet_name="ItemInfo")
+        CascInfo = pd.read_excel(xlsx_file, sheet_name="Casccodes")
+        ContainerInfo = pd.read_excel(xlsx_file, sheet_name="ContainerInfo")
+
+        for i in ItemInfo:
+            print(f"row['{i}']",end=',')
+
+        ItemData = []
+        CascData = []
+        ContainerData = []
+
+        ItemColumns ={
+            'CountryofOrigin' : '' ,
+            'HSCode' : '' ,
+            'HSQty' : '0.00' ,
+            'TotalLineAmount' : '0.00' ,
+            'ItemCode' : '' ,
+            'Description' : '' ,
+            'DGIndicator' : 'False' ,
+            'Brand' : '' ,
+            'Model' : '' ,
+            'InHAWBOBL' : '' ,
+            'OutHAWBOBL' : '' ,
+            'HSUOM' : '--Select--' ,
+            'InvoiceNumber' : '' ,
+            'ItemCurrency' : '--Select--' ,
+            'UnitPrice' : '0.00' ,
+            'TotalDutiableQty' : '0.00' ,
+            'TotalDutiableUOM' : '--Select--' ,
+            'DutiableQty' : '0.00' ,
+            'DutiableUOM' : '--Select--' ,
+            'OuterPackQty' : '0.00' ,
+            'OuterPackUOM' : '--Select--' ,
+            'InPackQty' : '0.00' ,
+            'InPackUOM' : '--Select--' ,
+            'InnerPackQty' : '0.00' ,
+            'InnerPackUOM' : '--Select--' ,
+            'InmostPackQty' : '0.00' ,
+            'InmostPackUOM' : '--Select--' ,
+            'TarrifPreferentialCode' : '--Select--' ,
+            'OtherTaxRate' : '0.00' ,
+            'OtherTaxUOM' : '--Select--' ,
+            'OtherTaxAmount' : '0.00' ,
+            'CurrentLot' : '' ,
+            'PreviousLot' : '' ,
+            'AlcoholPercentage' : '0.00' ,
+            'ShippingMarks1' : '' ,
+            'ShippingMarks2' : '' ,
+            'ShippingMarks3' : '' ,
+            'ShippingMarks4' : '' ,
+            'CerItemQty' : '0.00' ,
+            'CerItemUOM' : '--Select--' ,
+            'CIFValOfCer' : '' ,
+            'ManufactureCostDate' : '' ,
+            'TexCat' : '' ,
+            'TexQuotaQty' : '0.00' ,
+            'TexQuotaUOM' : '--Select--' ,
+            'CerInvNo' : '' ,
+            'CerInvDate' : '' ,
+            'OriginOfCer' : '' ,
+            'HSCodeCer' : '' ,
+            'PerContent' : '' ,
+            'CertificateDescription' : '' ,
+            'VehicleType' : '--Select--' ,
+            'OptionalChrgeUOM' : '--Select--' ,
+            'EngineCapcity' : '0.00' ,
+            'Optioncahrge' : '0.00' ,
+            'OptionalSumtotal' : '0.00' ,
+            'OptionalSumExchange' : '0.00' ,
+            'EngineCapUOM' : '--Select--' ,
+            'originaldatereg' : '' ,
+        }
+
+        CascColumn = {
+            'ItemNo': '',
+            'ProductCode': '',
+            'Quantity': '0.00',
+            'ProductUOM': '--Select--',
+            'RowNo': '',
+            'CascCode1': '',
+            'CascCode2': '',
+            'CascCode3': '',
+            'CASCId': '',
+            'EndUserDes' : '',
+        }
+
+        ContainerColumn = {
+            'SNo': '',
+            'ContainerNo': '',
+            'SizeType': '',
+            'Weight': '',
+            'SealNo': '',
+        }
+
+        ItemInfo.fillna(ItemColumns, inplace=True)
+
+        CascInfo.fillna(CascColumn, inplace=True)
+        ContainerInfo.fillna(ContainerColumn, inplace=True)
+
+        self.cursor.execute(f"SELECT PermitId FROM OutItemDtl WHERE PermitId = '{PermitId}'")
+        itemLen = len(self.cursor.fetchall())
+
+        row = ''
+
+        ItemValues = [row['CountryofOrigin'],row['HSCode'],row['HSQty'],row['TotalLineAmount'],row['ItemCode'],row['Description'],row['DGIndicator'],row['Brand'],row['Model'],row['InHAWBOBL'],row['OutHAWBOBL'],row['HSUOM'],row['InvoiceNumber'],row['ItemCurrency'],row['UnitPrice'],row['TotalDutiableQty'],row['TotalDutiableUOM'],row['DutiableQty'],row['DutiableUOM'],row['OuterPackQty'],row['OuterPackUOM'],row['InPackQty'],row['InPackUOM'],row['InnerPackQty'],row['InnerPackUOM'],row['InmostPackQty'],row['InmostPackUOM'],row['TarrifPreferentialCode'],row['OtherTaxRate'],row['OtherTaxUOM'],row['OtherTaxAmount'],row['CurrentLot'],row['PreviousLot'],row['AlcoholPercentage'],row['ShippingMarks1'],row['ShippingMarks2'],row['ShippingMarks3'],row['ShippingMarks4'],row['CerItemQty'],row['CerItemUOM'],row['CIFValOfCer'],row['ManufactureCostDate'],row['TexCat'],row['TexQuotaQty'],row['TexQuotaUOM'],row['CerInvNo'],row['CerInvDate'],row['OriginOfCer'],row['HSCodeCer'],row['PerContent'],row['CertificateDescription'],row['VehicleType'],row['OptionalChrgeUOM'],row['EngineCapcity'],row['Optioncahrge'],row['OptionalSumtotal'],row['OptionalSumExchange'],row['EngineCapUOM'],row['originaldatereg']]
+
+
+        # query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
+        # self.cursor.execute(query)
+        
+        # result = self.cursor.fetchall()
+        # data = ["%s" for i in result]
+        # data = ','.join(data)
+        # print(data)
+        
+        
+        # QryItem = "INSERT INTO OutItemDtl (ItemNo,PermitId,MessageType,HSCode,Description,DGIndicator,Contry,EndUserDescription,Brand,Model,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,CerItemQty,CerItemUOM,CIFValOfCer,ManufactureCostDate,TexCat,TexQuotaQty,TexQuotaUOM,CerInvNo,CerInvDate,OriginOfCer,HSCodeCer,PerContent,CertificateDescription,TouchUser,TouchTime,VehicleType,OptionalChrgeUOM,EngineCapcity,Optioncahrge,OptionalSumtotal,OptionalSumExchage,EngineCapUOM,orignaldatereg) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        # print(QryItem)
+
+        return JsonResponse({"show":"success"})
+        # for index, row in ItemInfo.iterrows():
+        #     itemLen += 1
+        #     Val = (row['CountryofOrigin'], row['HSCode'], row['HSQty'], row['TotalLineAmount'], row['Description'], row['DGIndicator'], row['Brand'], row['Model'], row['InHAWBOBL'], row['OutHAWBOBL'], row['HSUOM'], row['InvoiceNumber'], row['ItemCurrency'], row['UnitPrice'], row['TotalDutiableQty'], row['TotalDutiableUOM'], row['DutiableQty'], row['DutiableUOM'], row['OuterPackQty'], row['OuterPackUOM'], row['InPackQty'], row['InPackUOM'], row['InnerPackQty'], row['InnerPackUOM'], row['InmostPackQty'], row['InmostPackUOM'], row['TarrifPreferentialCode'], row['OtherTaxRate'], row['OtherTaxUOM'], row['OtherTaxAmount'], row['CurrentLot'], row['PreviousLot'], row['AlcoholPercentage'], row['ShippingMarks1'], row['ShippingMarks2'], row['ShippingMarks3'], row['ShippingMarks4'], itemLen, PermitId, MsgType, userName, TouchTime, "0.00", '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', 'PER', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '--Select--', '--Select--', '--Select--', '0.00', '0.00', '0.00', None, None, None)  # Add placeholders for missing values
+
+        #     # Print for debugging
+        #     print("Executing Query:", QryItem)
+        #     print("With Values:", Val)
+
+        #     self.cursor.execute(QryItem, (Val,)) 
+
+        # QryCasc = "INSERT INTO OutCASCDtl (ItemNo,ProductCode,Quantity,ProductUOM,RowNo,CascCode1,CascCode2,CascCode3,PermitId,MessageType,TouchUser,TouchTime,CASCId,EndUserDes) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+       
+        # for index, row in CascInfo.iterrows():
+        #     if row['ProductCode'] != "":
+        #         ValCasc = (row['ItemNo'],row['ProductCode'],row['Quantity'],row['ProductUOM'],row['RowNo'],row['CascCode1'],row['CascCode2'],row['CascCode3'],PermitId,MsgType,userName,TouchTime,row['CASCId'],row['EndUserDes'])
+        #         self.cursor.execute(QryCasc,ValCasc) 
+        # self.conn.commit()   
+
+        # self.cursor.execute("SELECT ItemNo,PermitId,MessageType,HSCode,Description,DGIndicator,Contry,Brand,Model,Vehicletype,Enginecapacity,Engineuom,Orginregdate,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,LSPValue,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,TouchUser,TouchTime,OptionalChrgeUOM,Optioncahrge,OptionalSumtotal,OptionalSumExchage FROM  OutItemDtl WHERE PermitId = '{}' ORDER BY ItemNo".format(request.POST.get('PermitId')))
+        # self.item = self.cursor.fetchall()
+
+        # self.cursor.execute("SELECT ItemNo,ProductCode,Quantity,ProductUOM,RowNo,CascCode1,CascCode2,CascCode3,CASCId FROM OutCASCDtl WHERE PermitId = '{}' ORDER BY ItemNo".format(request.POST.get('PermitId')))
+        # self.casc = self.cursor.fetchall()
+
+        # return JsonResponse({
+        #     "Result":"UPLOAD SUCCESSFULLY...!",
+        #     "item" : (pd.DataFrame(list(self.item), columns=['ItemNo','PermitId','MessageType','HSCode','Description','DGIndicator','Contry','Brand','Model','Vehicletype','Enginecapacity','Engineuom','Orginregdate','InHAWBOBL','OutHAWBOBL','DutiableQty','DutiableUOM','TotalDutiableQty','TotalDutiableUOM','InvoiceQuantity','HSQty','HSUOM','AlcoholPer','InvoiceNo','ChkUnitPrice','UnitPrice','UnitPriceCurrency','ExchangeRate','SumExchangeRate','TotalLineAmount','InvoiceCharges','CIFFOB','OPQty','OPUOM','IPQty','IPUOM','InPqty','InPUOM','ImPQty','ImPUOM','PreferentialCode','GSTRate','GSTUOM','GSTAmount','ExciseDutyRate','ExciseDutyUOM','ExciseDutyAmount','CustomsDutyRate','CustomsDutyUOM','CustomsDutyAmount','OtherTaxRate','OtherTaxUOM','OtherTaxAmount','CurrentLot','PreviousLot','LSPValue','Making','ShippingMarks1','ShippingMarks2','ShippingMarks3','ShippingMarks4','TouchUser','TouchTime','OptionalChrgeUOM','Optioncahrge','OptionalSumtotal','OptionalSumExchage'])).to_dict('records'),
+        #     "casc" : (pd.DataFrame(list(self.casc), columns=['ItemNo','ProductCode','Quantity','ProductUOM','RowNo','CascCode1','CascCode2','CascCode3','CASCId'])).to_dict('records'),
+        # })
+    

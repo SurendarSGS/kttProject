@@ -1022,7 +1022,8 @@
                         <div class="row mt-3">
                             <div class="col-4" id="OutCargoHbl">HBL</div>
                             <div class="col-6">
-                                <input type="text" class="inputStyle" id="OutCargoHblValue" onfocusout="OutCargoHblValueOut()">
+                                <input type="text" class="inputStyle" id="OutCargoHblValue"
+                                    onfocusout="OutCargoHblValueOut()">
                             </div>
                         </div>
                     </div>
@@ -1135,7 +1136,9 @@
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="Hbl">HBL</label></div>
-                                <div class="col-7"><input type="text" id="Hbl" class="inputStyle">
+                                <div class="col-7">
+                                    <input type="text" id="Hbl" class="inputStyle"
+                                        onfocusout="OutWardCargoHblValueOut()">
                                 </div>
                             </div>
                         </div>
@@ -1223,8 +1226,8 @@
                         </div>
                         <div class="row">
                             <div class="row mt-3">
-                                <div class="col-4"><label for="HBL">HBL</label></div>
-                                <div class="col-7"><input type="text" name="HBL" class="inputStyle"></div>
+                                <div class="col-4"><label>HAWB</label></div>
+                                <div class="col-7"><input type="text" name="HAWB" class="inputStyle"></div>
                             </div>
                         </div>
                     </div>
@@ -1259,8 +1262,9 @@
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label for="Hawb">HAWB</label></div>
-                                <div class="col-7"><input type="text" id="Hawb" class="inputStyle"
-                                        onfocusout="hawbOutFunction()"></div>
+                                <div class="col-7">
+                                    <input type="text" id="Hawb" class="inputStyle" onfocusout="hawbOutFunction()">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1573,7 +1577,7 @@
                             <div class="col-4 " id="OutHAWBOBLlbl">OUT HAWB/HBL</div>
                             <div class="col-8">
                                 <select id="OutHAWBOBL" class="Dropdown">
-                                    
+                                    <option value=""></option>
                                 </select>
                             </div>
                         </div>
@@ -1979,7 +1983,7 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-3">
-                            <a class="btn1" id="downloadTempBtn">DOWNLOAD TEMPLATE</a>
+                            <a class="btn1" id="downloadTempBtn" href="/OutExcelDownload/">DOWNLOAD TEMPLATE</a>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-5">
@@ -1988,7 +1992,7 @@
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                            <button class="btn1" type="button" id="InpaymentReadBtn">UPLOAD DATA</button>
+                            <button class="btn1" type="button" id="InpaymentReadBtn" onclick="ItemUploadInNon()">UPLOAD DATA</button>
                         </div>
                     </div>
                 </div>
@@ -2523,9 +2527,7 @@
                 <div class="col-2"><input type="text" class="inputStyle" placeholder="SEARCH BY ITEM NO..."></div>
             </div>
 
-            <div class="row mt-4">
-                <div class="col-2"><button class="MoveOnButtons" type="button">DEL HBL / HAWB</button></div>
-            </div>
+
             <br>
             <br>
             <table id="ItemTable" style="width: 100%;">
@@ -2551,6 +2553,11 @@
                 </tbody>
             </table>
             <br><br>
+            <div class="row mt-4">
+                <div class="col-2"><button class="MoveOnButtons" type="button">DEL HBL / HAWB</button></div>
+            </div>
+            <br>
+            <br>
         </div>
         <!---------------------------------------------------Cpc--------------------------------------------------->
         <div class="" id="Cpc" style="display:none">
@@ -2987,7 +2994,6 @@
     function EditAnotherValues() {
         "{% for out in OutData%}"
         $('#FinalDestinationCountry').val("{{out.FinalDestinationCountry}}")
-        // console.log("{{out.FinalDestinationCountry}}");
         $('#VesselNationality').val("{{out.VesselNationality}}")
         "{% endfor %}"
     }
@@ -3304,7 +3310,18 @@
             $('#ContainercheckBoxThead').prop('checked', false)
         }
     }
+    function CargoGrossEdit() {
+        $("#TotalGrossWeightSpan").hide();
+        var totalWeight = Number($('#PermitGrossWeight').val());
+        var selectedWeight = $('#TotalGrossWeightUOM').val();
 
+        if ('TNE' == selectedWeight && totalWeight != null) {
+            var total = totalWeight * 1000
+            $('#TotalGrossWeight').val(total);
+        } else {
+            $('#TotalGrossWeight').val(totalWeight);
+        }
+    }
 </script>
 
 
@@ -3313,7 +3330,6 @@
 {% for out in OutData%}
 
 <script>
-    console.log("{{out.DeclarationType}}")
     $('#DeclarationType').val("{{out.DeclarationType}}")
     OutDeclarationChange()
 
@@ -3389,8 +3405,6 @@
     $('#OutwardCode').val("{{out.OutwardCarrierAgentCode}}")
 
     $('#FrieghtCode').val("{{out.FreightForwarderCode}}")
-
-
     $('#ImporterCode').val("{{out.ImporterCompanyCode}}")
     $('#InwardCode').val("{{out.InwardCarrierAgentCode}}")
     $('#ConsigneCode').val("{{out.CONSIGNEECode}}")
@@ -3400,8 +3414,6 @@
     if ('1900/01/01' != "{{out.ArrivalDate|date:'d/m/Y' }}") {
         $('#ArrivalDate').val("{{out.ArrivalDate|date:'d/m/Y' }}")
     }
-
-    // $('#ArrivalDate').val("{{out.ArrivalDate}}")
     $('#ArrivalTime').val("{{out.ArrivalTime}}")
 
     $('#LoadingPortCode').val("{{out.LoadingPortCode}}")
@@ -3446,11 +3458,12 @@
     $('#OutMasterAirwayBill').val("{{out.OutMasterAirwayBill}}")
     $('#TotalOuterPack').val("{{out.TotalOuterPack}}")
     $('#TotalOuterPackUOM').val("{{out.TotalOuterPackUOM}}")
-    $('#TotalGrossWeight').val("{{out.TotalGrossWeight}}")
+    $('#PermitGrossWeight').val("{{out.TotalGrossWeight}}")
     $('#TotalGrossWeightUOM').val("{{out.TotalGrossWeightUOM}}")
     $('#GrossReference').val("{{out.GrossReference}}")
     $('#summaryTradeRemarks').val(`{{out.TradeRemarks}}`)
     $('#InternalRemarks').val("{{out.InternalRemarks}}")
+    CargoGrossEdit()
 
     if ("{{out.DeclareIndicator}}" == "true" || "{{out.DeclareIndicator}}" == 'True') {
         $('#DeclareIndicator').prop('checked', true)

@@ -556,173 +556,6 @@ function InvoiceTermChange(val) {
   }
 }
 
-// function InvoiceCalculation() {
-//   var exRate = Number($('#InvoiceExRate').val())
-//   var Amount = Number($('#InvoiceAmount').val())
-//   if (exRate > 0 && exRate != '' && Amount != '' && Amount > 0) {
-//     var totalinv = exRate * Amount;
-//     $('#InvoiceSumAmount').val(totalinv.toFixed(2))
-//   }
-//   else {
-//     $('#InvoiceSumAmount').val('0.00')
-//   }
-//   InvoiceTotalGstFunction()
-//   InsuranceCalculation()
-// }
-
-// $(function () {
-//   $("#InvoiceAmount").focusout(function () {
-//     if ($(this).val() == '') {
-//       $(this).val('0.00')
-//     }
-//     InvoiceCalculation()
-//   });
-//   $('#InvoiceCurrency').focusout(function () {
-//     InvoiceCalculation()
-//   });
-// });
-
-// function InvoiceTotalGstFunction() {
-//   var Total = Number($('#InvoiceSumAmount').val()) + Number($('#OtherSumAmount').val()) + Number($('#FrightSumAmount').val()) + Number($('#InsurenceSumAmount').val());
-//   $('#CostInsurenceFreightSum').val(Total.toFixed(2))
-//   var TotalPer = (Number($('#CostInsurenceFreightSum').val()) * Number($('#InvoiceGstCharge').val())) / 100;
-//   $('#InvoiceGstSum').val(TotalPer.toFixed(2))
-// }
-
-// function OtherCalculation() {
-//   var invoiceSumamount = Number($('#InvoiceSumAmount').val())
-//   var invoiceOtherValuePer = Number($('#OtherCharges').val())
-//   var invoiceOtherExRate = Number($('#OtherExRate').val())
-//   if (invoiceSumamount > 0 && invoiceSumamount != '' && invoiceOtherValuePer != '' && invoiceOtherValuePer > 0 && Number(invoiceOtherExRate) > 0) {
-//     total = (invoiceOtherValuePer * invoiceOtherValuePer) / 100;
-//     document.getElementById('OtherSumAmount').value = total.toFixed(2);
-//     var x = total / invoiceOtherExRate;
-//     document.getElementById('OtherAmount').value = x.toFixed(4);
-//   }
-//   else if (invoiceOtherValuePer == 0.00 || invoiceOtherValuePer == 0) {
-//     var x = document.getElementById('OtherAmount').value;
-//     total = x * invoiceOtherExRate;
-//     document.getElementById('OtherSumAmount').value = total.toFixed(2);
-//   }
-//   InvoiceTotalGstFunction()
-// }
-
-// function FrieghtClaculation() {
-//   let sumAmd = document.getElementById('InvoiceSumAmount').value;
-//   let friVal = document.getElementById('FrightCharges').value;
-//   let FriAmd = document.getElementById('FrightAmount').value;
-//   if (!(FriAmd > 0)) {
-//     document.getElementById('FrightSumAmount').value = ((sumAmd * friVal) / 100).toFixed(2);
-//   }
-
-//   InvoiceTotalGstFunction();
-// }
-
-
-
-// function FrieghtChargesPer_TextChanged() {
-//   FrieghtChargesPer = $('#FrightCharges').val()
-//   if (FrieghtChargesPer != "") {
-//     Drpcurrency3 = $('#FrightCurrency').val()
-//     if (Drpcurrency3 != "--Select--") {
-//       let a = $('#InvoiceSumAmount').val()
-//       let b = FrieghtChargesPer
-//       let c = $('#FrightExRate').val()
-//       if (a && b) {
-//         let SOT = (a * b / 100).toFixed(4)
-//         document.getElementById('FrightSumAmount').value = SOT;
-//         let d = SOT
-//         $('#FrightAmount').val((d / c).toFixed(2))
-//       }
-//     }
-//     else {
-//       let a = $('#InvoiceSumAmount').val()
-//       let b = $('#FrightCharges').val()
-//       if (a && b) {
-//         let SOT = (a * b / 100).toFixed(4)
-//         document.getElementById('FrightSumAmount').value = SOT;
-//       }
-//     }
-//   }
-//   else {
-//     // $('#FrightCharges').val("0.00")
-//   }
-//   let excharge = $('#InsurenceExRate').val()
-//   let sumins = $('#InsurenceSumAmount').val()
-//   if (excharge > 0) {
-//     $('#InsurenceAmount').val((sumins / excharge).toFixed(2))
-//   }
-//   else {
-//     $('#InsurenceAmount').val("0.00")
-//   }
-//   // totalinv();
-//   // FrieghtChargesPer.Focus();
-// }
-
-// function FreightSumFunction() {
-//   let exCurr = document.getElementById('FrightCurrency').value;
-//   let exRate = document.getElementById('FrightExRate').value;
-//   let friVal = document.getElementById('FrightAmount').value;
-//   let friCharg = document.getElementById('FrightCharges').value;
-//   if ("--Select--" == exCurr) {
-//   }
-//   else {
-//     if (!(friCharg > 0)) {
-//       document.getElementById('FrightSumAmount').value = (exRate * friVal).toFixed(2);
-//     }
-//   }
-//   InvoiceTotalGstFunction();
-// }
-
-// function InsuranceCalculation() {
-//   let sumAmd = document.getElementById('InvoiceSumAmount').value;
-//   let insPer = document.getElementById('InsurenceCharges').value;
-//   let friSum = document.getElementById('FrightSumAmount').value;
-
-//   if (0 < insPer) {
-//     let sumVal = (sumAmd * insPer) / 100;
-//     document.getElementById('InsurenceAmount').value = sumVal.toFixed(2);
-//   }
-//   else {
-//     document.getElementById('InsurenceAmount').value = "0.00"
-//   }
-//   let tot = Number(friSum) + Number(sumAmd);
-//   document.getElementById('InsurenceSumAmount').value = ((tot * insPer) / 100).toFixed(2);
-//   InvoiceTotalGstFunction();
-// }
-// function TxtInsuranceCharges_TextChanged() {
-//   let lblInsuranceCharges = $('#InsurenceExRate').val()
-//   if (lblInsuranceCharges != "") {
-
-//     let a = $('#InsurenceExRate').val()
-//     let b = $('#InsurenceAmount').val()
-//     if (a && b) {
-//       let SumINSrChrge = (a * b).toFixed(2)
-//       $('#InsurenceSumAmount').val(SumINSrChrge)
-//       // SumInsuranceCharges.Text = SumINSrChrge;
-//     }
-//     $('#InsurenceSumAmount').val(SumINSrChrge)
-//     // SumInsuranceCharges.Text = Math.Round((a * b), 2).ToString();
-//   }
-//   // sumofinsurance();
-//   // totalinv();
-//   let Drpcurrency4 = $('#InsurenceCurrency').val()
-//   if (Drpcurrency4 != "SGD") {
-//     let SIC = $('#InsurenceSumAmount').val()
-//     let LIC = $('#InsurenceExRate').val()
-//     let finalinsuedit = 0.00;
-//     // updateInvoice.Update();
-//     if (LIC > 0) {
-//       finalinsuedit = SIC / LIC;
-
-//     }
-//     $('#InsurenceSumAmount').val("0.00")
-//     $('#InsurenceSumAmount').val(finalinsuedit.toFixed(2))
-//     // TxtInsuranceCharges.Text = "0.00";
-
-//     // TxtInsuranceCharges.Text = Math.Round(Convert.ToDecimal(finalinsuedit), 2).ToString();
-//   }
-// }
 function CheckFunction(ID) {
   if ($('#' + ID).prop('checked')) {
     $('#' + ID).val("True");
@@ -2031,7 +1864,7 @@ function ItemEdit(Arg) {
         $("#UnitPriceIDShow").prop("checked", true);
         itemCheckUnitPriceFunction();
       }
-      if (i.ShippingMarks1 != "" || i.ShippingMarks2 != "" || i.ShippingMarks3 != "" || i.ShippingMarks4 != "") {
+      if (i.ShippingMarks1 != "" || i.ShippingMarks2 != "" || i.ShippingMarks3 != "" || i.ShippingMarks4 != "") { 
         $("#shippingMarkCheck").prop("checked", true);
         ItemCascShowAll('#shippingMarkCheck', '.ShippingMark')
       }
@@ -2043,7 +1876,7 @@ function ItemEdit(Arg) {
         $("#packing_details").prop("checked", true);
         ItemCascShowAll('#packing_details', '.PackingDetails')
       }
-      ItemCascEdit(i.ItemNo);
+      
       HsOnFocusOut();
       invoiceNumberFunction();
       invoiceTotalLineAmountFunction();
@@ -2055,6 +1888,7 @@ function ItemEdit(Arg) {
       else {
         $('#itmeDescription').val(i.Description);
       }
+      ItemCascEdit(i.ItemNo);
       break;
     }
   }
@@ -4383,7 +4217,7 @@ function Insurance() {
   const InsurenceCharges = Number($('#InsurenceCharges').val())
   const total = InvoiceSumAmount + OtherSumAmount + FrightSumAmount
   const result = total * (InsurenceCharges / 100)
-  $('#InsurenceSumAmount').val(result)
+  $('#InsurenceSumAmount').val(result.toFixed(2))
 }
 
 function TotalCalculation() {

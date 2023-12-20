@@ -1779,7 +1779,7 @@ function TotalInvoiceCalculation() {
   let GstPer = $("#InvoiceGstChargeInNon").val();
 
   let Result = ((Tot * GstPer) / 100).toFixed(2);
-  $("#InvoiceGstSumInNon").val(Result);
+  $("#InvoiceGstSumInNon").val(Number(Result).toFixed(2));
 }
 
 function OtherChargesInNonCalculation() {
@@ -1837,9 +1837,7 @@ function SumOfInsurence() {
   let Tot = InvSumAmount + FrightSumAmount;
 
   if (InsurenceCharge > 0) {
-    $("#InsurenceSumAmountInNon").val(
-      ((InsurenceCharge * Tot) / 100).toFixed(2)
-    );
+    $("#InsurenceSumAmountInNon").val(((InsurenceCharge * Tot) / 100).toFixed(2));
     $("#InsurenceAmountInNon").val(((InsurenceCharge * Tot) / 100).toFixed(2));
   }
 }
@@ -1865,9 +1863,7 @@ function FrighChargeInNonCalculation() {
   SumOfInsurence();
   if (Number($("#InsurenceExRateInNon").val()) > 0) {
     $("#InsurenceAmountInNon").val(
-      Number(
-        $("#InsurenceSumAmountInNon").val() / $("#InsurenceExRateInNon").val()
-      ).toFixed(2)
+      Number($("#InsurenceSumAmountInNon").val() / $("#InsurenceExRateInNon").val()).toFixed(2)
     );
   } else {
     $("#InsurenceAmountInNon").val("0.00");
@@ -1921,9 +1917,7 @@ function InsurenceChargeInNonCalculation() {
       let Tis = (InvoiceSumAmount * InsurenceCharge) / 100;
       $("#InsurenceAmountInNon").val(Tis.toFixed(2));
       let tot = InvoiceSumAmount + Number($("#FrightSumAmountInNon").val());
-      $("#InsurenceSumAmountInNon").val(
-        ((tot * InsurenceCharge) / 100).toFixed(2)
-      );
+      $("#InsurenceSumAmountInNon").val(Number(((tot * InsurenceCharge) / 100)).toFixed(2));
     }
   } else {
     $("#InsurenceSumAmountInNon").val("0.00");
@@ -1936,9 +1930,7 @@ function InsurenceAmountInNonCalculation() {
   let InsurenceAmount = Number($("#InsurenceAmountInNon").val());
   let InsurenceExRate = Number($("#InsurenceExRateInNon").val());
   if (InsurenceExRate != "") {
-    $("#InsurenceSumAmountInNon").val(
-      (InsurenceExRate * InsurenceAmount).toFixed(2)
-    );
+    $("#InsurenceSumAmountInNon").val(Number((InsurenceExRate * InsurenceAmount)).toFixed(2));
   } else {
     $("#InsurenceSumAmountInNon").val("0.00");
   }
@@ -1952,7 +1944,7 @@ function InsurenceAmountInNonCalculation() {
     if (InsurenceExRate > 0) {
       val1 = InsurenceAmount / InsurenceExRate;
     }
-    $("#InsurenceAmountInNon").val(val1.toFixed(2));
+    $("#InsurenceAmountInNon").val(Number(val1).toFixed(2));
   }
 }
 
@@ -3383,23 +3375,23 @@ function ItemLoad() {
         Color = '#000'
       }
       Tab += `
-      <tr style="color:${Color}">
-        <td><input type="checkbox" name = "itemCheckDel" value = "${Itm.ItemNo}" ></td>
-        <td><i class="fa-regular fa-pen-to-square" style="color: #ff0000;" onclick = "ItemEditInNon('${Itm.ItemNo}')" ></i></td>
-        <td>${Itm.ItemNo}</td>
-        <td>${Itm.HSCode}</td>
-        <td>${Itm.Description}</td>
-        <td>${Itm.Contry}</td>
-        <td>${Itm.InHAWBOBL}</td>
-        <td>${Itm.OutHAWBOBL}</td>
-        <td>${Itm.UnitPriceCurrency}</td>
-        <td>${Itm.CIFFOB}</td>
-        <td>${Itm.HSQty}</td>
-        <td>${Itm.HSUOM}</td>
-        <td>${Itm.GSTAmount}</td>
-        <td>${Itm.TotalLineAmount}</td>
-    </tr>
-          `;
+          <tr style="color:${Color}">
+            <td><input type="checkbox" name = "itemCheckDel" value = "${Itm.ItemNo}" ></td>
+            <td><i class="fa-regular fa-pen-to-square" style="color: #ff0000;" onclick = "ItemEditInNon('${Itm.ItemNo}')" ></i></td>
+            <td>${Itm.ItemNo}</td>
+            <td>${Itm.HSCode}</td>
+            <td>${Itm.Description}</td>
+            <td>${Itm.Contry}</td>
+            <td>${Itm.InHAWBOBL}</td>
+            <td>${Itm.OutHAWBOBL}</td>
+            <td>${Itm.UnitPriceCurrency}</td>
+            <td>${Itm.CIFFOB}</td>
+            <td>${Itm.HSQty}</td>
+            <td>${Itm.HSUOM}</td>
+            <td>${Itm.GSTAmount}</td>
+            <td>${Itm.TotalLineAmount}</td>
+        </tr>
+        `;
 
 
       ItemCurrAmd.push([Itm.UnitPriceCurrency, Number(Itm.TotalLineAmount)]);
@@ -3550,7 +3542,7 @@ function ItemEditInNon(ItemNumber) {
         $("#lotIdCheck").prop("checked", true);
         ItemCascShowAll("#lotIdCheck", ".OutLotId");
       }
-      ItemCascEdit(Itm.ItemNo);
+
       ItemHscodeFocusOut();
       ItemCooOut(Itm.Contry);
       itemDuitableQtyOnChange();
@@ -3566,6 +3558,7 @@ function ItemEditInNon(ItemNumber) {
       else {
         $("#ItemDescriptionInNon").val(Itm.Description);
       }
+      ItemCascEdit(Itm.ItemNo);
 
     }
   }
@@ -3862,6 +3855,8 @@ function ItemUploadInNon() {
 }
 
 function ItemEditAllInNon() {
+  $('#EditAllItemBtn').prop('disabled', true)
+  $("#Loading").show();
   var ItemAllDataInNon = [];
   for (var item of ItemData) {
     ItemEditInNon(item.ItemNo);

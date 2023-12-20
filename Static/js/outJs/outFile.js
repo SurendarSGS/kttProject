@@ -262,18 +262,22 @@ function OutOutwardTrasnPortModeChange() {
 
   if (OutTransPort == "1 : Sea" || OutTransPort == "4 : Air" || OutTransPort == "7 : Pipeline") {
     $("#OutWardCarrierAgentShow").show();
+
   }
   if (OutTransPort == "1 : Sea") {
     $("#OutOutwardSeaShow").show();
+    $("#OutHAWBOBLlbl").html("OUT HBL");
   }
   else if (OutTransPort == "N : Not Required" || OutTransPort == "--Select--") {
     $('#OutOutWardDetailShow').hide();
     $('#OutOutWardDetailShow input').val("");
   }
   else if (OutTransPort == "4 : Air") {
+    $("#OutHAWBOBLlbl").html("OUT HAWB");
     $('#OutOutAirShow').show();
   }
   else {
+    $("#OutHAWBOBLlbl").html("OUT HAWB/HBL");
     $('#OutOutRailShow').show();
   }
   if (OutTransPort != "--Select--") {
@@ -1937,8 +1941,8 @@ function OutItemSave() {
         EndUserDescription: "",//$('#EndUserDescription').val().trim().toUpperCase(),
         Brand: $('#Brand').val().trim().toUpperCase(),
         Model: $('#Model').val().trim().toUpperCase(),
-        InHAWBOBL: $('#InHAWBOBL').val(),
-        OutHAWBOBL: $('#OutHAWBOBL').val(),
+        InHAWBOBL: $('#OutCargoHblValue').val(),
+        OutHAWBOBL: $('#Hbl').val(),
         DutiableQty: $('#TxtTotalDutiableQuantity').val().trim().toUpperCase(),
         DutiableUOM: $('#TDQUOM').val().trim(),
         TotalDutiableQty: $('#txttotDutiableQty').val().trim().toUpperCase(),
@@ -2752,7 +2756,7 @@ function OutfinalSave() {
         OutMasterAirwayBill: $('#OutMasterAirwayBill').val(),//
         TotalOuterPack: $('#TotalOuterPack').val(),
         TotalOuterPackUOM: $('#TotalOuterPackUOM').val(),
-        TotalGrossWeight: $('#TotalGrossWeight').val(),
+        TotalGrossWeight: $('#PermitGrossWeight').val(),
         TotalGrossWeightUOM: $('#TotalGrossWeightUOM').val(),
         GrossReference: $('#GrossReference').val().trim().toUpperCase(),
         TradeRemarks: $('#summaryTradeRemarks').val(),
@@ -2954,15 +2958,6 @@ function hawbOutFunction() {
   $("#OutHAWBOBL").html(ht);
 }
 
-function hawbInFunction() {
-  var Hawb = $('#Hawb').val().trim().toUpperCase().split(',')
-  let ht = "";
-  for (var i of Hawb) {
-    ht += `<option>${i}</option>`;
-  }
-  $("#OutHAWBOBL").html(ht);
-}
-
 function OutCargoHblValueOut() {
   var Hawb = $('#OutCargoHblValue').val().trim().toUpperCase().split(',')
   let ht = "";
@@ -2970,4 +2965,49 @@ function OutCargoHblValueOut() {
     ht += `<option>${i}</option>`;
   }
   $("#InHAWBOBL").html(ht);
+}
+
+function OutWardCargoHblValueOut() {
+  var Hawb = $('#Hbl').val().trim().toUpperCase().split(',')
+  let ht = "";
+  for (var i of Hawb) {
+    ht += `<option>${i}</option>`;
+  }
+  $("#OutHAWBOBL").html(ht);
+}
+
+function ItemUploadInNon() {
+  var fileInput = document.getElementById("InpaymentFile");
+  if (fileInput.value != "") {
+    var file = fileInput.files[0];
+    var formData = new FormData();
+    formData.append("file", file);
+    formData.append("PermitId", $("#PermitIDInNon").val());
+    formData.append("MsgType", $("#MessageType").val());
+    formData.append("UserName", $("#INONUSERNAME").val());
+    formData.append("TouchTime", TOUCHTIME);
+    formData.append(
+      "csrfmiddlewaretoken",
+      $("[name=csrfmiddlewaretoken]").val()
+    );
+    // $("#Loading").show();
+    $.ajax({
+      type: "POST",
+      url: "/OutItemExcelUpload/",
+      dataType: "json",
+      processData: false,
+      contentType: false,
+      data: formData,
+      mimeType: "multipart/form-data",
+      success: function (response) {
+        ItemData = response.item;
+        CascData = response.casc;
+        ItemLoad();
+        $("#Loading").hide();
+      },
+      error: function (response) {
+        $("#Loading").hide();
+      },
+    });
+  }
 }

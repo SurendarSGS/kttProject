@@ -719,7 +719,7 @@ def ItemConsolidate(request):
         Cascdtl.objects.filter(PermitId=permitId, ItemNo=p).update(ItemNo=c)
         c = c + 1
 
-    Item = list(ItemDtl.objects.filter(PermitId=permitId).order_by("ItemNo").values())
+    Item = list(ItemDtl.objects.filter(PermitId=permitId).order_by("ItemNo").values()) 
     ItemCasc = list(
         Cascdtl.objects.filter(PermitId=permitId).order_by("ItemNo").values()
     )
