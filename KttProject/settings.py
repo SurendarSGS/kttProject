@@ -130,7 +130,7 @@ DATABASES = {
         "HOST": "ec2-54-179-0-97.ap-southeast-1.compute.amazonaws.com",
         'PORT': '',
         "OPTIONS": {"driver": "ODBC Driver 17 for SQL Server", 
-        },
+        }, 
     },
     "SecondDb": {
         "ENGINE": "mssql",
