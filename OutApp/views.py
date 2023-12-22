@@ -1332,9 +1332,6 @@ class ItemInNonExcelUpload(View,SqlDb):
         CascInfo = pd.read_excel(xlsx_file, sheet_name="Casccodes")
         ContainerInfo = pd.read_excel(xlsx_file, sheet_name="ContainerInfo")
 
-        for i in ItemInfo:
-            print(f"row['{i}']",end=',')
-
         ItemData = []
         CascData = []
         ContainerData = []
@@ -1427,13 +1424,16 @@ class ItemInNonExcelUpload(View,SqlDb):
         CascInfo.fillna(CascColumn, inplace=True)
         ContainerInfo.fillna(ContainerColumn, inplace=True)
 
-        self.cursor.execute(f"SELECT PermitId FROM OutItemDtl WHERE PermitId = '{PermitId}'")
+        self.cursor.execute(f"SELECT max(ItemNo) PermitId FROM OutItemDtl WHERE PermitId = '{PermitId}'")
         itemLen = len(self.cursor.fetchall())
+        print(itemLen)
 
         row = ''
 
-        ItemValues = [row['CountryofOrigin'],row['HSCode'],row['HSQty'],row['TotalLineAmount'],row['ItemCode'],row['Description'],row['DGIndicator'],row['Brand'],row['Model'],row['InHAWBOBL'],row['OutHAWBOBL'],row['HSUOM'],row['InvoiceNumber'],row['ItemCurrency'],row['UnitPrice'],row['TotalDutiableQty'],row['TotalDutiableUOM'],row['DutiableQty'],row['DutiableUOM'],row['OuterPackQty'],row['OuterPackUOM'],row['InPackQty'],row['InPackUOM'],row['InnerPackQty'],row['InnerPackUOM'],row['InmostPackQty'],row['InmostPackUOM'],row['TarrifPreferentialCode'],row['OtherTaxRate'],row['OtherTaxUOM'],row['OtherTaxAmount'],row['CurrentLot'],row['PreviousLot'],row['AlcoholPercentage'],row['ShippingMarks1'],row['ShippingMarks2'],row['ShippingMarks3'],row['ShippingMarks4'],row['CerItemQty'],row['CerItemUOM'],row['CIFValOfCer'],row['ManufactureCostDate'],row['TexCat'],row['TexQuotaQty'],row['TexQuotaUOM'],row['CerInvNo'],row['CerInvDate'],row['OriginOfCer'],row['HSCodeCer'],row['PerContent'],row['CertificateDescription'],row['VehicleType'],row['OptionalChrgeUOM'],row['EngineCapcity'],row['Optioncahrge'],row['OptionalSumtotal'],row['OptionalSumExchange'],row['EngineCapUOM'],row['originaldatereg']]
+        # ItemValues = [row['CountryofOrigin'],row['HSCode'],row['HSQty'],row['TotalLineAmount'],row['ItemCode'],row['Description'],row['DGIndicator'],row['Brand'],row['Model'],row['InHAWBOBL'],row['OutHAWBOBL'],row['HSUOM'],row['InvoiceNumber'],row['ItemCurrency'],row['UnitPrice'],row['TotalDutiableQty'],row['TotalDutiableUOM'],row['DutiableQty'],row['DutiableUOM'],row['OuterPackQty'],row['OuterPackUOM'],row['InPackQty'],row['InPackUOM'],row['InnerPackQty'],row['InnerPackUOM'],row['InmostPackQty'],row['InmostPackUOM'],row['TarrifPreferentialCode'],row['OtherTaxRate'],row['OtherTaxUOM'],row['OtherTaxAmount'],row['CurrentLot'],row['PreviousLot'],row['AlcoholPercentage'],row['ShippingMarks1'],row['ShippingMarks2'],row['ShippingMarks3'],row['ShippingMarks4'],row['CerItemQty'],row['CerItemUOM'],row['CIFValOfCer'],row['ManufactureCostDate'],row['TexCat'],row['TexQuotaQty'],row['TexQuotaUOM'],row['CerInvNo'],row['CerInvDate'],row['OriginOfCer'],row['HSCodeCer'],row['PerContent'],row['CertificateDescription'],row['VehicleType'],row['OptionalChrgeUOM'],row['EngineCapcity'],row['Optioncahrge'],row['OptionalSumtotal'],row['OptionalSumExchange'],row['EngineCapUOM'],row['originaldatereg']]
 
+        for item in ItemInfo:
+            print(item)
 
         # query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
         # self.cursor.execute(query)

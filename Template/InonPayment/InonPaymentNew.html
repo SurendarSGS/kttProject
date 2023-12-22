@@ -283,7 +283,7 @@
                         </div>
                     </div>
                     <div class="row mt-3">
-                        <div class="col-5">DOCUMENT TYPE</div> 
+                        <div class="col-5">DOCUMENT TYPE</div>
                         <div class="col-5">ATTACHMENT</div>
                         <div class="col-2"></div>
                     </div>
@@ -813,7 +813,7 @@
                             </div>
                         </div>
                         <div class="container mt-3" style="display: none;" id="VesselNameVisible">
-                            <div class="row"> 
+                            <div class="row">
                                 <div class="col-3"> VESSEL NAME </div>
                                 <div class="col-6">
                                     <input type="text" class="inputStyle HighLight" id="VesselName">
@@ -1216,7 +1216,8 @@
                         <input type="text" class="inputStyle" style="width: 70%;" placeholder="NAME1" tabindex="8"
                             id="InvoiceImporterName1InNon">
 
-                        <button type="button" class="CopyImporterbtn1" onclick="CopyImporterInvoice()">COPYIMPORTER</button>
+                        <button type="button" class="CopyImporterbtn1"
+                            onclick="CopyImporterInvoice()">COPYIMPORTER</button>
                     </div>
                 </div>
             </div>
@@ -1425,7 +1426,8 @@
             <div class="row">
                 <div class="col-7"></div>
                 <div class="col-5">
-                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSaveInNon('NEWMOVE')" tabindex="26">ADD
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSaveInNon('NEWMOVE')"
+                        tabindex="26">ADD
                         ITEM</button>
                     <button type="button" style="width:24%;" class="ButtonClick"
                         onclick="ItemSaveInNon('PREVIOUSMOVE')">PREVIOUS</button>
@@ -1478,10 +1480,11 @@
                             <div class="col-8">
                                 <span style="background-color: brown;color: white;display: none;"
                                     id="ControlledItemInNon">CONTROLLED ITEM</span>
-                                <input type="text" class="inputStyle HighLight" id="ItemHsCodeInNon" tabindex="1" 
+                                <input type="text" class="inputStyle HighLight" id="ItemHsCodeInNon" tabindex="1"
                                     onfocus="ItemHscodeFocusIn()" onfocusout="ItemHscodeFocusOut()">
                                 <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
-                                <p style="color: rgb(50, 167, 0)(216, 28, 28);" id="HsCodeLoadingId">PLEASE WAIT A MINIUTE</p>
+                                <p style="color: rgb(50, 167, 0)(216, 28, 28);" id="HsCodeLoadingId">PLEASE WAIT A
+                                    MINIUTE</p>
                             </div>
                         </div>
                     </div>
@@ -1489,8 +1492,8 @@
                         <div class="row">
                             <div class="col-4">DESCRIPTION</div>
                             <div class="col-8">
-                                <textarea class="inputStyle HighLight" id="ItemDescriptionInNon" style="height: 70px;" tabindex="2"
-                                    onfocus="TrimKeyUp('ItemDescriptionInNon')"></textarea>
+                                <textarea class="inputStyle HighLight" id="ItemDescriptionInNon" style="height: 70px;"
+                                    tabindex="2" onfocus="TrimKeyUp('ItemDescriptionInNon')"></textarea>
                                 <span class="ErrColor" id="ItemDescriptionInNonSpan">FILL DESCRIPTION</span>
                             </div>
                         </div>
@@ -1519,7 +1522,8 @@
                                 <label for="itemDgIndicator">DG INDICATOR</label>
                             </div>
                             <div class="col-4">
-                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')" tabindex="4">
+                                <input type="checkbox" id="itemUnBrand" onclick="CheckFunction('itemUnBrand')"
+                                    tabindex="4">
                                 <label for="itemUnBrand">UNBRANDED</label>
                             </div>
                         </div>
@@ -1556,7 +1560,8 @@
                     <div class="row mt-3" id="EngineCapacityShow" style="display: none;">
                         <div class="row">
                             <div class="col-5 ">ENGINE CAPACITY</div>
-                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00" tabindex="8">
+                            <div class="col-4"><input type="text" class="inputStyle" id="EngineCapacity" value="0.00"
+                                    tabindex="8">
                             </div>
                             <div class="col-3">
                                 <select class="Dropdown" id="EngineCapacityUom" tabindex="9">
@@ -1571,7 +1576,7 @@
                             <div class="col-7">
                                 <input type="text" class="inputStyle" id="OriginalRegistrationDate" tabindex="9"
                                     onfocusout="InvoiceDateFunction('OriginalRegistrationDate')">
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row mt-3" id="itemDutiableQtyNone" style="display: none;">
@@ -1592,8 +1597,8 @@
                         <div class="row">
                             <div class="col-5 ">TOTAL DUTIABLE QUANTITY</div>
                             <div class="col-4">
-                                <input type="number" class="inputStyle" id="ItemTotalDutiableQtyInput" value="0.00" tabindex="11"
-                                    onkeyup="ItemTotalDutiableOnchange()">
+                                <input type="number" class="inputStyle" id="ItemTotalDutiableQtyInput" value="0.00"
+                                    tabindex="11" onkeyup="ItemTotalDutiableOnchange()">
                             </div>
                             <div class="col-3">
                                 <select class="Dropdown" id="ItemTotalDutiableQtyUom">
@@ -1606,8 +1611,8 @@
                         <div class="row">
                             <div class="col-5 ">INVOICE QUANTITY</div>
                             <div class="col-7">
-                                <input type="number" class="inputStyle" value="0.00" id="itemInvoiceQuantity" tabindex="12"
-                                    onkeyup="itemInvoiceQuantityFunction()">
+                                <input type="number" class="inputStyle" value="0.00" id="itemInvoiceQuantity"
+                                    tabindex="12" onkeyup="itemInvoiceQuantityFunction()">
                             </div>
                         </div>
                     </div>
@@ -1615,7 +1620,8 @@
                         <div class="row">
                             <div class="col-5 "> HS QUANTITY</div>
                             <div class="col-4">
-                                <input type="number" class="inputStyle HighLight" id="ItemHsQtyInput" value="0.00" tabindex="13">
+                                <input type="number" class="inputStyle HighLight" id="ItemHsQtyInput" value="0.00"
+                                    tabindex="13">
                                 <span class="ErrColor" id="ItemHsQtyInputSpan">FILL HS QUANTITY</span>
                             </div>
                             <div class="col-3">
@@ -1651,7 +1657,7 @@
                                     onclick="ItemCascShowAll('#packing_details','.PackingDetails')">
                                 <label for="packing_details">PACKING INFO</label>
                             </div>
-                            <div class="col-3"> 
+                            <div class="col-3">
                                 <input type="checkbox" id="itemCascID" value="False" tabindex="16"
                                     onclick="ItemCascShowAll('#itemCascID','.OutItemCascHide')">
                                 <label class="" for="itemCascID">ITEM CASC</label>
@@ -1788,9 +1794,9 @@
                     <div class="row mt-3">
                         <div class="row">
                             <div class="col-5 ">TOTAL LINE AMOUNT</div>
-                            <div class="col-7"> 
-                                <input type="number" class="inputStyle HighLight" id="iteminvoiceTotalLineAmount" tabindex="25"
-                                    value="0.00" onfocusout="TotalLineAmountCalculation()">
+                            <div class="col-7">
+                                <input type="number" class="inputStyle HighLight" id="iteminvoiceTotalLineAmount"
+                                    tabindex="25" value="0.00" onfocusout="TotalLineAmountCalculation()">
                                 <span class="ErrColor" id="iteminvoiceTotalLineAmountSpan">FILL AMOUNT</span>
                             </div>
                         </div>
@@ -1879,7 +1885,7 @@
                 <div class="col-6">
                     <div class="row">
                         <div class="col">
-                            <h6 class="Borderdiv">UPLOAD ITEM EXCEL TEMPLATE</h6> 
+                            <h6 class="Borderdiv">UPLOAD ITEM EXCEL TEMPLATE</h6>
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -1926,7 +1932,7 @@
                     <div class="row">
                         <div class="col-2"></div>
                         <div class="col-10">
-                            <div class="row"> 
+                            <div class="row">
                                 <div class="col-1" style="width: 150px;">PRODUCT CODE 1 </div>
                                 <div class="col-2 mb-5">
                                     <i class="fa-solid fa-magnifying-glass fa-lg"
@@ -1967,9 +1973,12 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="21"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="22"></td>
-                                                <td><input type="text" class="inputStyle" name="cascName1" tabindex="23"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1"
+                                                        tabindex="21"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1"
+                                                        tabindex="22"></td>
+                                                <td><input type="text" class="inputStyle" name="cascName1"
+                                                        tabindex="23"></td>
                                                 <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
                                                         onclick="DeleteCascTable(this)"></i></td>
                                             </tr>
@@ -2285,10 +2294,10 @@
                 <div class="col-3"></div>
             </div>
             <div class="row mt-4">
-                <div class="col-2"><button class="MoveOnButtons showDisable" type="button" 
-                        onclick="ItemDeleteInNon()">DELETE ITEM</button></div>
                 <div class="col-2"><button class="MoveOnButtons showDisable" type="button"
-                        onclick="ItemEditAllInNon()" id="EditAllItemBtn">EDIT ALL ITEM</button></div>
+                        onclick="ItemDeleteInNon()">DELETE ITEM</button></div>
+                <div class="col-2"><button class="MoveOnButtons showDisable" type="button" onclick="ItemEditAllInNon()"
+                        id="EditAllItemBtn">EDIT ALL ITEM</button></div>
                 <div class="col-2"><button class="MoveOnButtons showDisable" type="button"
                         onclick="ItemConsolidateInNon()">CONSOLIDATE</button></div>
                 <div class="col-2"><input type="text" class="inputStyle" placeholder="SEARCH BY ITEM NO..."></div>
@@ -2509,7 +2518,7 @@
                     </div>
                 </div>
             </div>
-            <!---------------------------------------------- BUTTONS ---------------------------------------> 
+            <!---------------------------------------------- BUTTONS --------------------------------------->
             <div class="row mt-4">
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
@@ -2565,13 +2574,16 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">EXCISE DUTY</div>
-                            <div class="col-6"><input type="text" class="inputStyle" value="0.00" disabled
-                                    id="summaryExciseDuty"></div>
+                            <div class="col-6">
+                                <input type="text" class="inputStyle" value="0.00" disabled id="summaryExciseDuty">
+                            </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-6 ">SUM OF INVOICE AMOUNT</div>
-                            <div class="col-6" id="summarySumOfInvoiceAmount"><input type="text" class="inputStyle"
-                                    name="summarySumOfInvoiceAmount" value="0.00" disabled></div>
+                            <div class="col-6" id="summarySumOfInvoiceAmount">
+                                <input type="text" class="inputStyle" name="summarySumOfInvoiceAmount" value="0.00"
+                                    disabled>
+                            </div>
                         </div>
                     </div>
                     <div class="col-3">
@@ -2587,8 +2599,10 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">SUM OF ITEM AMOUNT</div>
-                            <div class="col-6" id="summarySumOfItemAmout"><input type="text" class="inputStyle"
-                                    name="summarySumOfItemAmout" value="0.00" disabled></div>
+                            <div class="col-6" id="summarySumOfItemAmout">
+                                <input type="text" class="inputStyle" name="summarySumOfItemAmout" value="0.00"
+                                    disabled>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2600,7 +2614,8 @@
                 <div class="row">
                     <div class="col-1">TRADER REMARKS</div>
                     <div class="col-2"><button class="ButtonClick" style="width: 100%;" type="button"
-                            onclick="summaryPreviousFunction()" id="SummaryPreviousPermitBtn">PREVIOUS PERMITNO</button></div>
+                            onclick="summaryPreviousFunction()" id="SummaryPreviousPermitBtn">PREVIOUS PERMITNO</button>
+                    </div>
                     <div class="col-1"><button class="ButtonClick" style="width: 100%;" type="button"
                             onclick="summaryEXRateFunction()">EX.RATE</button></div>
                     <div class="col-1">FORMAT REMARKS</div>
@@ -2616,7 +2631,7 @@
                 </div>
                 <div class="row mt-4">
                     <div class="col-7">INTERNAL REMARKS</div>
-                    <div class="col-3">MRD</div> 
+                    <div class="col-3">MRD</div>
                     <div class="col-2">TIME</div>
                 </div>
                 <div class="row mt-3">

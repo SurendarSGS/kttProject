@@ -1992,7 +1992,8 @@
                         </div>
                         <div class="col-1"></div>
                         <div class="col-2">
-                            <button class="btn1" type="button" id="InpaymentReadBtn" onclick="ItemUploadInNon()">UPLOAD DATA</button>
+                            <button class="btn1" type="button" id="InpaymentReadBtn" onclick="ItemUploadInNon()">UPLOAD
+                                DATA</button>
                         </div>
                     </div>
                 </div>
@@ -2800,12 +2801,12 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="row mt-3">
+                    <div class="row mt-2">
                         <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="summaryInvoiceTotal"
                                 disabled>
                         </div>
                     </div>
-                    <div class="row mt-3">
+                    <div class="row mt-2">
                         <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00"
                                 disabled>
                         </div>
@@ -2820,13 +2821,16 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="row mt-3">
+                    <div class="row mt-2">
                         <div class="col-8"><input type="text" id="NumberOfItems" class="inputStyle" value="0.00"
                                 disabled>
                         </div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-8"> </div>
+                    <div class="row mt-2">
+                        <div class="col-8" id="summarySumOfInvoiceAmount">
+                            <input type="text" class="inputStyle" name="summarySumOfInvoiceAmount" value="0.00"
+                                disabled>
+                        </div>
                     </div>
                 </div>
                 <div class="col-2">
@@ -2838,12 +2842,15 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="row mt-3">
+                    <div class="row mt-2">
                         <div class="col-8"><input type="text" class="inputStyle" value="0.00"
                                 id="SummarytotalInvoiceCif" disabled></div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-8"> </div>
+                    <div class="row mt-2">
+                        <div class="col-8" id="summarySumOfItemAmout">
+                            <input type="text" class="inputStyle" name="summarySumOfItemAmout" value="0.00"
+                                disabled>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3500,5 +3507,5 @@
 {% endblock %}
 
 <script>
-    
+
 </script>

@@ -1113,6 +1113,7 @@ function InvoiceSave() {
 
 function InvoiceLoadData() {
   var CifSum = 0
+  var InvoiceCurrAmd = []
 
   $("#InvoiceSerialNumber").val(Number(InvoiceData.length) + 1).toString().padStart(3, "0")
   $('#summaryInvoiceTotal').val(InvoiceData.length)
@@ -1130,9 +1131,12 @@ function InvoiceLoadData() {
       <td>${data.CIFSUMAmount}</td>
     </tr>`
     DrpInvoice += `<option>${data.InvoiceNo}</option>`
+    InvoiceCurrAmd.push([data.TICurrency, Number(data.TIAmount)]);
     CifSum += Number(data.CIFSUMAmount);
   })
   $('#SummarytotalInvoiceCif').val(CifSum)
+
+  SummaryInvoiceSumofInvoiceAmount(InvoiceCurrAmd)
 
   if (InvoiceData.length == 0) {
     InvData = `<tr>
@@ -1831,6 +1835,7 @@ itemfetch.then(function (itemfetch) {
 
 function ItemLoad() {
   $("#ItemNo").val(ItemData.length + 1)
+  var ItemCurrAmd = []
   var Cifob = 0
   var td = ""
   ItemData.forEach((item) => {
@@ -1851,6 +1856,7 @@ function ItemLoad() {
     </tr>
     `
     Cifob += Number(item.CIFFOB);
+    ItemCurrAmd.push([item.UnitPriceCurrency, Number(item.TotalLineAmount)]);
   })
   if (ItemData.length == 0) {
     td = `<tr>
@@ -1860,6 +1866,7 @@ function ItemLoad() {
   $('#TotalCIFFOBValue').val(Cifob)
   $('#NumberOfItems').val(ItemData.length)
   $("#ItemTable tbody").html(td)
+  SummarySumofItemAmd(ItemCurrAmd)
 }
 
 function OutItemSave() {
@@ -2982,7 +2989,7 @@ function ItemUploadInNon() {
     var file = fileInput.files[0];
     var formData = new FormData();
     formData.append("file", file);
-    formData.append("PermitId", $("#PermitIDInNon").val());
+    formData.append("PermitId", $("#PermitId").val());
     formData.append("MsgType", $("#MessageType").val());
     formData.append("UserName", $("#INONUSERNAME").val());
     formData.append("TouchTime", TOUCHTIME);
@@ -3013,4 +3020,70 @@ function ItemUploadInNon() {
 }
 
 
-        
+function SummaryInvoiceSumofInvoiceAmount(invoiceCurAmountARR) {
+  document.getElementById("summarySumOfInvoiceAmount").innerHTML = "";
+  let a = invoiceCurAmountARR;
+  let k = [];
+  let c = [];
+  let j = 0;
+
+  for (let i = 0; i < a.length; i++) {
+    if (i == 0) {
+      k.push(a[i][0]);
+      c.push(a[i]);
+    } else {
+      if (k.includes(a[i][0])) {
+        let n1 = k.indexOf(a[i][0]);
+        let m = c[n1][1] + a[i][1];
+        c[n1][1] = m;
+      } else {
+        k.push(a[i][0]);
+        c.push(a[i]);
+      }
+    }
+  }
+  for (let y = 0; y < c.length; y++) {
+    var x = document.createElement("INPUT");
+    x.setAttribute("type", "text");
+    x.setAttribute("class", "inputStyle");
+    x.setAttribute("disabled", false);
+    x.setAttribute("value", `${c[y][0]} : ${c[y][1].toFixed(2)}`);
+    x.setAttribute("name", 'summarySumOfInvoiceAmount');
+    document.getElementById('summarySumOfInvoiceAmount').appendChild(x);
+  }
+  let artst = c.toString()
+  // document.getElementById('summaryInvoiceAmount').innerHTML = artst.replaceAll(",", " ");
+}
+
+function SummarySumofItemAmd(itemCurAmountARR) {
+  document.getElementById("summarySumOfItemAmout").innerHTML = "";
+  let a = itemCurAmountARR;
+  let k = [];
+  let c = [];
+  let j = 0;
+  for (let i = 0; i < a.length; i++) {
+    if (i == 0) {
+      k.push(a[i][0]);
+      c.push(a[i]);
+    } else {
+      if (k.includes(a[i][0])) {
+        let n1 = k.indexOf(a[i][0]);
+        let m = c[n1][1] + a[i][1];
+        c[n1][1] = m;
+      } else {
+        k.push(a[i][0]);
+        c.push(a[i]);
+      }
+    }
+  }
+  for (let y = 0; y < c.length; y++) {
+    var x = document.createElement("INPUT");
+    x.setAttribute("type", "text");
+    x.setAttribute("class", "inputStyle");
+    x.setAttribute("disabled", false);
+    x.setAttribute("name", 'summarySumOfItemAmout');
+    x.setAttribute("value", `${c[y][0]} : ${c[y][1].toFixed(2)}`);
+    document.getElementById('summarySumOfItemAmout').appendChild(x);
+    $('#summarySumOfItemValue').val(c[y][1].toFixed(2))
+  }
+}
